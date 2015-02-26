@@ -8,8 +8,8 @@
 			<url>http://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor</url>
 			<requirements>
 				<major>7</major>
-				<minor>1</minor>
-				<patch>4</patch>
+				<minor>2</minor>
+				<patch>0</patch>
 			</requirements>
 		</package>
 		<author>
