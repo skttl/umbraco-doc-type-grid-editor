@@ -12,27 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CEE996
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UmbracoCms.7.2.2", "http://localhost:57740", "{4243FDA2-F71E-4A8E-92B0-8021D5C62E64}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_57740"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\Sandbox\Umbraco\UmbracoCms.7.2.2\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57740\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_57740"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\Sandbox\Umbraco\UmbracoCms.7.2.2\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57740\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\..\..\Sandbox\Umbraco\UmbracoCms.7.2.2\"
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package", "Package", "{D588B45D-9E67-4136-8271-2B8724C8165F}"
 	ProjectSection(SolutionItems) = preProject
 		Package.build.cmd = Package.build.cmd
@@ -51,8 +30,6 @@ Global
 		{4BD1DB40-1B39-4966-8740-D6A39D658598}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BD1DB40-1B39-4966-8740-D6A39D658598}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BD1DB40-1B39-4966-8740-D6A39D658598}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4243FDA2-F71E-4A8E-92B0-8021D5C62E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4243FDA2-F71E-4A8E-92B0-8021D5C62E64}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -228,10 +228,12 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>IF NOT "$(SolutionDir)" == "*Undefined*" (
-xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2\bin"
-xcopy /s /y "$(TargetDir)$(ProjectName).pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2\bin"
-xcopy /s /y "$(ProjectDir)Web\UI\*.*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2"
+    <PostBuildEvent>IF %25ComputerName%25 == MBP13-PC-BC (
+  IF NOT "$(SolutionDir)" == "*Undefined*" (
+    xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2\bin"
+    xcopy /s /y "$(TargetDir)$(ProjectName).pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2\bin"
+    xcopy /s /y "$(ProjectDir)Web\UI\*.*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2"
+  )
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
