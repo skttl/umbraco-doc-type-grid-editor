@@ -1,0 +1,15 @@
+﻿@using System.Web.Mvc.Html
+@using Our.Umbraco.DocTypeGridEditor.Helpers
+@using Our.Umbraco.DocTypeGridEditor.Web.Extensions
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<dynamic>
+@if (Model.value != null)
+{
+    string id = Model.value.id.ToString();
+    string docType = Model.value.docType.ToString();
+    string value = Model.value.value.ToString();
+    string viewPath = Model.editor.config.viewPath.ToString();
+    
+    var content = DocTypeGridEditorHelper.ConvertValueToContent(id, docType, value);
+    
+    @Html.RenderDocTypeGridEditorItem(content, viewPath)
+}         

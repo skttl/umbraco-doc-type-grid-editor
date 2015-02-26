@@ -1,0 +1,51 @@
+﻿<form name="dtgeForm" novalidate class="dtge-dialog umb-panel" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
+    
+    <div class="umb-panel-body no-header with-footer umb-scrollable" ng-switch="dialogMode">
+        
+        <umb-control-group label="Choose a content type" ng-switch-when="selectDocType">
+            <select class="umb-editor" ng-change="selectDocType()" name="selectDocType" ng-model="$parent.$parent.selectedDocType" ng-options="dt as dt.name for dt in docTypes" required>
+                <option value=""><localize key="choose" />...</option>
+            </select>
+        </umb-control-group>
+        
+        <div ng-switch-when="edit">
+            
+            <div style="margin-bottom: -25px;" ng-show="dialogOptions.requireName">
+                <umb-property property="nameProperty" >
+                    <input type="text" name="widgetName" ng-model="nameProperty.value" id="{{nameProperty.alias}}"
+                           class="umb-editor umb-textstring textstring"
+                           ng-required="true" />
+                </umb-property>
+            </div>
+
+            <fieldset ng-repeat="tab in node.tabs">
+                <legend style="font-size: 18px;">{{tab.alias}}</legend>
+                
+                <umb-property 
+                    property="property"
+                    ng-repeat="property in tab.properties">
+                    <umb-editor model="property"></umb-editor>
+                </umb-property>
+
+            </fieldset>
+
+        </div>
+
+    </div>
+
+    <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+            <div class="btn-toolbar umb-btn-toolbar">
+                
+                <a href ng-click="close()" class="btn btn-link">
+	        		<localize key="general_cancel">Cancel</localize>
+				</a>
+
+				<button class="btn btn-primary" ng-click="save()">
+				    <localize key="buttons_save">Save</localize>
+				</button>
+
+            </div>
+        </div>
+    </div>
+</form>
