@@ -28,7 +28,6 @@
                 );
             },
             getEditorMarkupForDocTypePartial: function (nodeId, id, docType, value, viewPath) {
-                console.log(value);
                 var url = "/" + nodeId +"?dtgePreview=1";
                 return $http({
                     method: 'POST',
