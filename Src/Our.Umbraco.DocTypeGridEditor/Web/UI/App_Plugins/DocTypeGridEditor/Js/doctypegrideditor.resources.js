@@ -5,7 +5,7 @@
                 var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeAliasByGuid?guid=" + guid;
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
-                    'Failed to retrieve datatype alias by guid'
+                    'Failed to retrieve content type alias by guid'
                 );
             },
             getContentTypes: function (allowedContentTypes) {
@@ -17,7 +17,14 @@
                 }
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
-                    'Failed to retrieve datatypes'
+                    'Failed to retrieve content types'
+                );
+            },
+            getContentTypeIcon: function (guid) {
+                var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeIcon?guid=" + guid;
+                return umbRequestHelper.resourcePromise(
+                    $http.get(url),
+                    'Failed to retrieve content type icon'
                 );
             },
             getDataTypePreValues: function (dtdId) {

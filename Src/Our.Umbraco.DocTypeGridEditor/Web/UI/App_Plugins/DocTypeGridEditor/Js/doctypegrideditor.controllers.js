@@ -10,6 +10,7 @@
     function ($scope, $rootScope, $timeout, $routeParams, dtgeDialogService, dtgeResources) {
 
         $scope.title = "Click to insert item";
+        $scope.icon = "icon-item-arrangement";
 
         $scope.setValue = function (data) {
             $scope.control.value = data;
@@ -18,6 +19,13 @@
             }
             if ("name" in $scope.control.value.value && $scope.control.value.value.name) {
                 $scope.title = $scope.control.value.value.name;
+            }
+            if ("docType" in $scope.control.value && $scope.control.value.docType) {
+                dtgeResources.getContentTypeIcon($scope.control.value.docType).then(function (data2) {
+                    if (data2.icon) {
+                        $scope.icon = data2.icon;
+                    }
+                });
             }
         };
 

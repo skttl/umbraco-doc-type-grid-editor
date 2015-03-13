@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Configuration;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;
@@ -36,6 +37,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     alias = x.Alias,
                     icon = x.Icon
                 });
+        }
+
+        [System.Web.Http.HttpGet]
+        public object GetContentTypeIcon([System.Web.Http.ModelBinding.ModelBinder] Guid guid)
+        {
+            var contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(guid);
+            var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
+            return new
+            {
+                icon = contentType != null ? contentType.Icon : ""
+            };
         }
 
         [System.Web.Http.HttpGet]
