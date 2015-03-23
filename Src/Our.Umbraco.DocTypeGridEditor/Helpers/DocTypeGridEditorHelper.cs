@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Our.Umbraco.DocTypeGridEditor.Models;
@@ -31,15 +32,16 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                         if (Guid.TryParse(docTypeAlias, out docTypeGuid))
                             docTypeAlias = Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
 
-                        var contentType = PublishedContentType.Get(PublishedItemType.Content, docTypeAlias);
-                        var properties = new List<IPublishedProperty>();
+                        var publishedContentType = PublishedContentType.Get(PublishedItemType.Content, docTypeAlias);
+                        var contentType = ApplicationContext.Current.Services.ContentTypeService.GetContentType(docTypeAlias);
+                        var properties = new List<IPublishedProperty>(); 
 
                         // Convert all the properties
                         var data = JsonConvert.DeserializeObject(dataJson);
                         var propValues = ((JObject) data).ToObject<Dictionary<string, object>>();
                         foreach (var jProp in propValues)
                         {
-                            var propType = contentType.GetPropertyType(jProp.Key);
+                            var propType = publishedContentType.GetPropertyType(jProp.Key);
                             if (propType != null)
                             {
                                 /* Because we never store the value in the database, we never run the property editors
@@ -58,7 +60,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                                 var newValue = propEditor.ValueEditor.ConvertEditorToDb(contentPropData, jProp.Value);
 
-                                properties.Add(new DetachedPublishedProperty(propType, newValue));
+                                /* Now that we have the DB stored value, we actually need to then convert it into it's
+                                 * XML serialized state as expected by the published property by calling ConvertDbToString
+                                 */
+                                var propType2 = contentType.PropertyTypes.Single(x => x.Alias == propType.PropertyTypeAlias);
+                                var newValue2 = propEditor.ValueEditor.ConvertDbToString(new Property(propType2, newValue), propType2, 
+                                    ApplicationContext.Current.Services.DataTypeService);
+
+                                properties.Add(new DetachedPublishedProperty(propType, newValue2));
                             }
                         }
 
@@ -69,7 +78,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                             // Do nothing, we just want to parse out the name if we can
                         }
 
-                        return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(), contentType,
+                        return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(), publishedContentType,
                             properties.ToArray());
                     }
                 });
