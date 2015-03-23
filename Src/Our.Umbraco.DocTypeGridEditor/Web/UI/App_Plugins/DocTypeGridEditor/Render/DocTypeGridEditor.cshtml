@@ -1,4 +1,5 @@
-﻿@using System.Web.Mvc.Html
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
 @using Our.Umbraco.DocTypeGridEditor.Helpers
 @using Our.Umbraco.DocTypeGridEditor.Web.Extensions
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<dynamic>
@@ -8,8 +9,9 @@
     string docType = Model.value.docType.ToString();
     string value = Model.value.value.ToString();
     string viewPath = Model.editor.config.viewPath.ToString();
+    string previewViewPath = Model.editor.config.previewViewPath.ToString();
     
     var content = DocTypeGridEditorHelper.ConvertValueToContent(id, docType, value);
-    
-    @Html.RenderDocTypeGridEditorItem(content, viewPath)
+
+    @Html.RenderDocTypeGridEditorItem(content, viewPath, previewViewPath)
 }         

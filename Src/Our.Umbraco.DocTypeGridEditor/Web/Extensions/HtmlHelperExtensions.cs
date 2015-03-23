@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Our.Umbraco.DocTypeGridEditor.Helpers;
+using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 
@@ -10,24 +10,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
     public static class HtmlHelperExtensions
     {
         public static HtmlString RenderDocTypeGridEditorItem(this HtmlHelper helper,
-            string id,
-            string docType,
-            string value,
-            string viewPath = "",
-            string actionName = "",
-            object model = null)
-        {
-            var content = DocTypeGridEditorHelper.ConvertValueToContent(id, docType, value);
-            return helper.RenderDocTypeGridEditorItem(content, viewPath, actionName, model);
-        }
-
-        public static HtmlString RenderDocTypeGridEditorItem(this HtmlHelper helper,
             IPublishedContent content,
             string viewPath = "",
-            string actionName = "",
-            object model = null)
+            string previewViewPath = "")
         {
-            
             if (content == null)
                 return new HtmlString(string.Empty);
 
@@ -36,22 +22,44 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(viewPath))
                 viewPath = viewPath.TrimEnd('/') + "/";
 
-            if (string.IsNullOrWhiteSpace(actionName))
-                actionName = content.DocumentTypeAlias;
+            if (!string.IsNullOrWhiteSpace(previewViewPath))
+                previewViewPath = previewViewPath.TrimEnd('/') + "/";
+
+            var actionName = content.DocumentTypeAlias;
 
             var umbracoHelper = new UmbracoHelper(UmbracoContext.Current);
             if (umbracoHelper.SurfaceControllerExists(controllerName, actionName, true))
             {
                 return helper.Action(actionName, controllerName, new
                 {
-                    dtgeModel = model ?? content,
-                    dtgeViewPath = viewPath
+                    dtgeModel = content,
+                    dtgeViewPath = viewPath,
+                    dtgePreviewViewPath = previewViewPath
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(viewPath))
-                return helper.Partial(viewPath + content.DocumentTypeAlias + ".cshtml", content);
+            // Check for preview view
+            if (!string.IsNullOrWhiteSpace(previewViewPath)
+                && helper.ViewContext.RequestContext.HttpContext.Request.QueryString["dtgePreview"] == "1")
+            {
+                var fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext.Controller.ControllerContext, fullPreviewViewPath, true))
+                {
+                    return helper.Partial(previewViewPath, content);
+                }
+            }
 
+            // Check for view path view
+            if (!string.IsNullOrWhiteSpace(viewPath))
+            {
+                var fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext.Controller.ControllerContext, fullViewPath, true))
+                {
+                    return helper.Partial(fullViewPath, content);
+                }
+            }
+
+            // Resort to standard partial view
             return helper.Partial(content.DocumentTypeAlias, content);
         }
     }
