@@ -7,7 +7,7 @@
 	"config": {
 	    "allowedDocTypes": [],
         "enablePreview": true,
-        "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Views/",
+        "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
         "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/"
 	}
 }
