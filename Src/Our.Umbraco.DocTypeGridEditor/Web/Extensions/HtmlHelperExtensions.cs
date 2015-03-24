@@ -17,7 +17,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (content == null)
                 return new HtmlString(string.Empty);
 
-            var controllerName = content.DocumentTypeAlias + "Surface";
+            var controllerName = content.DocumentTypeAlias + "Surface"; 
 
             if (!string.IsNullOrWhiteSpace(viewPath))
                 viewPath = viewPath.TrimEnd('/') + "/";
@@ -45,7 +45,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 var fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext.Controller.ControllerContext, fullPreviewViewPath, true))
                 {
-                    return helper.Partial(previewViewPath, content);
+                    return helper.Partial(fullPreviewViewPath, content);
                 }
             }
 
