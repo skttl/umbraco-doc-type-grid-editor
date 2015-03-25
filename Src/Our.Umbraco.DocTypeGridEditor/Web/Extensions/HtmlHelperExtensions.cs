@@ -13,13 +13,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             IPublishedContent content,
             string viewPath = "",
             string previewViewPath = "")
-        {
-            if (content == null)
+        { 
+            if (content == null) 
                 return new HtmlString(string.Empty);
 
             var controllerName = content.DocumentTypeAlias + "Surface"; 
 
-            if (!string.IsNullOrWhiteSpace(viewPath))
+            if (!string.IsNullOrWhiteSpace(viewPath)) 
                 viewPath = viewPath.TrimEnd('/') + "/";
 
             if (!string.IsNullOrWhiteSpace(previewViewPath))
@@ -38,12 +38,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 });
             }
 
-            // Check for preview view
+            // Check for preview view 
             if (!string.IsNullOrWhiteSpace(previewViewPath)
                 && helper.ViewContext.RequestContext.HttpContext.Request.QueryString["dtgePreview"] == "1")
             {
                 var fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext.Controller.ControllerContext, fullPreviewViewPath, true))
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
@@ -53,7 +53,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(viewPath))
             {
                 var fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext.Controller.ControllerContext, fullViewPath, true))
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }

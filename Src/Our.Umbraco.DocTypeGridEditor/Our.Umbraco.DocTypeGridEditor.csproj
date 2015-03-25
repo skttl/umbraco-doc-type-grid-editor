@@ -231,9 +231,9 @@
   <PropertyGroup>
     <PostBuildEvent>IF %25ComputerName%25 == MBP13-PC-BC (
   IF NOT "$(SolutionDir)" == "*Undefined*" (
-    xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2\bin"
-    xcopy /s /y "$(TargetDir)$(ProjectName).pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2\bin"
-    xcopy /s /y "$(ProjectDir)Web\UI\*.*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.2.2"
+    xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoUHangoutDemo\bin"
+    xcopy /s /y "$(TargetDir)$(ProjectName).pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoUHangoutDemo\bin"
+    xcopy /s /y "$(ProjectDir)Web\UI\*.*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoUHangoutDemo"
   )
 )</PostBuildEvent>
   </PropertyGroup>
