@@ -12,12 +12,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CEE996
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package", "Package", "{D588B45D-9E67-4136-8271-2B8724C8165F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{D588B45D-9E67-4136-8271-2B8724C8165F}"
 	ProjectSection(SolutionItems) = preProject
-		Package.build.cmd = Package.build.cmd
-		Package.build.xml = Package.build.xml
-		Package.xml = Package.xml
 		README.markdown = README.markdown
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Package", "{42CE1449-272B-453B-B162-4558FD38BF41}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build-appveyor.cmd = build-appveyor.cmd
+		build.cmd = build.cmd
+		Build\package.nuspec = Build\package.nuspec
+		Build\package.proj = Build\package.proj
+		Build\package.xml = Build\package.xml
 	EndProjectSection
 EndProject
 Global
