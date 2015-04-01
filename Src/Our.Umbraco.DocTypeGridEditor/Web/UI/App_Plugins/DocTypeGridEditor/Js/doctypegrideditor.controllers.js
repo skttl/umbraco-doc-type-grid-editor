@@ -4,10 +4,11 @@
     "$rootScope",
     "$timeout",
     "$routeParams",
+    'assetsService',
     "Our.Umbraco.DocTypeGridEditor.Services.DocTypeDialogService",
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
 
-    function ($scope, $rootScope, $timeout, $routeParams, dtgeDialogService, dtgeResources) {
+    function ($scope, $rootScope, $timeout, $routeParams, assetsService, dtgeDialogService, dtgeResources) {
 
         $scope.title = "Click to insert item";
         $scope.icon = "icon-item-arrangement";
@@ -49,7 +50,7 @@
         $scope.setPreview = function (model) {
             if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
                 var nodeId = $routeParams.id;
-                dtgeResources.getEditorMarkupForDocTypePartial(nodeId, model.id, model.docType, model.value, $scope.control.editor.config.viewPath)
+                dtgeResources.getEditorMarkupForDocTypePartial(nodeId, model.id, model.docType, model.value, $scope.control.editor.config.viewPath, $scope.control.editor.config.previewViewPath)
                     .success(function(htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
@@ -63,6 +64,18 @@
             docType: "",
             value: {}
         });
+
+        // Load preview css / js files
+        if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview)
+        {
+            if ("previewCssFilePath" in $scope.control.editor.config && $scope.control.editor.config.previewCssFilePath) {
+                assetsService.loadCss($scope.control.editor.config.previewCssFilePath, $scope);
+            };
+
+            if ("previewJsFilePath" in $scope.control.editor.config && $scope.control.editor.config.previewJsFilePath) {
+                assetsService.loadJs($scope.control.editor.config.previewJsFilePath, $scope);
+            }
+        }
 
         $timeout(function () {
             if ($scope.control.$initializing) {

@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using Umbraco.Core.Logging;
+using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 
@@ -21,16 +21,36 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             get { return ControllerContext.RouteData.Values["dtgeViewPath"] as string ?? string.Empty; }
         }
 
+        public string PreviewViewPath
+        {
+            get { return ControllerContext.RouteData.Values["dtgePreviewViewPath"] as string ?? string.Empty; }
+        }
+
+        public bool IsPreview
+        {
+            get { return Request.QueryString["dtgePreview"] == "1"; }
+        }
+
         protected ActionResult CurrentPartialView(object model = null)
         {
             if (model == null)
                 model = Model;
 
             var viewName = ControllerContext.RouteData.Values["action"].ToString();
-            var viewPath = GetFullViewPath(viewName);
 
-            if (ViewExists(viewPath, true))
-                return base.PartialView(viewPath, model);
+            if (IsPreview && !string.IsNullOrWhiteSpace(PreviewViewPath))
+            {
+                var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);
+                if (ViewEngines.Engines.ViewExists(ControllerContext, previewViewPath, true))
+                    return base.PartialView(previewViewPath, model);
+            }
+
+            if (!string.IsNullOrWhiteSpace(ViewPath))
+            {
+                var viewPath = GetFullViewPath(viewName, ViewPath);
+                if (ViewEngines.Engines.ViewExists(ControllerContext, viewPath, true))
+                    return base.PartialView(viewPath, model);
+            }
 
             return HttpNotFound();
         }
@@ -42,31 +62,33 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         protected override PartialViewResult PartialView(string viewName, object model)
         {
-            var viewPath = GetFullViewPath(viewName);
-            return base.PartialView(viewPath, model);
+            if (IsPreview && !string.IsNullOrWhiteSpace(PreviewViewPath))
+            {
+                var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);
+                if (ViewEngines.Engines.ViewExists(ControllerContext, previewViewPath, true))
+                    return base.PartialView(previewViewPath, model);
+            }
+
+            if (!string.IsNullOrWhiteSpace(ViewPath))
+            {
+                var viewPath = GetFullViewPath(viewName, ViewPath);
+                if (ViewEngines.Engines.ViewExists(ControllerContext, viewPath, true))
+                    return base.PartialView(viewPath, model);
+            }
+
+            return base.PartialView(viewName, model);
         }
 
-        protected string GetFullViewPath(string viewName)
+        protected string GetFullViewPath(string viewName, string baseViewPath)
         {
             if (viewName.StartsWith("~") || viewName.StartsWith("/")
-                || viewName.StartsWith(".") || string.IsNullOrWhiteSpace(ViewPath))
+                || viewName.StartsWith(".") || string.IsNullOrWhiteSpace(baseViewPath))
             {
                 return viewName;
             }
 
-            return ViewPath.TrimEnd('/') + "/" + viewName + ".cshtml";
+            return baseViewPath.TrimEnd('/') + "/" + viewName + ".cshtml";
         }
-
-        protected bool ViewExists(string viewName, bool isPartial = false)
-        {
-            var result = !isPartial
-                ? ViewEngines.Engines.FindView(ControllerContext, viewName, null)
-                : ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
-            if (result.View != null)
-                return true;
-
-            LogHelper.Warn<DocTypeGridEditorSurfaceController>("No view file found with the name " + viewName);
-            return false;
-        }
+        
     }
 }
