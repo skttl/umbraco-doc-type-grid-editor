@@ -2,19 +2,19 @@
 <umbPackage>
 	<info>
 		<package>
-			<name>Doc Type Grid Editor</name>
-			<version>0.0</version>
-			<license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
-			<url>http://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor</url>
+			<name></name>
+			<version>0.0.0</version>
+			<license url=""></license>
+			<url></url>
 			<requirements>
-				<major>7</major>
-				<minor>2</minor>
+				<major>0</major>
+				<minor>0</minor>
 				<patch>0</patch>
 			</requirements>
 		</package>
 		<author>
-			<name>Matt Brailsford, Lee Kelleher</name>
-			<website>http://our.umbraco.org</website>
+			<name></name>
+			<website></website>
 		</author>
 		<readme><![CDATA[]]></readme>
 	</info>
@@ -26,14 +26,15 @@
 	<DictionaryItems />
 	<Languages />
 	<DataTypes />
+
   <Actions>
-		<Action runat="install" undo="true" alias="AddObjectToJsonArray"
+    <Action runat="install" undo="true" alias="AddObjectToJsonArray"
 	    keyProperty="alias"
 	    sourceFile="~/App_Plugins/DocTypeGridEditor/Config/grid.editors.config.js"
 	    targetFile="~/Config/grid.editors.config.js" />
-	</Actions>
-
+  </Actions>
 	<control />
+
 	<files />
 
 </umbPackage>

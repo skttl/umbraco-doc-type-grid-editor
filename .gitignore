@@ -38,6 +38,6 @@ bin/
 */Thumbs.db
 */log.txt
 /Assets/
-/Build/
 *.DS_Store
 [Pp]ackages/*/**
+artifacts/
