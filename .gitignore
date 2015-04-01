@@ -41,3 +41,4 @@ bin/
 *.DS_Store
 [Pp]ackages/*/**
 artifacts/
+[Bb]uild/*
