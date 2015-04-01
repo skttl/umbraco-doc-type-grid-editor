@@ -31,7 +31,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             get { return Request.QueryString["dtgePreview"] == "1"; }
         }
 
-        protected ActionResult CurrentPartialView(object model = null)
+        protected PartialViewResult CurrentPartialView(object model = null)
         {
             if (model == null)
                 model = Model;
@@ -52,7 +52,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     return base.PartialView(viewPath, model);
             }
 
-            return HttpNotFound();
+            return base.PartialView(viewName, model);
         }
 
         protected new PartialViewResult PartialView(string viewName)
