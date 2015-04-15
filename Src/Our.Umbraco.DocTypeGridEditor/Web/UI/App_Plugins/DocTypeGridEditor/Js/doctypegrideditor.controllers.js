@@ -78,7 +78,16 @@
         }
 
         $timeout(function () {
-            if ($scope.control.$initializing) {
+            if ($scope.control.editor.config.isDocType && $scope.control.value.docType == "") {
+                var result = dtgeResources.getContentType($scope.control.editor.alias);
+                result.then(function (data) {
+                    if (data != null) {
+                        $scope.control.value.docType = data.guid;
+                        $scope.control.value.value = null;
+                        $scope.setDocType();
+                    }
+                });
+            } else if ($scope.control.$initializing) {
                 $scope.setDocType();
             } else if ($scope.control.value) {
                 $scope.setPreview($scope.control.value);

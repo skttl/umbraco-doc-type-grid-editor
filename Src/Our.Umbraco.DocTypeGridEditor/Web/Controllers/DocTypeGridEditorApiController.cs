@@ -40,6 +40,23 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         }
 
         [System.Web.Http.HttpGet]
+        public object GetContentType([System.Web.Http.ModelBinding.ModelBinder] string alias)
+        {
+            var allContentTypes = Services.ContentTypeService.GetAllContentTypes();
+            var found = allContentTypes
+                .Where(o => o.Alias.Equals(alias, StringComparison.InvariantCultureIgnoreCase))
+                .Select(x => new
+                {
+                    id = x.Id,
+                    guid = x.Key,
+                    name = x.Name,
+                    alias = x.Alias,
+                    icon = x.Icon
+                });
+            return found.Any() ? found.First() : null;
+        }
+
+        [System.Web.Http.HttpGet]
         public object GetContentTypeIcon([System.Web.Http.ModelBinding.ModelBinder] Guid guid)
         {
             var contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(guid);
