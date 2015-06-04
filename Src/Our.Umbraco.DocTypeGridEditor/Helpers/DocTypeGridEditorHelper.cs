@@ -23,6 +23,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         public static IPublishedContent ConvertValueToContent(string id, string docTypeAlias, string dataJson)
         {
+            if (string.IsNullOrWhiteSpace(docTypeAlias))
+                return null;
+
             return (IPublishedContent)ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
                 "DocTypeGridEditorHelper.ConvertValueToContent_" + id + "_" + docTypeAlias, () =>
                 {
