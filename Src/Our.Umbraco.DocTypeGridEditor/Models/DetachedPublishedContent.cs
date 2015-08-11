@@ -14,15 +14,18 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
         private readonly PublishedContentType _contentType;
         private readonly IEnumerable<IPublishedProperty> _properties;
         private readonly bool _isPreviewing;
+        private readonly IPublishedContent _containerNode;
 
         public DetachedPublishedContent(string name,
             PublishedContentType contentType,
             IEnumerable<IPublishedProperty> properties,
+            IPublishedContent containerNode = null,
             bool isPreviewing = false)
         {
             _name = name;
             _contentType = contentType;
             _properties = properties;
+            _containerNode = containerNode;
             _isPreviewing = isPreviewing;
         }
 
@@ -106,22 +109,22 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         public override string WriterName
         {
-            get { return null; }
+            get { return _containerNode != null ? _containerNode.WriterName : null; }
         }
 
         public override string CreatorName
         {
-            get { return null; }
+            get { return _containerNode != null ? _containerNode.CreatorName : null; }
         }
 
         public override int WriterId
         {
-            get { return 0; }
+            get { return _containerNode != null ? _containerNode.WriterId : 0; }
         }
 
         public override int CreatorId
         {
-            get { return 0; }
+            get { return _containerNode != null ? _containerNode.CreatorId : 0; }
         }
 
         public override string Path
@@ -131,17 +134,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         public override DateTime CreateDate
         {
-            get { return DateTime.MinValue; }
+            get { return _containerNode != null ? _containerNode.CreateDate : DateTime.MinValue; }
         }
 
         public override DateTime UpdateDate
         {
-            get { return DateTime.MinValue; }
+            get { return _containerNode != null ? _containerNode.UpdateDate : DateTime.MinValue; }
         }
 
         public override Guid Version
         {
-            get { return Guid.Empty; }
+            get { return _containerNode != null ? _containerNode.Version : Guid.Empty; }
         }
 
         public override int Level

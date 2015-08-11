@@ -11,6 +11,7 @@ using Umbraco.Core.Models.Editors;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Services;
+using Umbraco.Web;
 
 namespace Our.Umbraco.DocTypeGridEditor.Helpers
 {
@@ -78,8 +79,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                             // Do nothing, we just want to parse out the name if we can
                         }
 
-                        return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(), publishedContentType,
-                            properties.ToArray());
+                        // Get the current request node we are embedded in
+                        var pcr = UmbracoContext.Current.PublishedContentRequest;
+                        var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
+
+                        return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(), 
+                            publishedContentType,
+                            properties.ToArray(),
+                            containerNode);
                     }
                 });
         }
