@@ -24,24 +24,20 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         public static IPublishedContent ConvertValueToContent(string id, string docTypeAlias, string dataJson)
         {
-
-            try
+            if (UmbracoContext.Current != null)
             {
                 return
                     (IPublishedContent)
-                    ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
-                        "DocTypeGridEditorHelper.ConvertValueToContent_" + id + "_" + docTypeAlias,
-                        () =>
-                {
-                            return ConvertValue(id, docTypeAlias, dataJson);
-                        });
+                        ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
+                            "DocTypeGridEditorHelper.ConvertValueToContent_" + id + "_" + docTypeAlias,
+                            () =>
+                            {
+                                return ConvertValue(id, docTypeAlias, dataJson);
+                            });
             }
-            catch (NullReferenceException ex)
-            {
-
-                return (IPublishedContent)ConvertValue(id, docTypeAlias, dataJson);
-            }
+                return (IPublishedContent) ConvertValue(id, docTypeAlias, dataJson);
         }
+
 
         private static IPublishedContent ConvertValue(string id, string docTypeAlias, string dataJson)
         {
@@ -54,7 +50,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                         var publishedContentType = PublishedContentType.Get(PublishedItemType.Content, docTypeAlias);
                         var contentType = ApplicationContext.Current.Services.ContentTypeService.GetContentType(docTypeAlias);
-                        var properties = new List<IPublishedProperty>(); 
+                        var properties = new List<IPublishedProperty>();
 
                         // Convert all the properties
                         var data = JsonConvert.DeserializeObject(dataJson);
@@ -65,9 +61,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                             if (propType != null)
                             {
                                 /* Because we never store the value in the database, we never run the property editors
-                                 * "ConvertEditorToDb" method however the property editors will expect their value to 
+                                 * "ConvertEditorToDb" method however the property editors will expect their value to
                                  * be in a "DB" state so to get round this, we run the "ConvertEditorToDb" here before
-                                 * we go on to convert the value for the view. 
+                                 * we go on to convert the value for the view.
                                  */
                                 var propEditor = PropertyEditorResolver.Current.GetByAlias(propType.PropertyEditorAlias);
                                 var propPreValues = Services.DataTypeService.GetPreValuesCollectionByDataTypeId(
@@ -84,7 +80,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                                  * XML serialized state as expected by the published property by calling ConvertDbToString
                                  */
                                 var propType2 = contentType.PropertyTypes.Single(x => x.Alias == propType.PropertyTypeAlias);
-                                var newValue2 = propEditor.ValueEditor.ConvertDbToString(new Property(propType2, newValue), propType2, 
+                                var newValue2 = propEditor.ValueEditor.ConvertDbToString(new Property(propType2, newValue), propType2,
                                     ApplicationContext.Current.Services.DataTypeService);
 
                                 properties.Add(new DetachedPublishedProperty(propType, newValue2));
@@ -102,7 +98,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var pcr = UmbracoContext.Current == null ? null : UmbracoContext.Current.PublishedContentRequest;
                         var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
-                        return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(), 
+                        return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(),
                             publishedContentType,
                             properties.ToArray(),
                             containerNode);
