@@ -11,7 +11,10 @@
     string viewPath = Model.editor.config.viewPath.ToString();
     string previewViewPath = Model.editor.config.previewViewPath.ToString();
     
-    var content = DocTypeGridEditorHelper.ConvertValueToContent(id, docType, value);
-
-    @Html.RenderDocTypeGridEditorItem(content, viewPath, previewViewPath)
+    if(docType != "")
+    { 
+        var content = DocTypeGridEditorHelper.ConvertValueToContent(id, docType, value);
+    
+        @Html.RenderDocTypeGridEditorItem(content, viewPath)
+    }
 }         
