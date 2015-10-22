@@ -27,9 +27,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             if (string.IsNullOrWhiteSpace(docTypeAlias))
                 return null;
 
+           if (UmbracoContext.Current != null)
+           {
             return (IPublishedContent)ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
                 "DocTypeGridEditorHelper.ConvertValueToContent_" + id + "_" + docTypeAlias, () =>
                 {
+                   return ConvertValue(id, docTypeAlias, dataJson);
+                 });
+            }
+                return (IPublishedContent) ConvertValue(id, docTypeAlias, dataJson);
+        }
+
+        private static IPublishedContent ConvertValue(string id, string docTypeAlias, string dataJson)
+        {
                     using (var timer =  DisposableTimer.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValueToContent ({0}, {1})", id, docTypeAlias)))
                     {
                         Guid docTypeGuid;
@@ -83,7 +93,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                         }
 
                         // Get the current request node we are embedded in
-                        var pcr = UmbracoContext.Current.PublishedContentRequest;
+                        var pcr = UmbracoContext.Current == null ? null : UmbracoContext.Current.PublishedContentRequest;
                         var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
                         return new DetachedPublishedContent(nameObj == null ? null : nameObj.ToString(), 
@@ -91,7 +101,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                             properties.ToArray(),
                             containerNode);
                     }
-                });
+
         }
     }
 }
