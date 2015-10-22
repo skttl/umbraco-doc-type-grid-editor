@@ -76,7 +76,7 @@
 		<BuildUmbDir>$(MSBuildProjectDirectory)\_umbraco</BuildUmbDir>
 		<BuildNuGetDir>$(MSBuildProjectDirectory)\_nuget</BuildNuGetDir>
 		<ArtifactsDir>$(RootDir)\artifacts</ArtifactsDir>
-		<CoreProjectDir>$(RootDir)\Src\$(ProjectName)</CoreProjectDir>
+		<CoreProjectDir>$(RootDir)\src\$(ProjectName)</CoreProjectDir>
 	</PropertyGroup>
 
 	<!-- TARGETS -->
@@ -186,7 +186,7 @@
 			OutputDirectory="$(ArtifactsDir)"
 			Files="@(PackageFiles)" />
 
-		<!--<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\.nuget\NuGet.exe"
+		<!--<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
 			BasePath="$(BuildNuGetDir)"
 			Version="$(ProductVersion)"

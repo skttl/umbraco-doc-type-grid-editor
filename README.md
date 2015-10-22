@@ -12,49 +12,41 @@ A grid editor for Umbraco 7 that allows you to use Doc Types as a blue print for
 
 ### Installation
 
-> *Note:* Nested Content has been developed against **Umbraco v7.1.4** and will support that version and above.
+> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.1.4** and will support that version and above.
 
-Nested Content can be installed from either Our Umbraco or NuGet package repositories, or build manually from the source-code:
+Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code:
 
 #### Our Umbraco package repository
 
 To install from Our Umbraco, please download the package from:
 
-> [https://our.umbraco.org/projects/backoffice-extensions/nested-content](https://our.umbraco.org/projects/backoffice-extensions/nested-content) 
-
-#### NuGet package repository
-
-To [install from NuGet](https://www.nuget.org/packages/Our.Umbraco.NestedContent), you can run the following command from within Visual Studio:
-
-	PM> Install-Package Our.Umbraco.NestedContent
-
-We also have a [MyGet package repository](https://www.myget.org/gallery/umbraco-nested-content) - for bleeding-edge / development releases.
+> [https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor) 
 
 #### Manual build
 
-If you prefer, you can compile  Nested Content yourself, you'll need:
+If you prefer, you can compile  Doc Type Grid Editor yourself, you'll need:
 
 * Visual Studio 2012 (or above)
 
 To clone it locally click the "Clone in Windows" button above or run the following git commands.
 
-	git clone https://github.com/leekelleher/umbraco-nested-content.git umbraco-nested-content
-	cd umbraco-nested-content
+	git clone https://github.com/leekelleher/umbraco-doc-type-grid-editor.git umbraco-doc-type-grid-editor
+	cd umbraco-doc-type-grid-editor
 	.\build.cmd
 
 ---
 
 ## Developers Guide
 
-For details on how to use the Nested Content package, please refer to our [Developers Guide](docs/developers-guide.md) documentation.
+For details on how to use the Doc Type Grid Editor package, please refer to our [Developers Guide](docs/developers-guide.md) documentation.
 
-A PDF download is also available: [Nested Content - Developers Guide v1.0.pdf](docs/assets/pdf/Nested-Content--Developers-Guide-v1.0.pdf)
+A PDF download is also available: [Doc Type Grid Editor - Developers Guide v1.0.pdf](docs/assets/pdf/Nested-Content--Developers-Guide-v1.0.pdf)
 
 ---
 
 ## Known Issues
 
-Please be aware that not all property-editors will work within Nested Content. The following property-editors are known to have compatibility issues:
+Please be aware that not all property-editors will work within Doc Type Grid Editor. The following property-editors are known to have compatibility issues:
 
 * Upload (default Umbraco core)
 * Image Cropper (default Umbraco core)
@@ -75,8 +67,8 @@ Anyone and everyone is welcome to contribute. Please take a moment to review the
 
 Have a question?
 
-* [Nested Content Forum](https://our.umbraco.org/projects/backoffice-extensions/nested-content/nested-content-feedback) on Our Umbraco
-* [Raise an issue](https://github.com/leekelleher/umbraco-nested-content/issues) on GitHub
+* [Doc Type Grid Editor Forum](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor/doc-type-grid-editor-feedback/) on Our Umbraco
+* [Raise an issue](https://github.com/leekelleher/umbraco-doc-type-grid-editor/issues) on GitHub
 
 
 ## Dev Team
@@ -91,6 +83,6 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2015 Umbrella Inc, Our Umbraco and [other contributors](https://github.com/leekelleher/umbraco-nested-content/graphs/contributors)
+Copyright &copy; 2015 Umbrella Inc, Our Umbraco and [other contributors](https://github.com/leekelleher/umbraco-doc-type-grid-editor/graphs/contributors)
 
 Licensed under the [MIT License](LICENSE.md)

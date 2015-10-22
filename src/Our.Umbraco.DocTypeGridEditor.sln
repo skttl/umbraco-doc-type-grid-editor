@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.DocTypeGridEditor", "Src\Our.Umbraco.DocTypeGridEditor\Our.Umbraco.DocTypeGridEditor.csproj", "{4BD1DB40-1B39-4966-8740-D6A39D658598}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.DocTypeGridEditor", "Our.Umbraco.DocTypeGridEditor\Our.Umbraco.DocTypeGridEditor.csproj", "{4BD1DB40-1B39-4966-8740-D6A39D658598}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CEE9961C-D747-40CD-B0B2-868D6B46833E}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,17 +14,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CEE996
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{D588B45D-9E67-4136-8271-2B8724C8165F}"
 	ProjectSection(SolutionItems) = preProject
-		README.markdown = README.markdown
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Package", "{42CE1449-272B-453B-B162-4558FD38BF41}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-		build-appveyor.cmd = build-appveyor.cmd
-		build.cmd = build.cmd
-		Build\package.nuspec = Build\package.nuspec
-		Build\package.proj = Build\package.proj
-		Build\package.xml = Build\package.xml
+		..\appveyor.yml = ..\appveyor.yml
+		..\build-appveyor.cmd = ..\build-appveyor.cmd
+		..\build.cmd = ..\build.cmd
+		..\build\package.nuspec = ..\build\package.nuspec
+		..\build\package.proj = ..\build\package.proj
+		..\build\package.xml = ..\build\package.xml
 	EndProjectSection
 EndProject
 Global
