@@ -6,6 +6,7 @@
 	"icon": "icon-item-arrangement",
 	"config": {
 	    "allowedDocTypes": [],
+        "nameTemplate": "",
         "enablePreview": true,
         "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
         "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
