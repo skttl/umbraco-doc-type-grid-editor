@@ -5,12 +5,13 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<IPublishedContent>
 @{
     var id = Request.Form["id"];
-    var docType = Request.Form["docType"];
+    var editorAlias = Request.Form["editorAlias"];
+    var contentTypeAlias = Request.Form["contentTypeAlias"];
     var value = Request.Unvalidated.Form["value"];
     var viewPath = Request.Form["viewPath"];
     var previewViewPath = Request.Form["previewViewPath"];
+
+    var content = DocTypeGridEditorHelper.ConvertValueToContent(id, contentTypeAlias, value);
     
-    var content = DocTypeGridEditorHelper.ConvertValueToContent(id, docType, value);
-    
-    @Html.RenderDocTypeGridEditorItem(content, viewPath, previewViewPath)
+    @Html.RenderDocTypeGridEditorItem(content, editorAlias, viewPath, previewViewPath)
 }

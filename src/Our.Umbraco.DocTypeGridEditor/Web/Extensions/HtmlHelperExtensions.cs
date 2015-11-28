@@ -2,8 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Web;
+using Content = System.Web.UI.WebControls.Content;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
@@ -11,6 +13,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
     {
         public static HtmlString RenderDocTypeGridEditorItem(this HtmlHelper helper,
             IPublishedContent content,
+            string editorAlias = "",
             string viewPath = "",
             string previewViewPath = "")
         { 
@@ -25,12 +28,20 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(previewViewPath))
                 previewViewPath = previewViewPath.TrimEnd('/') + "/";
 
-            var actionName = content.DocumentTypeAlias;
-
             var umbracoHelper = new UmbracoHelper(UmbracoContext.Current);
-            if (umbracoHelper.SurfaceControllerExists(controllerName, actionName, true))
+            if (!editorAlias.IsNullOrWhiteSpace() && umbracoHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
-                return helper.Action(actionName, controllerName, new
+                return helper.Action(editorAlias, controllerName, new
+                {
+                    dtgeModel = content,
+                    dtgeViewPath = viewPath,
+                    dtgePreviewViewPath = previewViewPath
+                });
+            }
+
+            if (umbracoHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
+            {
+                return helper.Action(content.DocumentTypeAlias, controllerName, new
                 {
                     dtgeModel = content,
                     dtgeViewPath = viewPath,
@@ -42,7 +53,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(previewViewPath)
                 && helper.ViewContext.RequestContext.HttpContext.Request.QueryString["dtgePreview"] == "1")
             {
-                var fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
+                var fullPreviewViewPath = previewViewPath + editorAlias + ".cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                {
+                    return helper.Partial(fullPreviewViewPath, content);
+                }
+
+                fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
@@ -52,14 +69,25 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             // Check for view path view
             if (!string.IsNullOrWhiteSpace(viewPath))
             {
-                var fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
+                var fullViewPath = viewPath + editorAlias + ".cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                {
+                    return helper.Partial(fullViewPath, content);
+                }
+
+                fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
             }
 
-            // Resort to standard partial view
+            // Resort to standard partial views
+            if (ViewEngines.Engines.ViewExists(helper.ViewContext, editorAlias, true))
+            {
+                return helper.Partial(editorAlias, content);
+            }
+
             return helper.Partial(content.DocumentTypeAlias, content);
         }
     }

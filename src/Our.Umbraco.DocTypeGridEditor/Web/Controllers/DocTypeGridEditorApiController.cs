@@ -40,9 +40,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         }
 
         [System.Web.Http.HttpGet]
-        public object GetContentTypeIcon([System.Web.Http.ModelBinding.ModelBinder] Guid guid)
+        public object GetContentTypeIcon([System.Web.Http.ModelBinding.ModelBinder] string contentTypeAlias)
         {
-            var contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(guid);
+            Guid docTypeGuid;
+            if (Guid.TryParse(contentTypeAlias, out docTypeGuid))
+                contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
+
             var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
             return new
             {

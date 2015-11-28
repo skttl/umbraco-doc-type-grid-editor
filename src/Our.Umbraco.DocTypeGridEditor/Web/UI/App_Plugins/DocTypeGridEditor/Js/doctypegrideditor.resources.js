@@ -1,7 +1,7 @@
 ﻿angular.module('umbraco.resources').factory('Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources',
     function ($q, $http, umbRequestHelper) {
         return {
-            getContentAliasByGuid: function (guid) {
+            getContentTypeAliasByGuid: function (guid) {
                 var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeAliasByGuid?guid=" + guid;
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
@@ -20,8 +20,8 @@
                     'Failed to retrieve content types'
                 );
             },
-            getContentTypeIcon: function (guid) {
-                var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeIcon?guid=" + guid;
+            getContentTypeIcon: function (contentTypeAlias) {
+                var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeIcon?contentTypeAlias=" + contentTypeAlias;
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
                     'Failed to retrieve content type icon'
@@ -34,14 +34,15 @@
                     'Failed to retrieve datatypes'
                 );
             },
-            getEditorMarkupForDocTypePartial: function (nodeId, id, docType, value, viewPath, previewViewPath) {
+            getEditorMarkupForDocTypePartial: function (nodeId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath) {
                 var url = "/" + nodeId +"?dtgePreview=1";
                 return $http({
                     method: 'POST',
                     url: url,
                     data: $.param({
                         id: id,
-                        docType: docType,
+                        editorAlias: editorAlias,
+                        contentTypeAlias: contentTypeAlias,
                         value: JSON.stringify(value),
                         viewPath: viewPath,
                         previewViewPath: previewViewPath
