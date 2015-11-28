@@ -10,14 +10,6 @@
         
         <div ng-switch-when="edit">
             
-            <div style="margin-bottom: -25px;" ng-show="dialogOptions.requireName">
-                <umb-property property="nameProperty" >
-                    <input type="text" name="widgetName" ng-model="nameProperty.value" id="{{nameProperty.alias}}"
-                           class="umb-editor umb-textstring textstring"
-                           ng-required="true" />
-                </umb-property>
-            </div>
-
             <fieldset ng-repeat="tab in node.tabs">
                 <legend style="font-size: 18px;">{{tab.alias}}</legend>
                 

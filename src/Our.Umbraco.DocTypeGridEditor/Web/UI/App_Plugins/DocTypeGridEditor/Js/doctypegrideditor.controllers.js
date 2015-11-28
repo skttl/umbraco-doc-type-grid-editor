@@ -32,7 +32,9 @@
 
         $scope.setDocType = function () {
             dtgeDialogService.open({
+                editorName: $scope.control.editor.name,
                 allowedDocTypes: $scope.control.editor.config.allowedDocTypes || [],
+                nameTemplate: $scope.control.editor.config.nameTemplate,
                 dialogData: {
                     docType: $scope.control.value.docType,
                     value: $scope.control.value.value
@@ -101,11 +103,11 @@
 angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog",
     [
         "$scope",
-        "editorState",
+        "$interpolate",
         "contentResource",
         "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
 
-        function ($scope, editorState, contentResource, dtgeResources) {
+        function ($scope, $interpolate, contentResource, dtgeResources) {
 
             $scope.dialogOptions = $scope.$parent.dialogOptions;
 
@@ -113,13 +115,10 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             $scope.dialogMode = "selectDocType";
             $scope.selectedDocType = null;
             $scope.node = null;
-            $scope.nameProperty = {
-                hideLabel: false,
-                alias: "name",
-                label: "Name",
-                description: "Give this piece of content a name.",
-                value: ""
-            };
+
+            var nameExp = !!$scope.dialogOptions.nameTemplate
+                ? $interpolate($scope.dialogOptions.nameTemplate)
+                : undefined;
 
             $scope.selectDocType = function () {
                 $scope.dialogMode = "edit";
@@ -136,8 +135,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 // Copy property values to scope model value
                 if ($scope.node) {
                     var value = {
-                        name: $scope.nameProperty.value
+                        name: $scope.dialogOptions.editorName
                     };
+
                     for (var t = 0; t < $scope.node.tabs.length; t++) {
                         var tab = $scope.node.tabs[t];
                         for (var p = 0; p < tab.properties.length; p++) {
@@ -147,6 +147,14 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             }
                         }
                     }
+
+                    if (nameExp) {
+                        var newName = nameExp(value); // Run it against the stored dictionary value, NOT the node object
+                        if (newName && (newName = $.trim(newName))) {
+                            value.name = newName;
+                        }
+                    }
+
                     $scope.dialogData.value = value;
                 } else {
                     $scope.dialogData.value = null;
@@ -163,7 +171,6 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
                         // Merge current value
                         if ($scope.dialogData.value) {
-                            $scope.nameProperty.value = $scope.dialogData.value.name;
                             for (var t = 0; t < data.tabs.length; t++) {
                                 var tab = data.tabs[t];
                                 for (var p = 0; p < tab.properties.length; p++) {
@@ -176,9 +183,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         };
 
                         // Assign the model to scope
-                        $scope.node = data;
+                        $scope.nodeContext = $scope.node = data;
 
-                        editorState.set($scope.node);
+                        //editorState.set($scope.node);
                     });
                 });
             };
