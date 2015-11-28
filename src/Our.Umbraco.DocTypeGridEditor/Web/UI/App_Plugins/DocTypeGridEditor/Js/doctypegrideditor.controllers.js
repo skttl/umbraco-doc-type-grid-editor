@@ -158,6 +158,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 if (!$scope.dtgeForm.$valid)
                     return;
 
+                // Cause formSubmitting to fire
+                $scope.$broadcast("formSubmitting", { scope: $scope });
+
                 // Copy property values to scope model value
                 if ($scope.node) {
                     var value = {
