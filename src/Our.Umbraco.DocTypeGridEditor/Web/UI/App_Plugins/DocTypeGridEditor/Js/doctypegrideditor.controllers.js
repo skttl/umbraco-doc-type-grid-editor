@@ -130,10 +130,11 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
     [
         "$scope",
         "$interpolate",
+        "formHelper",
         "contentResource",
         "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
 
-        function ($scope, $interpolate, contentResource, dtgeResources) {
+        function ($scope, $interpolate, formHelper, contentResource, dtgeResources) {
 
             $scope.dialogOptions = $scope.$parent.dialogOptions;
 
@@ -154,42 +155,40 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             $scope.save = function () {
 
-                // Make sure form is valid
-                if (!$scope.dtgeForm.$valid)
-                    return;
+                // Cause form submitting
+                if (formHelper.submitForm({ scope: $scope, formCtrl: $scope.dtgeForm })) {
 
-                // Cause formSubmitting to fire
-                $scope.$broadcast("formSubmitting", { scope: $scope });
+                    // Copy property values to scope model value
+                    if ($scope.node) {
+                        var value = {
+                            name: $scope.dialogOptions.editorName
+                        };
 
-                // Copy property values to scope model value
-                if ($scope.node) {
-                    var value = {
-                        name: $scope.dialogOptions.editorName
-                    };
-
-                    for (var t = 0; t < $scope.node.tabs.length; t++) {
-                        var tab = $scope.node.tabs[t];
-                        for (var p = 0; p < tab.properties.length; p++) {
-                            var prop = tab.properties[p];
-                            if (typeof prop.value !== "function") {
-                                value[prop.alias] = prop.value;
+                        for (var t = 0; t < $scope.node.tabs.length; t++) {
+                            var tab = $scope.node.tabs[t];
+                            for (var p = 0; p < tab.properties.length; p++) {
+                                var prop = tab.properties[p];
+                                if (typeof prop.value !== "function") {
+                                    value[prop.alias] = prop.value;
+                                }
                             }
                         }
-                    }
 
-                    if (nameExp) {
-                        var newName = nameExp(value); // Run it against the stored dictionary value, NOT the node object
-                        if (newName && (newName = $.trim(newName))) {
-                            value.name = newName;
+                        if (nameExp) {
+                            var newName = nameExp(value); // Run it against the stored dictionary value, NOT the node object
+                            if (newName && (newName = $.trim(newName))) {
+                                value.name = newName;
+                            }
                         }
+
+                        $scope.dialogData.value = value;
+                    } else {
+                        $scope.dialogData.value = null;
                     }
 
-                    $scope.dialogData.value = value;
-                } else {
-                    $scope.dialogData.value = null;
-                }
+                    $scope.submit($scope.dialogData);
 
-                $scope.submit($scope.dialogData);
+                }
             };
 
             function loadNode() {
