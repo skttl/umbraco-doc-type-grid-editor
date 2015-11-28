@@ -22,32 +22,32 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             get { return ApplicationContext.Current.Services; }
         }
 
-        public static IPublishedContent ConvertValueToContent(string id, string docTypeAlias, string dataJson)
+        public static IPublishedContent ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
         {
-            if (string.IsNullOrWhiteSpace(docTypeAlias))
+            if (string.IsNullOrWhiteSpace(contentTypeAlias))
                 return null;
 
             if (UmbracoContext.Current == null)
-                return ConvertValue(id, docTypeAlias, dataJson);
+                return ConvertValue(id, contentTypeAlias, dataJson);
 
             return (IPublishedContent)ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
-                string.Concat("DocTypeGridEditorHelper.ConvertValueToContent_", id, "_", docTypeAlias),
+                string.Concat("DocTypeGridEditorHelper.ConvertValueToContent_", id, "_", contentTypeAlias),
                 () =>
                 {
-                    return ConvertValue(id, docTypeAlias, dataJson);
+                    return ConvertValue(id, contentTypeAlias, dataJson);
                 });
         }
 
-        private static IPublishedContent ConvertValue(string id, string docTypeAlias, string dataJson)
+        private static IPublishedContent ConvertValue(string id, string contentTypeAlias, string dataJson)
         {
-            using (var timer = DisposableTimer.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValueToContent ({0}, {1})", id, docTypeAlias)))
+            using (var timer = DisposableTimer.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValueToContent ({0}, {1})", id, contentTypeAlias)))
             {
-                Guid docTypeGuid;
-                if (Guid.TryParse(docTypeAlias, out docTypeGuid))
-                    docTypeAlias = Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
+                Guid contentTypeGuid;
+                if (Guid.TryParse(contentTypeAlias, out contentTypeGuid))
+                    contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(contentTypeGuid);
 
-                var publishedContentType = PublishedContentType.Get(PublishedItemType.Content, docTypeAlias);
-                var contentType = ApplicationContext.Current.Services.ContentTypeService.GetContentType(docTypeAlias);
+                var publishedContentType = PublishedContentType.Get(PublishedItemType.Content, contentTypeAlias);
+                var contentType = ApplicationContext.Current.Services.ContentTypeService.GetContentType(contentTypeAlias);
                 var properties = new List<IPublishedProperty>();
 
                 // Convert all the properties
@@ -68,7 +68,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                             propType.DataTypeId);
 
                         var contentPropData = new ContentPropertyData(
-                            jProp.Value != null ? jProp.Value.ToString() : null,
+                            jProp.Value,
                             propPreValues,
                             new Dictionary<string, object>());
 
