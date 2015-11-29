@@ -54,11 +54,12 @@
 
         $scope.setPreview = function (model) {
             if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
+                console.log(editorState.current);
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
                     $scope.control.editor.config.previewViewPath,
-                    editorState.current.published)
+                    !!editorState.current.publishDate)
                     .success(function(htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
