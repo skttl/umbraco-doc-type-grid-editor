@@ -40,7 +40,7 @@ To clone it locally click the "Clone in Windows" button above or run the followi
 
 For details on how to use the Doc Type Grid Editor package, please refer to our [Developers Guide](docs/developers-guide.md) documentation.
 
-A PDF download is also available: [Doc Type Grid Editor - Developers Guide v1.0.pdf](docs/assets/pdf/Nested-Content--Developers-Guide-v1.0.pdf)
+A PDF download is also available: [Doc Type Grid Editor - Developers Guide v1.0.pdf](docs/Doc-Type-Grid-Editor--Developers-Guide-v1.0.pdf)
 
 ---
 
