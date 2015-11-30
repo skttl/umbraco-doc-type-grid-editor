@@ -12,9 +12,9 @@ A grid editor for Umbraco 7 that allows you to use Doc Types as a blue print for
 
 ### Installation
 
-> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.1.4** and will support that version and above.
+> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.2.0** and will support that version and above.
 
-Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code:
+Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code.
 
 #### Our Umbraco package repository
 
