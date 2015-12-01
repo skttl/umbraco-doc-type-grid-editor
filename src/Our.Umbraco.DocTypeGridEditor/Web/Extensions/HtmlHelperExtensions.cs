@@ -2,10 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Web;
-using Content = System.Web.UI.WebControls.Content;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
@@ -29,6 +29,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 previewViewPath = previewViewPath.TrimEnd('/') + "/";
 
             var umbracoHelper = new UmbracoHelper(UmbracoContext.Current);
+
+            // Try looking for surface controller with action named after the editor alias
             if (!editorAlias.IsNullOrWhiteSpace() && umbracoHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
                 return helper.Action(editorAlias, controllerName, new
@@ -39,9 +41,47 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 });
             }
 
+            // Try looking for surface controller with action named after the doc type alias alias
             if (umbracoHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
             {
                 return helper.Action(content.DocumentTypeAlias, controllerName, new
+                {
+                    dtgeModel = content,
+                    dtgeViewPath = viewPath,
+                    dtgePreviewViewPath = previewViewPath
+                });
+            }
+
+            // See if a default surface controller has been registered
+            var defaultController = DefaultDocTypeGridEditorSurfaceControllerResolver.Current.GetDefaultControllerType();
+            if (defaultController != null)
+            {
+                var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
+
+                // Try looking for an action named after the editor alias
+                if (!editorAlias.IsNullOrWhiteSpace() && umbracoHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
+                {
+                    return helper.Action(editorAlias, defaultControllerName, new
+                    {
+                        dtgeModel = content,
+                        dtgeViewPath = viewPath,
+                        dtgePreviewViewPath = previewViewPath
+                    });
+                }
+
+                // Try looking for a doc type alias action
+                if (umbracoHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
+                {
+                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, new
+                    {
+                        dtgeModel = content,
+                        dtgeViewPath = viewPath,
+                        dtgePreviewViewPath = previewViewPath
+                    });
+                }
+                
+                // Just go with a default action name
+                return helper.Action("Index", defaultControllerName, new
                 {
                     dtgeModel = content,
                     dtgeViewPath = viewPath,
