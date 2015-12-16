@@ -1,5 +1,7 @@
 # Doc Type Grid Editor
 
+[![Join the chat at https://gitter.im/leekelleher/umbraco-doc-type-grid-editor](https://badges.gitter.im/leekelleher/umbraco-doc-type-grid-editor.svg)](https://gitter.im/leekelleher/umbraco-doc-type-grid-editor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build status](https://img.shields.io/appveyor/ci/leekelleher/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/leekelleher/umbraco-doc-type-grid-editor)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
 [![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/leekelleher/umbraco-nested-content)
