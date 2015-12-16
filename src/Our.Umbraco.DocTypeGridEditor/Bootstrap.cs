@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Our.Umbraco.DocTypeGridEditor.Web.Attributes;
+using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
 using Umbraco.Core.Services;
 
@@ -10,6 +11,8 @@ namespace Our.Umbraco.DocTypeGridEditor
         protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             GlobalFilters.Filters.Add(new DocTypeGridEditorPreviewAttribute());
+
+            DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver()
         }
 
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)

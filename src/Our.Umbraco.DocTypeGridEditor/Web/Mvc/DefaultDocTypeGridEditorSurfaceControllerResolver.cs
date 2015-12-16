@@ -14,13 +14,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Mvc
         /// <summary>
         /// Constructor accepting the default SurfaceController
         /// </summary>
-        /// <param name="value"></param>
-        public DefaultDocTypeGridEditorSurfaceControllerResolver(Type value)
-            : base(value, true)
-        {
-            ValidateType(value);
-            Value = null;
-        }
+        public DefaultDocTypeGridEditorSurfaceControllerResolver()
+            : base(null, true)
+        { }
 
         /// <summary>
         /// Sets the default SurfaceController type
