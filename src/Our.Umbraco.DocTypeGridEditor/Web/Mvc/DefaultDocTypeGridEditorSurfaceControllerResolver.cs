@@ -16,9 +16,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Mvc
         /// </summary>
         /// <param name="value"></param>
         public DefaultDocTypeGridEditorSurfaceControllerResolver(Type value)
-            : base(value)
+            : base(value, true)
         {
             ValidateType(value);
+            Value = null;
         }
 
         /// <summary>
