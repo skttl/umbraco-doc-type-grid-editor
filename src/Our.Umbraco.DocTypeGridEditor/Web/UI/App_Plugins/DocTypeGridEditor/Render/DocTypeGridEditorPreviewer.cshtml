@@ -1,0 +1,17 @@
+﻿@using System.Web.Mvc.Html
+@using Our.Umbraco.DocTypeGridEditor.Helpers
+@using Our.Umbraco.DocTypeGridEditor.Web.Extensions
+@using Umbraco.Core.Models
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<IPublishedContent>
+@{
+    var id = Request.Form["id"];
+    var editorAlias = Request.Form["editorAlias"];
+    var contentTypeAlias = Request.Form["contentTypeAlias"];
+    var value = Request.Unvalidated.Form["value"];
+    var viewPath = Request.Form["viewPath"];
+    var previewViewPath = Request.Form["previewViewPath"];
+
+    var content = DocTypeGridEditorHelper.ConvertValueToContent(id, contentTypeAlias, value);
+    
+    @Html.RenderDocTypeGridEditorItem(content, editorAlias, viewPath, previewViewPath)
+}
