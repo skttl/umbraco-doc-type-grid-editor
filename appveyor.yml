@@ -13,7 +13,7 @@ artifacts:
   - path: artifacts\*.nupkg
   - path: artifacts\*.zip
 
-#deploy:
+deploy:
 #    # MyGet Deployment for builds & releases
 #  - provider: NuGet
 #    server: https://www.myget.org/F/name/
