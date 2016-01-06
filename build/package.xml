@@ -27,12 +27,13 @@
 	<Languages />
 	<DataTypes />
 
-  <Actions>
-    <Action runat="install" undo="true" alias="AddObjectToJsonArray"
-	    keyProperty="alias"
-	    sourceFile="~/App_Plugins/DocTypeGridEditor/Config/grid.editors.config.js"
-	    targetFile="~/Config/grid.editors.config.js" />
-  </Actions>
+	<Actions>
+		<Action runat="install" undo="true" alias="AddObjectToJsonArray"
+			keyProperty="alias"
+			sourceFile="~/App_Plugins/DocTypeGridEditor/Config/grid.editors.config.js"
+			targetFile="~/Config/grid.editors.config.js" />
+	</Actions>
+
 	<control />
 
 	<files />

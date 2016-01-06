@@ -16,7 +16,7 @@
 
 	<!-- SHARED PROPERTIES -->
 	<PropertyGroup>
-    <ProjectName>Our.Umbraco.DocTypeGridEditor</ProjectName>
+		<ProjectName>Our.Umbraco.DocTypeGridEditor</ProjectName>
 		<PackageName>Doc Type Grid Editor</PackageName>
 		<MinUmbracoVersion>7.2.0</MinUmbracoVersion>
 		<Readme>Doc Type Grid Editor is an advanced grid editor for the new Umbraco v7.2 Grid</Readme>
@@ -30,7 +30,7 @@
 	<!-- NUGET ONLY PROPERTIES -->
 	<PropertyGroup>
 		<PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
-    <NuGetPackageName>Umbraco Doc Type Grid Editor</NuGetPackageName>
+		<NuGetPackageName>Umbraco Doc Type Grid Editor</NuGetPackageName>
 		<Copyright>Copyright &#169; 2015 Matt Brailsford, Lee Kelleher</Copyright>
 		<Owners>Matt Brailsford, Lee Kelleher</Owners>
 		<IconUrl>https://our.umbraco.org/media/wiki/145708/635623742802070736_dtgepng.png</IconUrl>
@@ -46,28 +46,28 @@
 	<Choose>
 		<When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_TAG) != 'true' ">
 			<PropertyGroup>
-        <Release>false</Release>
+				<Release>false</Release>
 			</PropertyGroup>
 		</When>
 		<Otherwise>
 			<PropertyGroup>
-        <Release>true</Release>
+				<Release>true</Release>
 			</PropertyGroup>
 		</Otherwise>
 	</Choose>
 
-  <Choose>
-    <When Condition="$(Release) == 'false' And $(UMBRACO_PACKAGE_PRERELEASE_SUFFIX) == 'rtm'">
-      <PropertyGroup>
-        <AbortBuild>true</AbortBuild>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <AbortBuild>false</AbortBuild>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
+	<Choose>
+		<When Condition="$(Release) == 'false' And $(UMBRACO_PACKAGE_PRERELEASE_SUFFIX) == 'rtm'">
+			<PropertyGroup>
+				<AbortBuild>true</AbortBuild>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<AbortBuild>false</AbortBuild>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
 
 	<!-- PATHS -->
 	<PropertyGroup>
@@ -81,8 +81,8 @@
 
 	<!-- TARGETS -->
 	<Target Name="GetProductVersion">
-    <Error Condition="$(AbortBuild) == 'true'" Text="Aborting the build as the UMBRACO_PACKAGE_PRERELEASE_SUFFIX suffix is set 'rtm' but APPVEYOR_REPO_TAG is not 'true'" />
-    <GetProductVersion BuildVersion="$(APPVEYOR_BUILD_VERSION)" BuildSuffix="$(UMBRACO_PACKAGE_PRERELEASE_SUFFIX)" Release="$(Release)">
+		<Error Condition="$(AbortBuild) == 'true'" Text="Aborting the build as the UMBRACO_PACKAGE_PRERELEASE_SUFFIX suffix is set 'rtm' but APPVEYOR_REPO_TAG is not 'true'" />
+		<GetProductVersion BuildVersion="$(APPVEYOR_BUILD_VERSION)" BuildSuffix="$(UMBRACO_PACKAGE_PRERELEASE_SUFFIX)" Release="$(Release)">
 			<Output TaskParameter="ProductVersion" PropertyName="ProductVersion"/>
 		</GetProductVersion>
 	</Target>
@@ -109,10 +109,10 @@
 			AssemblyInformationalVersion="$(ProductVersion)"/>
 	</Target>
 
-  <!-- COMPILE -->
-  <Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
-    <MSBuild Projects="$(CoreProjectDir)\$(ProjectName).csproj" Properties="Configuration=$(BuildConfig)"/>
-  </Target>
+	<!-- COMPILE -->
+	<Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
+		<MSBuild Projects="$(CoreProjectDir)\$(ProjectName).csproj" Properties="Configuration=$(BuildConfig)"/>
+	</Target>
 
 	<!-- PREPARE FILES -->
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
@@ -120,17 +120,17 @@
 			<BinFiles Include="$(CoreProjectDir)\bin\$(BuildConfig)\$(ProjectName).dll" />
 			<PdbFiles Include="$(CoreProjectDir)\bin\$(BuildConfig)\$(ProjectName).pdb" />
 			<SrcFiles Include="$(CoreProjectDir)\**\*.cs" Exclude="$(CoreProjectDir)\obj\**"/>
-      <PluginFiles Include="$(CoreProjectDir)\Web\UI\**\*.*" />
-      <PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
+			<PluginFiles Include="$(CoreProjectDir)\Web\UI\**\*.*" />
+			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
 		<Copy SourceFiles="@(PdbFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
-    <Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildUmbDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildUmbDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
 	</Target>
 
