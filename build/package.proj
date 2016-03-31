@@ -123,6 +123,8 @@
 			<PluginFiles Include="$(CoreProjectDir)\Web\UI\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
+			<NugetReadme Include="$(MSBuildProjectDirectory)\Readme.txt" />
+			<InstallPsFile Include="$(MSBuildProjectDirectory)\install.ps1" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
@@ -132,6 +134,8 @@
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+		<Copy SourceFiles="@(NugetReadme)" DestinationFolder="$(BuildNuGetDir)" />
+		<Copy SourceFiles="@(InstallPsFile)" DestinationFolder="$(BuildNuGetDir)\tools" />
 	</Target>
 
 	<!-- MANIFEST UMBRACO -->
@@ -191,12 +195,12 @@
 			OutputDirectory="$(ArtifactsDir)"
 			Files="@(PackageFiles)" />
 
-		<!--<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
+		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
 			BasePath="$(BuildNuGetDir)"
 			Version="$(ProductVersion)"
 			OutputDirectory="$(ArtifactsDir)"
-			Symbols="true" />-->
+			Symbols="true" />
 
 		<RemoveDir Directories="$(BuildUmbDir)" Condition="Exists('$(BuildUmbDir)')" />
 		<RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
