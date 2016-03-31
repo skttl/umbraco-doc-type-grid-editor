@@ -123,7 +123,7 @@
 			<PluginFiles Include="$(CoreProjectDir)\Web\UI\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
-			<NugetReadme Include="$(MSBuildProjectDirectory)\Readme.txt" />
+			<NugetReadme Include="$(MSBuildProjectDirectory)\readme.txt" />
 			<InstallPsFile Include="$(MSBuildProjectDirectory)\install.ps1" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
