@@ -54,7 +54,6 @@
 
         $scope.setPreview = function (model) {
             if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
-                console.log(editorState.current);
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
@@ -206,7 +205,6 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             var tab = data.tabs[t];
                             for (var p = 0; p < tab.properties.length; p++) {
                                 var prop = tab.properties[p];
-                                console.log(prop.alias);
                                 if ($scope.dialogData.value[prop.alias]) {
                                     prop.value = $scope.dialogData.value[prop.alias];
                                 }

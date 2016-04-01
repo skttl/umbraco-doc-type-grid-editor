@@ -7,21 +7,21 @@
 
 --------------------------------------------------------------------------------------
 
-To enable DocTypeGridEditor you must add the following JSON snippet to grid.editors.config.js found in the Config folder
+To enable DocTypeGridEditor you must add the following JSON snippet to "grid.editors.config.js" found in the Config folder.
 
 {
-	"name": "Doc Type",
-	"alias": "docType",
-	"view": "/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.html",
-	"render": "/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditor.cshtml",
-	"icon": "icon-item-arrangement",
-	"config": {
-	    "allowedDocTypes": [],
+    "name": "Doc Type",
+    "alias": "docType",
+    "view": "/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.html",
+    "render": "/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditor.cshtml",
+    "icon": "icon-item-arrangement",
+    "config": {
+        "allowedDocTypes": [],
         "nameTemplate": "",
         "enablePreview": true,
         "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
         "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
-        "previewCssFilePath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/Css/dtge.css",
-        "previewJsFilePath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/Js/dtge.js"
-	}
+        "previewCssFilePath": "",
+        "previewJsFilePath": ""
+    }
 }
