@@ -9,6 +9,7 @@ _ReSharper.*
 Thumbs.db
 .DS_Store
 *.log
+.vs
 
 artifacts/
 src/packages/*/**

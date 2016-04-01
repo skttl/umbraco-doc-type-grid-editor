@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CEE996
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{D588B45D-9E67-4136-8271-2B8724C8165F}"
 	ProjectSection(SolutionItems) = preProject
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\LICENSE.md = ..\LICENSE.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -22,9 +24,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Pack
 		..\appveyor.yml = ..\appveyor.yml
 		..\build-appveyor.cmd = ..\build-appveyor.cmd
 		..\build.cmd = ..\build.cmd
+		..\build\install.ps1 = ..\build\install.ps1
 		..\build\package.nuspec = ..\build\package.nuspec
 		..\build\package.proj = ..\build\package.proj
 		..\build\package.xml = ..\build\package.xml
+		..\build\readme.txt = ..\build\readme.txt
 	EndProjectSection
 EndProject
 Global

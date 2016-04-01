@@ -16,13 +16,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             string editorAlias = "",
             string viewPath = "",
             string previewViewPath = "")
-        { 
-            if (content == null) 
+        {
+            if (content == null)
                 return new HtmlString(string.Empty);
 
-            var controllerName = content.DocumentTypeAlias + "Surface"; 
+            var controllerName = content.DocumentTypeAlias + "Surface";
 
-            if (!string.IsNullOrWhiteSpace(viewPath)) 
+            if (!string.IsNullOrWhiteSpace(viewPath))
                 viewPath = viewPath.TrimEnd('/') + "/";
 
             if (!string.IsNullOrWhiteSpace(previewViewPath))
@@ -79,7 +79,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                         dtgePreviewViewPath = previewViewPath
                     });
                 }
-                
+
                 // Just go with a default action name
                 return helper.Action("Index", defaultControllerName, new
                 {

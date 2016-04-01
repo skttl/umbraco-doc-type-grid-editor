@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Models;
 using Umbraco.Core;
+using Umbraco.Core.Logging;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.Editors;
 using Umbraco.Core.Models.PublishedContent;
@@ -78,10 +79,30 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                          * XML serialized state as expected by the published property by calling ConvertDbToString
                          */
                         var propType2 = contentType.CompositionPropertyTypes.Single(x => x.Alias == propType.PropertyTypeAlias);
-                        var newValue2 = propEditor.ValueEditor.ConvertDbToString(new Property(propType2, newValue), propType2,
-                            ApplicationContext.Current.Services.DataTypeService);
 
-                        properties.Add(new DetachedPublishedProperty(propType, newValue2));
+                        Property prop2 = null;
+                        try
+                        {
+                            /* HACK: [LK:2016-04-01] When using the "Umbraco.Tags" property-editor, the converted DB value does
+                             * not match the datatypes underlying db-column type. So it throws a "Type validation failed" exception.
+                             * We feel that the Umbraco core isn't handling the Tags value correctly, as it should be the responsiblity
+                             * of the "Umbraco.Tags" property-editor to handle the value conversion into the correct type.
+                             * See: http://issues.umbraco.org/issue/U4-8279
+                             */
+                            prop2 = new Property(propType2, newValue);
+                        }
+                        catch(Exception ex)
+                        {
+                            LogHelper.Error<DocTypeGridEditorHelper>("Error creating Property object.", ex);
+                        }
+
+                        if (prop2 != null)
+                        {
+                            var newValue2 = propEditor.ValueEditor.ConvertDbToString(prop2, propType2,
+                                ApplicationContext.Current.Services.DataTypeService);
+
+                            properties.Add(new DetachedPublishedProperty(propType, newValue2));
+                        }
                     }
                 }
 
