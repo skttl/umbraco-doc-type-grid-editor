@@ -1,6 +1,7 @@
 # Doc Type Grid Editor
 
 [![Build status](https://img.shields.io/appveyor/ci/leekelleher/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/leekelleher/umbraco-doc-type-grid-editor)
+[![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.DocTypeGridEditor.svg)](https://www.nuget.org/packages/Our.Umbraco.DocTypeGridEditor)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
 [![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/leekelleher/umbraco-doc-type-grid-editor)
 
@@ -20,7 +21,15 @@ Doc Type Grid Editor can be installed from either Our Umbraco package repository
 
 To install from Our Umbraco, please download the package from:
 
-> [https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor) 
+> [https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
+
+#### NuGet package repository
+
+To [install from NuGet](https://www.nuget.org/packages/Our.Umbraco.DocTypeGridEditor), you can run the following command from within Visual Studio:
+
+	PM> Install-Package Our.Umbraco.DocTypeGridEditor
+
+We also have a [MyGet package repository](https://www.myget.org/gallery/umbraco-packages) - for bleeding-edge / development releases.
 
 #### Manual build
 
@@ -78,7 +87,7 @@ Have a question?
 
 ### Special thanks
 
-* Thanks to [Jeavon Leopold](https://github.com/Jeavon) for being a rockstar and adding AppVeyor support.
+* Thanks to [Jeavon Leopold](https://github.com/Jeavon) for being a rockstar and adding AppVeyor &amp; NuGet support.
 
 
 ## License
