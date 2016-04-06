@@ -43,13 +43,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                     foreach (var method in ctrlInstance.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
                         .Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType)))
                     {
-                        if (method.Name == actionName)
+                        if (method.Name.InvariantEquals(actionName))
                         {
                             return true;
                         }
 
                         var attr = method.GetCustomAttribute<ActionNameAttribute>();
-                        if (attr != null && attr.Name == actionName)
+                        if (attr != null && attr.Name.InvariantEquals(actionName))
                         {
                             return true;
                         }
