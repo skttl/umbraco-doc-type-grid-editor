@@ -53,7 +53,7 @@
         };
 
         $scope.setPreview = function (model) {
-            if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
+          if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
@@ -101,7 +101,7 @@
         }
 
         // Load preview css / js files
-        if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview)
+        if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview)
         {
             if ("previewCssFilePath" in $scope.control.editor.config && $scope.control.editor.config.previewCssFilePath) {
                 assetsService.loadCss($scope.control.editor.config.previewCssFilePath, $scope);
