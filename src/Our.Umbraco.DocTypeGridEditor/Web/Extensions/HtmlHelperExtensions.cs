@@ -104,6 +104,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
+
+                fullPreviewViewPath = previewViewPath +  "Default.cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                {
+                    return helper.Partial(fullPreviewViewPath, content);
+                }
             }
 
             // Check for view path view
@@ -116,6 +122,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 }
 
                 fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                {
+                    return helper.Partial(fullViewPath, content);
+                }
+
+                fullViewPath = viewPath + "Default.cshtml";
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
