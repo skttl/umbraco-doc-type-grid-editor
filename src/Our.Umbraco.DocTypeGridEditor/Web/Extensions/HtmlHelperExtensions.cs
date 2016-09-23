@@ -105,7 +105,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
-                fullPreviewViewPath = previewViewPath +  "Default.cshtml";
+                fullPreviewViewPath = previewViewPath + "Default.cshtml";
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);

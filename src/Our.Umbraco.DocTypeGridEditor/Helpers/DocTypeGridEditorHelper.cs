@@ -93,7 +93,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                         }
                         catch(Exception ex)
                         {
-                            LogHelper.Error<DocTypeGridEditorHelper>("Error creating Property object.", ex);
+                            LogHelper.Error<DocTypeGridEditorHelper>("[DocTypeGridEditor] Error creating Property object.", ex);
                         }
 
                         if (prop2 != null)

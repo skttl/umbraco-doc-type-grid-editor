@@ -5,7 +5,7 @@ using Umbraco.Web.Mvc;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 {
-    public abstract class DocTypeGridEditorSurfaceController 
+    public abstract class DocTypeGridEditorSurfaceController
         : DocTypeGridEditorSurfaceController<IPublishedContent>
     { }
 
@@ -89,6 +89,5 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
             return baseViewPath.TrimEnd('/') + "/" + viewName + ".cshtml";
         }
-        
     }
 }
