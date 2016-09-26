@@ -39,7 +39,7 @@ If you prefer, you can compile  Doc Type Grid Editor yourself, you'll need:
 
 To clone it locally click the "Clone in Windows" button above or run the following git commands.
 
-	git clone https://github.com/leekelleher/umbraco-doc-type-grid-editor.git umbraco-doc-type-grid-editor
+	git clone https://github.com/umco/umbraco-doc-type-grid-editor.git umbraco-doc-type-grid-editor
 	cd umbraco-doc-type-grid-editor
 	.\build.cmd
 
@@ -78,7 +78,7 @@ Anyone and everyone is welcome to contribute. Please take a moment to review the
 Have a question?
 
 * [Doc Type Grid Editor Forum](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor/doc-type-grid-editor-feedback/) on Our Umbraco
-* [Raise an issue](https://github.com/leekelleher/umbraco-doc-type-grid-editor/issues) on GitHub
+* [Raise an issue](https://github.com/umco/umbraco-doc-type-grid-editor/issues) on GitHub
 
 
 ## Dev Team
@@ -93,6 +93,6 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2014 Umbrella Inc, Our Umbraco and [other contributors](https://github.com/leekelleher/umbraco-doc-type-grid-editor/graphs/contributors)
+Copyright &copy; 2014 Umbrella Inc, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
 
 Licensed under the [MIT License](LICENSE.md)
