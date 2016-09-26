@@ -17,7 +17,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Extensions
             if (result.View != null)
                 return true;
 
-            LogHelper.Warn<Bootstrap>("No view file found with the name " + viewName);
+            LogHelper.Info<ViewEngineCollection>("[DocTypeGridEditor] No view file found with the name '{0}'", () => viewName);
 
             return false;
         }
