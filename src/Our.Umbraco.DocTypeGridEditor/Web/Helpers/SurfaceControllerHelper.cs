@@ -57,7 +57,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
 
                     return false;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
