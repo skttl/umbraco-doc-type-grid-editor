@@ -237,7 +237,7 @@
     <Compile Include="Extensions\ContentTypeServiceExtensions.cs" />
     <Compile Include="Web\Controllers\DocTypeGridEditorSurfaceController.cs" />
     <Compile Include="Web\Extensions\HtmlHelperExtensions.cs" />
-    <Compile Include="Web\Extensions\UmbracoHelperExtensions.cs" />
+    <Compile Include="Web\Helpers\SurfaceControllerHelper.cs" />
     <Compile Include="Web\Mvc\DefaultDocTypeGridEditorSurfaceControllerResolver.cs" />
   </ItemGroup>
   <ItemGroup>

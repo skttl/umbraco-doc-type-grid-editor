@@ -8,13 +8,13 @@ using Umbraco.Core;
 using Umbraco.Web;
 using Umbraco.Web.Mvc;
 
-namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
+namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
 {
-    internal static class UmbracoHelperExtensions
+    internal static class SurfaceControllerHelper
     {
-        public static bool SurfaceControllerExists(this UmbracoHelper helper, string controllerName, string actionName = "Index")
+        public static bool SurfaceControllerExists(string controllerName, string actionName = "Index")
         {
-            using (var timer = DisposableTimer.DebugDuration<UmbracoHelper>(string.Format("SurfaceControllerExists ({0}, {1})", controllerName, actionName)))
+            using (var timer = DisposableTimer.DebugDuration<Bootstrap>(string.Format("SurfaceControllerExists ({0}, {1})", controllerName, actionName)))
             {
                 // Setup dummy route data
                 var rd = new RouteData();
@@ -64,14 +64,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             }
         }
 
-        public static bool SurfaceControllerExists(this UmbracoHelper helper, string name, string actionName = "Index", bool cacheResult = true)
+        public static bool SurfaceControllerExists(string name, string actionName = "Index", bool cacheResult = true)
         {
             if (!cacheResult)
-                return SurfaceControllerExists(helper, name, actionName);
+                return SurfaceControllerExists(name, actionName);
 
             return (bool)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
-                string.Join("_", new[] { "Our.Umbraco.Mortar.Web.Extensions.UmbracoHelperExtensions.SurfaceControllerExists", name, actionName }),
-                () => SurfaceControllerExists(helper, name, actionName));
+                string.Join("_", new[] { "Our.Umbraco.DocTypeGridEditor.Web.Helpers.SurfaceControllerHelper.SurfaceControllerExists", name, actionName }),
+                () => SurfaceControllerExists(name, actionName));
         }
     }
 }
