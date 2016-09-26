@@ -60,6 +60,7 @@ Please be aware that not all property-editors will work within Doc Type Grid Edi
 * Upload (default Umbraco core)
 * Image Cropper (default Umbraco core)
 * Macro Container (default Umbraco core)
+* Tags (default Umbraco core)
 
 ---
 
