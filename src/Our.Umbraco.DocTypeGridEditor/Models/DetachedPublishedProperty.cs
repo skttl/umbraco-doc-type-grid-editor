@@ -29,20 +29,32 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             _xpathValue = new Lazy<object>(() => _propertyType.ConvertSourceToXPath(_sourceValue.Value, _isPreview));
         }
 
-        public string PropertyTypeAlias {
+        public string PropertyTypeAlias
+        {
             get
             {
                 return _propertyType.PropertyTypeAlias;
             }
         }
 
-        public bool HasValue 
+        public bool HasValue
         {
             get { return DataValue != null && DataValue.ToString().Trim().Length > 0; }
         }
 
-        public object DataValue { get { return _rawValue; } }
-        public object Value { get { return _objectValue.Value; } }
-        public object XPathValue { get { return _xpathValue.Value; } }
+        public object DataValue
+        {
+            get { return _rawValue; }
+        }
+
+        public object Value
+        {
+            get { return _objectValue.Value; }
+        }
+
+        public object XPathValue
+        {
+            get { return _xpathValue.Value; }
+        }
     }
 }

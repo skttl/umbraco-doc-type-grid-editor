@@ -27,7 +27,5 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             }
             return defaultValue;
         }
-
-
     }
 }

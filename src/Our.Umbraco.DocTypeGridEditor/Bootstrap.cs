@@ -2,6 +2,8 @@
 using Our.Umbraco.DocTypeGridEditor.Web.Attributes;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
+using Umbraco.Core.Events;
+using Umbraco.Core.Models;
 using Umbraco.Core.Services;
 
 namespace Our.Umbraco.DocTypeGridEditor
@@ -20,7 +22,7 @@ namespace Our.Umbraco.DocTypeGridEditor
             DataTypeService.Saved += ExpireCache;
         }
 
-        private void ExpireCache(IDataTypeService sender, global::Umbraco.Core.Events.SaveEventArgs<global::Umbraco.Core.Models.IDataTypeDefinition> e)
+        private void ExpireCache(IDataTypeService sender, SaveEventArgs<IDataTypeDefinition> e)
         {
             foreach (var dataType in e.SavedEntities)
             {

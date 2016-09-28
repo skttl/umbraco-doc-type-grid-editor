@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web.Configuration;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;

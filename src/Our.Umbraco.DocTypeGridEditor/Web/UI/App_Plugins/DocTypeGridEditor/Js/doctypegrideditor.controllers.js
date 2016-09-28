@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor", [
-    
+
     "$scope",
     "$rootScope",
     "$timeout",
@@ -12,7 +12,7 @@
     function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeDialogService, dtgeResources) {
 
         $scope.title = "Click to insert item";
-        $scope.icon = "icon-item-arrangement"; 
+        $scope.icon = "icon-item-arrangement";
 
         $scope.setValue = function (data, callback) {
             $scope.control.value = data;
@@ -53,13 +53,13 @@
         };
 
         $scope.setPreview = function (model) {
-            if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
+            if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
                     $scope.control.editor.config.previewViewPath,
                     !!editorState.current.publishDate)
-                    .success(function(htmlResult) {
+                    .success(function (htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
                         }
@@ -85,7 +85,7 @@
                 delete $scope.control.value.docType;
             }
             if (isGuid($scope.control.value.dtgeContentTypeAlias)) {
-                dtgeResources.getContentTypeAliasByGuid($scope.control.value.dtgeContentTypeAlias).then(function(data1) {
+                dtgeResources.getContentTypeAliasByGuid($scope.control.value.dtgeContentTypeAlias).then(function (data1) {
                     $scope.control.value.dtgeContentTypeAlias = data1.alias;
                     $scope.setValue($scope.control.value, init);
                 });
@@ -101,8 +101,7 @@
         }
 
         // Load preview css / js files
-        if ("enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview)
-        {
+        if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
             if ("previewCssFilePath" in $scope.control.editor.config && $scope.control.editor.config.previewCssFilePath) {
                 assetsService.loadCss($scope.control.editor.config.previewCssFilePath, $scope);
             };

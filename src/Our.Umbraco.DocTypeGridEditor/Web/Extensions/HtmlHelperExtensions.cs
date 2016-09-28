@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
 using Umbraco.Core.Models;
@@ -11,7 +12,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
     public static class HtmlHelperExtensions
     {
-        public static HtmlString RenderDocTypeGridEditorItem(this HtmlHelper helper,
+        public static HtmlString RenderDocTypeGridEditorItem(
+            this HtmlHelper helper,
             IPublishedContent content,
             string editorAlias = "",
             string viewPath = "",
@@ -28,10 +30,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(previewViewPath))
                 previewViewPath = previewViewPath.TrimEnd('/') + "/";
 
-            var umbracoHelper = new UmbracoHelper(UmbracoContext.Current);
-
             // Try looking for surface controller with action named after the editor alias
-            if (!editorAlias.IsNullOrWhiteSpace() && umbracoHelper.SurfaceControllerExists(controllerName, editorAlias, true))
+            if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
                 return helper.Action(editorAlias, controllerName, new
                 {
@@ -42,7 +42,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             }
 
             // Try looking for surface controller with action named after the doc type alias alias
-            if (umbracoHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
+            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
             {
                 return helper.Action(content.DocumentTypeAlias, controllerName, new
                 {
@@ -59,7 +59,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
 
                 // Try looking for an action named after the editor alias
-                if (!editorAlias.IsNullOrWhiteSpace() && umbracoHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
+                if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
                 {
                     return helper.Action(editorAlias, defaultControllerName, new
                     {
@@ -70,7 +70,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 }
 
                 // Try looking for a doc type alias action
-                if (umbracoHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
+                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
                 {
                     return helper.Action(content.DocumentTypeAlias, defaultControllerName, new
                     {
@@ -104,6 +104,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
+
+                fullPreviewViewPath = previewViewPath + "Default.cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                {
+                    return helper.Partial(fullPreviewViewPath, content);
+                }
             }
 
             // Check for view path view
@@ -116,6 +122,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 }
 
                 fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
+                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                {
+                    return helper.Partial(fullViewPath, content);
+                }
+
+                fullViewPath = viewPath + "Default.cshtml";
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);

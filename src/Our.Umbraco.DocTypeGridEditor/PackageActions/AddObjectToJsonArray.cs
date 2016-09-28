@@ -7,9 +7,9 @@ using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using umbraco.cms.businesslogic.packager.standardPackageActions;
+using umbraco.interfaces;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
-using umbraco.interfaces;
 using Formatting = Newtonsoft.Json.Formatting;
 using XmlHelper = Our.Umbraco.DocTypeGridEditor.Helpers.XmlHelper;
 
@@ -53,7 +53,7 @@ namespace Our.Umbraco.DocTypeGridEditor.PackageActions
 
                 if (string.IsNullOrWhiteSpace(srcJson))
                     return false;
-            
+
                 var srcObj = JsonConvert.DeserializeObject(srcJson) as JObject;
                 var trgArr = JsonConvert.DeserializeObject(trgJson) as JArray ?? new JArray();
 

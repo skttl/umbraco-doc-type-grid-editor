@@ -78,7 +78,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                         /* Now that we have the DB stored value, we actually need to then convert it into it's
                          * XML serialized state as expected by the published property by calling ConvertDbToString
                          */
-                        var propType2 = contentType.CompositionPropertyTypes.Single(x => x.Alias == propType.PropertyTypeAlias);
+                        var propType2 = contentType.CompositionPropertyTypes.Single(x => x.Alias.InvariantEquals(propType.PropertyTypeAlias));
 
                         Property prop2 = null;
                         try
@@ -93,7 +93,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                         }
                         catch(Exception ex)
                         {
-                            LogHelper.Error<DocTypeGridEditorHelper>("Error creating Property object.", ex);
+                            LogHelper.Error<DocTypeGridEditorHelper>("[DocTypeGridEditor] Error creating Property object.", ex);
                         }
 
                         if (prop2 != null)
