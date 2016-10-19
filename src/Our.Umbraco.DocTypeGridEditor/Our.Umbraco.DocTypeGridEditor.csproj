@@ -258,6 +258,22 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>IF %25ComputerName%25 == MBP13-PC-BC (
+  IF NOT "$(SolutionDir)" == "*Undefined*" (
+    xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\Umbrella\Carlsberg\Pegasus2\carlsberggroup.com\bin"
+    xcopy /s /y "$(TargetDir)$(ProjectName).pdb" "C:\Users\Matt\Work\TheOutfield\Umbrella\Carlsberg\Pegasus2\carlsberggroup.com\bin"
+    xcopy /s /y "$(ProjectDir)Web\UI\*.*" "C:\Users\Matt\Work\TheOutfield\Umbrella\Carlsberg\Pegasus2\carlsberggroup.com"
+  )
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
