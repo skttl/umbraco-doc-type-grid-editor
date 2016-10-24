@@ -53,7 +53,11 @@
                 });
             },
             getContentTypePropertyTypes: function (alias) {
-                return $http.get("Backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypePropertyTypes?alias=" + alias);
+                var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypePropertyTypes?alias=" + alias;
+                return umbRequestHelper.resourcePromise(
+                    $http.get(url),
+                    'Failed to retrieve property types'
+                );
             }
         };
     });
