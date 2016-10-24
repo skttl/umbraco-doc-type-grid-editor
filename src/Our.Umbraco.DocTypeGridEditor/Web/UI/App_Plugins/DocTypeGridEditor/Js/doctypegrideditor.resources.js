@@ -51,6 +51,9 @@
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 });
+            },
+            getContentTypePropertyTypes: function (alias) {
+                return $http.get("Backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypePropertyTypes?alias=" + alias);
             }
         };
     });

@@ -211,6 +211,19 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         }
                     };
 
+                    // Fetch and assign sortOrder to each prop
+                    dtgeResources.getContentTypePropertyTypes(data.contentTypeAlias).then(function (response) {
+                        _.each(response.data, function (e, i) {
+                            _.each(data.tabs, function (tab, j) {
+                                _.each(tab.properties, function (prop, k) {
+                                    if (prop != undefined && prop.alias != undefined && e != undefined && e.Alias != undefined && prop.alias == e.Alias) {
+                                        prop.sortOrder = e.SortOrder;
+                                    }
+                                });
+                            });
+                        });
+                    }, function (error) { });
+
                     // Assign the model to scope
                     $scope.nodeContext = $scope.node = data;
                 });

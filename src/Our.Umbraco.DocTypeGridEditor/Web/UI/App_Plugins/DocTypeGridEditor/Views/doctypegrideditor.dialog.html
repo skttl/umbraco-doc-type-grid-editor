@@ -15,7 +15,7 @@
                     <legend style="font-size: 18px;">{{tab.alias}}</legend>
 
                     <umb-property property="property"
-                                  ng-repeat="property in tab.properties">
+                                  ng-repeat="property in tab.properties | orderBy:'+sortOrder'">
                         <umb-editor model="property"></umb-editor>
                     </umb-property>
 
