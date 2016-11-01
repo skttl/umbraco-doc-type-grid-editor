@@ -32,7 +32,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
             return (IPublishedContent)ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
-                string.Concat("DocTypeGridEditorHelper.ConvertValueToContent_", id, "_", contentTypeAlias),
+                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_", id, "_", contentTypeAlias),
                 () =>
                 {
                     return ConvertValue(id, contentTypeAlias, dataJson);
@@ -41,14 +41,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         private static IPublishedContent ConvertValue(string id, string contentTypeAlias, string dataJson)
         {
-            using (var timer = DisposableTimer.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValueToContent ({0}, {1})", id, contentTypeAlias)))
+            using (var timer = DisposableTimer.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
             {
-                Guid contentTypeGuid;
-                if (Guid.TryParse(contentTypeAlias, out contentTypeGuid))
-                    contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(contentTypeGuid);
-
-                var publishedContentType = PublishedContentType.Get(PublishedItemType.Content, contentTypeAlias);
-                var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
+                var contentTypes = GetContentTypesByAlias(contentTypeAlias);
                 var properties = new List<IPublishedProperty>();
 
                 // Convert all the properties
@@ -56,7 +51,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var propValues = ((JObject)data).ToObject<Dictionary<string, object>>();
                 foreach (var jProp in propValues)
                 {
-                    var propType = publishedContentType.GetPropertyType(jProp.Key);
+                    var propType = contentTypes.PublishedContentType.GetPropertyType(jProp.Key);
                     if (propType != null)
                     {
                         /* Because we never store the value in the database, we never run the property editors
@@ -65,8 +60,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                          * we go on to convert the value for the view. 
                          */
                         var propEditor = PropertyEditorResolver.Current.GetByAlias(propType.PropertyEditorAlias);
-                        var propPreValues = Services.DataTypeService.GetPreValuesCollectionByDataTypeId(
-                            propType.DataTypeId);
+                        var propPreValues = GetPreValuesCollectionByDataTypeId(propType.DataTypeId);
 
                         var contentPropData = new ContentPropertyData(
                             jProp.Value,
@@ -78,7 +72,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                         /* Now that we have the DB stored value, we actually need to then convert it into it's
                          * XML serialized state as expected by the published property by calling ConvertDbToString
                          */
-                        var propType2 = contentType.CompositionPropertyTypes.Single(x => x.Alias.InvariantEquals(propType.PropertyTypeAlias));
+                        var propType2 = contentTypes.ContentType.CompositionPropertyTypes.Single(x => x.Alias.InvariantEquals(propType.PropertyTypeAlias));
 
                         Property prop2 = null;
                         try
@@ -117,11 +111,43 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
                 return new DetachedPublishedContent(nameObj != null ? nameObj.ToString() : null,
-                    publishedContentType,
+                    contentTypes.PublishedContentType,
                     properties.ToArray(),
                     containerNode);
             }
 
         }
+
+        private static PreValueCollection GetPreValuesCollectionByDataTypeId(int dataTypeId)
+        {
+            return (PreValueCollection)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_" + dataTypeId,
+                () => Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dataTypeId));
+        }
+
+        private static ContentTypeContainer GetContentTypesByAlias(string contentTypeAlias)
+        {
+            Guid contentTypeGuid;
+            if (Guid.TryParse(contentTypeAlias, out contentTypeGuid))
+                contentTypeAlias = GetContentTypeAliasByGuid(contentTypeGuid);
+
+            return (ContentTypeContainer)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_" + contentTypeAlias,
+                () => new ContentTypeContainer
+                        {
+                            PublishedContentType = PublishedContentType.Get(PublishedItemType.Content, contentTypeAlias),
+                            ContentType = Services.ContentTypeService.GetContentType(contentTypeAlias)
+                        });
+        }
+
+        private static string GetContentTypeAliasByGuid(Guid contentTypeGuid)
+        {
+            return (string)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_" + contentTypeGuid,
+                () => Services.ContentTypeService.GetAliasByGuid(contentTypeGuid));
+        }
+    }
+
+    public class ContentTypeContainer
+    {
+        public PublishedContentType PublishedContentType { get; set; }
+        public IContentType ContentType { get; set; }
     }
 }

@@ -19,15 +19,31 @@ namespace Our.Umbraco.DocTypeGridEditor
 
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            DataTypeService.Saved += ExpireCache;
+            DataTypeService.Saved += ExpireDataTypeCache;
+            ContentTypeService.SavedContentType += ExpireContentTypeCache;
         }
 
-        private void ExpireCache(IDataTypeService sender, SaveEventArgs<IDataTypeDefinition> e)
+        private void ExpireDataTypeCache(IDataTypeService sender, SaveEventArgs<IDataTypeDefinition> e)
         {
             foreach (var dataType in e.SavedEntities)
             {
                 ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
                     string.Concat("Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_", dataType.Key));
+
+                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
+                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_", dataType.Id));
+            }
+        }
+
+        private void ExpireContentTypeCache(IContentTypeService sender, SaveEventArgs<IContentType> e)
+        {
+            foreach (var contentType in e.SavedEntities)
+            {
+                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
+                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_", contentType.Alias));
+
+                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
+                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_", contentType.Key));
             }
         }
     }
