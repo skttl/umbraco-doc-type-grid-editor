@@ -48,7 +48,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                     contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(contentTypeGuid);
 
                 var publishedContentType = PublishedContentType.Get(PublishedItemType.Content, contentTypeAlias);
-                var contentType = ApplicationContext.Current.Services.ContentTypeService.GetContentType(contentTypeAlias);
+                var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
                 var properties = new List<IPublishedProperty>();
 
                 // Convert all the properties
@@ -91,15 +91,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                              */
                             prop2 = new Property(propType2, newValue);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             LogHelper.Error<DocTypeGridEditorHelper>("[DocTypeGridEditor] Error creating Property object.", ex);
                         }
 
                         if (prop2 != null)
                         {
-                            var newValue2 = propEditor.ValueEditor.ConvertDbToString(prop2, propType2,
-                                ApplicationContext.Current.Services.DataTypeService);
+                            var newValue2 = propEditor.ValueEditor.ConvertDbToString(prop2, propType2, Services.DataTypeService);
 
                             properties.Add(new DetachedPublishedProperty(propType, newValue2));
                         }
