@@ -1,4 +1,4 @@
-﻿/*.dtge-dialog fieldset legend {
+/*.dtge-dialog fieldset legend {
     display: none;
 }*/
 
@@ -11,4 +11,25 @@
 
 .dtge-dialog .help-inline {
     color: #9d261d;
+}
+
+@media only screen and (min-width: 1400px) {
+    .umb-modal.fade.in.wide.dtge-modal {
+        width: 700px !important;
+        margin-left: -700px !important;
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+    .umb-modal.fade.in.wide.dtge-modal {
+        width: 600px !important;
+        margin-left: -600px !important;
+    }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1199px) {
+    .umb-modal.fade.in.wide.dtge-modal {
+        width: 500px !important;
+        margin-left: -500px !important;
+    }
 }
