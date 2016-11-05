@@ -45,7 +45,8 @@
                         contentTypeAlias: contentTypeAlias,
                         value: JSON.stringify(value),
                         viewPath: viewPath,
-                        previewViewPath: previewViewPath
+                        previewViewPath: previewViewPath,
+                        section: section
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
