@@ -1,6 +1,6 @@
 # Doc Type Grid Editor
 
-[![Build status](https://img.shields.io/appveyor/ci/leekelleher/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/leekelleher/umbraco-doc-type-grid-editor)
+[![Build status](https://img.shields.io/appveyor/ci/UMCO/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/UMCO/umbraco-doc-type-grid-editor)
 [![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.DocTypeGridEditor.svg)](https://www.nuget.org/packages/Our.Umbraco.DocTypeGridEditor)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
 [![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/leekelleher/umbraco-doc-type-grid-editor)
