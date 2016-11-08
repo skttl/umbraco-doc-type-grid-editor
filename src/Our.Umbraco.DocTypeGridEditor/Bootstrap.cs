@@ -14,7 +14,10 @@ namespace Our.Umbraco.DocTypeGridEditor
         {
             GlobalFilters.Filters.Add(new DocTypeGridEditorPreviewAttribute());
 
-            DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver();
+            if (!DefaultDocTypeGridEditorSurfaceControllerResolver.HasCurrent)
+            {
+                DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver();
+            }
         }
 
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
