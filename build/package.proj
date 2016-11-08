@@ -21,10 +21,10 @@
 		<MinUmbracoVersion>7.2.0</MinUmbracoVersion>
 		<Readme>Doc Type Grid Editor is an advanced grid editor for the new Umbraco v7.2 Grid</Readme>
 		<AuthorName>Matt Brailsford, Lee Kelleher</AuthorName>
-		<AuthorUrl>https://github.com/leekelleher/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>
+		<AuthorUrl>https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>
 		<PackageLicenseName>MIT license</PackageLicenseName>
 		<PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
-		<ProjectUrl>https://github.com/leekelleher/umbraco-doc-type-grid-editor</ProjectUrl>
+		<ProjectUrl>https://github.com/umco/umbraco-doc-type-grid-editor</ProjectUrl>
 	</PropertyGroup>
 
 	<!-- NUGET ONLY PROPERTIES -->
