@@ -89,7 +89,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 });
             }
 
-            // Check for preview view 
+            // Check for preview view
             if (!string.IsNullOrWhiteSpace(previewViewPath)
                 && helper.ViewContext.RequestContext.HttpContext.Request.QueryString["dtgePreview"] == "1")
             {

@@ -123,7 +123,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         private static PreValueCollection GetPreValuesCollectionByDataTypeId(int dataTypeId)
         {
-            return (PreValueCollection)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_" + dataTypeId,
+            return (PreValueCollection)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
+                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_", dataTypeId),
                 () => Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dataTypeId));
         }
 
@@ -133,17 +134,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             if (Guid.TryParse(contentTypeAlias, out contentTypeGuid))
                 contentTypeAlias = GetContentTypeAliasByGuid(contentTypeGuid);
 
-            return (ContentTypeContainer)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_" + contentTypeAlias,
+            return (ContentTypeContainer)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
+                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_", contentTypeAlias),
                 () => new ContentTypeContainer
-                        {
-                            PublishedContentType = PublishedContentType.Get(PublishedItemType.Content, contentTypeAlias),
-                            ContentType = Services.ContentTypeService.GetContentType(contentTypeAlias)
-                        });
+                {
+                    PublishedContentType = PublishedContentType.Get(PublishedItemType.Content, contentTypeAlias),
+                    ContentType = Services.ContentTypeService.GetContentType(contentTypeAlias)
+                });
         }
 
         private static string GetContentTypeAliasByGuid(Guid contentTypeGuid)
         {
-            return (string)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_" + contentTypeGuid,
+            return (string)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
+                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_", contentTypeGuid),
                 () => Services.ContentTypeService.GetAliasByGuid(contentTypeGuid));
         }
     }
