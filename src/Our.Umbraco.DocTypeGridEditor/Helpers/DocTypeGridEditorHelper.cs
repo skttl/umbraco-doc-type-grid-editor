@@ -28,6 +28,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             if (string.IsNullOrWhiteSpace(contentTypeAlias))
                 return null;
 
+            if (dataJson == null)
+                return null;
+
             if (UmbracoContext.Current == null)
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
