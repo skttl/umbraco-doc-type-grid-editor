@@ -44,7 +44,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         private static IPublishedContent ConvertValue(string id, string contentTypeAlias, string dataJson)
         {
-            using (var timer = DisposableTimer.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
+            using (var timer = ApplicationContext.Current.ProfilingLogger.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
             {
                 var contentTypes = GetContentTypesByAlias(contentTypeAlias);
                 var properties = new List<IPublishedProperty>();
