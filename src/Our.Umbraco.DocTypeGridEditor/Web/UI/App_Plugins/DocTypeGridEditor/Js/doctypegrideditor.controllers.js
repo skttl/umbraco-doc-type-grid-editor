@@ -58,7 +58,8 @@
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
                     $scope.control.editor.config.previewViewPath,
-                    !!editorState.current.publishDate)
+                    !!editorState.current.publishDate,
+                    $routeParams.section)
                     .success(function (htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;

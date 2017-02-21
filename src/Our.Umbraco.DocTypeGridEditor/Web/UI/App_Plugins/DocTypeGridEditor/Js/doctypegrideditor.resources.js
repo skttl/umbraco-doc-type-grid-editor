@@ -34,7 +34,7 @@
                     'Failed to retrieve datatypes'
                 );
             },
-            getEditorMarkupForDocTypePartial: function (nodeId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath, published) {
+            getEditorMarkupForDocTypePartial: function (nodeId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath, published, section) {
                 var url = "/" + (published ? nodeId : "") + "?dtgePreview=1" + (published ? "" : "&nodeId=" + nodeId);
                 return $http({
                     method: 'POST',
@@ -45,7 +45,8 @@
                         contentTypeAlias: contentTypeAlias,
                         value: JSON.stringify(value),
                         viewPath: viewPath,
-                        previewViewPath: previewViewPath
+                        previewViewPath: previewViewPath,
+                        section: section
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
