@@ -4,7 +4,7 @@
             open: function (options) {
 
                 var o = $.extend({}, {
-                	template: umbRequestHelper.convertVirtualToAbsolutePath("~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html"),
+                    template: umbRequestHelper.convertVirtualToAbsolutePath("~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html"),
                     show: true,
                     requireName: true,
                 }, options);
