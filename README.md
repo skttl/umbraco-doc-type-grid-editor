@@ -55,12 +55,12 @@ A PDF download is also available: [Doc Type Grid Editor - Developers Guide v1.0.
 
 ## Known Issues
 
-Please be aware that not all property-editors will work within Doc Type Grid Editor. The following property-editors are known to have compatibility issues:
+Please be aware that not all property-editors will work within Doc Type Grid Editor. The following Umbraco core property-editors are known to have compatibility issues:
 
-* Upload (default Umbraco core)
-* Image Cropper (default Umbraco core)
-* Macro Container (default Umbraco core)
-* Tags (default Umbraco core)
+* Image Cropper
+* Macro Container
+* Tags
+* Upload
 
 ---
 
