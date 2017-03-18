@@ -1,6 +1,6 @@
 # Doc Type Grid Editor
 
-[![Build status](https://img.shields.io/appveyor/ci/leekelleher/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/leekelleher/umbraco-doc-type-grid-editor)
+[![Build status](https://img.shields.io/appveyor/ci/UMCO/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/UMCO/umbraco-doc-type-grid-editor)
 [![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.DocTypeGridEditor.svg)](https://www.nuget.org/packages/Our.Umbraco.DocTypeGridEditor)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
 [![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/leekelleher/umbraco-doc-type-grid-editor)
@@ -13,7 +13,7 @@ A grid editor for Umbraco 7 that allows you to use Doc Types as a blue print for
 
 ### Installation
 
-> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.2.0** and will support that version and above.
+> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.3.0** and will support that version and above.
 
 Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code.
 
@@ -55,12 +55,12 @@ A PDF download is also available: [Doc Type Grid Editor - Developers Guide v1.0.
 
 ## Known Issues
 
-Please be aware that not all property-editors will work within Doc Type Grid Editor. The following property-editors are known to have compatibility issues:
+Please be aware that not all property-editors will work within Doc Type Grid Editor. The following Umbraco core property-editors are known to have compatibility issues:
 
-* Upload (default Umbraco core)
-* Image Cropper (default Umbraco core)
-* Macro Container (default Umbraco core)
-* Tags (default Umbraco core)
+* Image Cropper
+* Macro Container
+* Tags
+* Upload
 
 ---
 

@@ -189,7 +189,6 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                     }
 
                     $scope.submit($scope.dialogData);
-
                 }
             };
 

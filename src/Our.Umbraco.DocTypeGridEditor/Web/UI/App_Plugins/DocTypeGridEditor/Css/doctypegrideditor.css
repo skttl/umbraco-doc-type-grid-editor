@@ -12,3 +12,27 @@
 .dtge-dialog .help-inline {
     color: #9d261d;
 }
+
+/*
+    Style the doc type grid editor previews
+
+.dtge-editor-placeholder {
+    background-color: #f8f8f8;
+    background-color: rgba(0,0,0,0.03);
+    padding: 20px;
+}
+
+.dtge-editor-placeholder .icon {
+    text-align: center;
+    display: block;
+    color: #ddd;
+    color: rgba(0,0,0,0.1);
+    font-size: 50px;
+    line-height: 50px;
+}
+
+.dtge-editor-placeholder .help-text {
+    text-align: center;
+    display: block;
+}
+*/

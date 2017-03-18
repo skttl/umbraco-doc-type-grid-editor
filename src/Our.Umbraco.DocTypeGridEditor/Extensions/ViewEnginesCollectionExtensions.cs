@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using Umbraco.Core.Logging;
 
 namespace Our.Umbraco.DocTypeGridEditor.Extensions
 {
@@ -16,8 +15,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Extensions
 
             if (result.View != null)
                 return true;
-
-            LogHelper.Info<ViewEngineCollection>("[DocTypeGridEditor] No view file found with the name '{0}'", () => viewName);
 
             return false;
         }

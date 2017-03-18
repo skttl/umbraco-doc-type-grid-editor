@@ -1,5 +1,5 @@
 # version format
-version: 0.3.0.{build}
+version: 0.4.0.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX if a rtm release build this should be blank, otherwise if empty will default to alpha
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
@@ -22,7 +22,7 @@ deploy:
     server: https://www.myget.org/F/umbraco-packages/
     symbol_server: https://nuget.symbolsource.org/MyGet/umbraco-packages
     api_key:
-      secure: Q1/4K8VSwr7BjwmKDTef8y5lOc7S+jK9ELuWy67y6OVRpjxmnF9M3Gfs1kT+ir8x
+      secure: 36/Ax5O+e6wENlhoTwgvoEBZV3FG4XjF429SNTej2qsGTAL+cdfA1kT/tm1St8vx
     artifact: /.*\.nupkg/
     on:
       branch: develop
@@ -30,7 +30,7 @@ deploy:
     # GitHub Deployment for releases
   - provider: GitHub
     auth_token:
-      secure: pEozEGTqJutQwOidJU6BTB+Ix0NV4vrUnomhfeqheVz4RNwfxjEYLoqR4XabhlPz
+      secure: yDxrRTveSScJA35MQTOaLYVjoPKFKl2bHBkG+JMZjiN0r7AfuUCxVU3CgW8Imu4h
     artifact: /.*\.zip/            # upload all Zip packages to release assets
     draft: false
     prerelease: false
@@ -42,7 +42,7 @@ deploy:
   - provider: NuGet
     server: 
     api_key:
-      secure: CGzDKxw4QI/z2VSe9ceiYlIabqGXHolgBgVNWWZjVAJ2V5WLF11IFdlp9r5Qp+Sw
+      secure: eSLiOXbGVrxSG+X7PV6qTTUZ5VzS9EFj5+EufaWPfd+QXkF6gc8rZ4mGoHIVp/fL
     artifact: /.*\.nupkg/
     on:
       branch: master

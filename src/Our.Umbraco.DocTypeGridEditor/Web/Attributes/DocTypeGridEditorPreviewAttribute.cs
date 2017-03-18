@@ -16,6 +16,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Attributes
                     viewResult.ViewName =
                         "~/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditorPreviewer.cshtml";
                 }
+                // NOTE: [LK:2016-11-16] If the preview result is a redirect, then cancel the request.
+                // The issue here is that typically a redirect from a controller would be to a full-loading HTML page.
+                // Meaning that a full bodied HTML page would be injected into a DTGE grid cell, causing havoc.
+                // This is a temporary resolution until we implement a more robust DTGE previewer mechanism.
+                else if (filterContext.Result is RedirectResult)
+                {
+                    filterContext.Cancel = true;
+                }
             }
 
             base.OnResultExecuting(filterContext);
