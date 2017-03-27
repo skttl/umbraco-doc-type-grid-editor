@@ -192,6 +192,23 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 }
             };
 
+            // this method will ensure that number values in nested/complex property editors 
+            // will be turned into string to emulate how the core handles values     
+            function deNumberValues(propValue) {
+                if (Array.isArray(propValue)) {
+                    propValue.forEach(function (key, index) {
+                        propValue[index] = deNumberValues(propValue[index]);
+                    });
+                } else {
+                    Object.keys(propValue).forEach(function (key, index) {
+                        if (propValue[key] === parseInt(propValue[key])) {
+                            propValue[key] = propValue[key].toString();
+                        }
+                    });
+                }
+                return propValue;
+            }
+
             function loadNode() {
                 contentResource.getScaffold(-20, $scope.dialogData.docTypeAlias).then(function (data) {
                     // Remove the last tab
@@ -204,7 +221,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             for (var p = 0; p < tab.properties.length; p++) {
                                 var prop = tab.properties[p];
                                 if ($scope.dialogData.value[prop.alias]) {
-                                    prop.value = $scope.dialogData.value[prop.alias];
+                                    prop.value = deNumberValues($scope.dialogData.value[prop.alias]);
                                 }
                             }
                         }
