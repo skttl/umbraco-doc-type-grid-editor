@@ -22,13 +22,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (content == null)
                 return new HtmlString(string.Empty);
 
-            var controllerName = content.DocumentTypeAlias + "Surface";
+            var controllerName = string.Concat(content.DocumentTypeAlias, "Surface");
 
             if (!string.IsNullOrWhiteSpace(viewPath))
-                viewPath = viewPath.TrimEnd('/') + "/";
+                viewPath = viewPath.EnsureEndsWith('/');
 
             if (!string.IsNullOrWhiteSpace(previewViewPath))
-                previewViewPath = previewViewPath.TrimEnd('/') + "/";
+                previewViewPath = previewViewPath.EnsureEndsWith('/');
 
             // Try looking for surface controller with action named after the editor alias
             if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
@@ -93,19 +93,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(previewViewPath)
                 && helper.ViewContext.RequestContext.HttpContext.Request.QueryString["dtgePreview"] == "1")
             {
-                var fullPreviewViewPath = previewViewPath + editorAlias + ".cshtml";
+                var fullPreviewViewPath = string.Concat(previewViewPath, editorAlias, ".cshtml");
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
-                fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
+                fullPreviewViewPath = string.Concat(previewViewPath, content.DocumentTypeAlias, ".cshtml");
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
-                fullPreviewViewPath = previewViewPath + "Default.cshtml";
+                fullPreviewViewPath = string.Concat(previewViewPath, "Default.cshtml");
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
@@ -115,19 +115,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             // Check for view path view
             if (!string.IsNullOrWhiteSpace(viewPath))
             {
-                var fullViewPath = viewPath + editorAlias + ".cshtml";
+                var fullViewPath = string.Concat(viewPath, editorAlias, ".cshtml");
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
 
-                fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
+                fullViewPath = string.Concat(viewPath, content.DocumentTypeAlias, ".cshtml");
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
 
-                fullViewPath = viewPath + "Default.cshtml";
+                fullViewPath = string.Concat(viewPath, "Default.cshtml");
                 if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
