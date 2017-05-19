@@ -51,6 +51,13 @@
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 });
+            },
+            getContentTypePropertyTypes: function (alias) {
+                var url = "/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypePropertyTypes?alias=" + alias;
+                return umbRequestHelper.resourcePromise(
+                    $http.get(url),
+                    'Failed to retrieve property types'
+                );
             }
         };
     });

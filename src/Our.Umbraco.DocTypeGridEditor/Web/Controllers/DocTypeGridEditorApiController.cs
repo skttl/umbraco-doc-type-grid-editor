@@ -7,6 +7,7 @@ using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
+using Umbraco.Web;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 {
@@ -82,6 +83,36 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             var preValue = Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dtd.Id);
             var propEditor = PropertyEditorResolver.Current.GetByAlias(dtd.PropertyEditorAlias);
             return propEditor.PreValueEditor.ConvertDbToEditor(propEditor.DefaultPreValues, preValue);
+        }
+
+        [System.Web.Http.HttpGet]
+        public List<PropertyType> GetContentTypePropertyTypes(String alias)
+        {
+            var list = new List<PropertyType>();
+            var doctype = UmbracoContext.Application.Services.ContentTypeService.GetContentType(alias);
+            if (doctype != null)
+            {
+                list = doctype.PropertyTypes.ToList();
+                if (doctype.ParentId != 0)
+                {
+                    list.AddRange(GetContentTypePropertyTypes(doctype.ParentId));
+                }
+            }
+            return list;
+        }
+        private List<PropertyType> GetContentTypePropertyTypes(int id)
+        {
+            var list = new List<PropertyType>();
+            var doctype = UmbracoContext.Application.Services.ContentTypeService.GetContentType(id);
+            if (doctype != null)
+            {
+                list = doctype.PropertyTypes.ToList();
+                if (doctype.ParentId != 0)
+                {
+                    list.AddRange(GetContentTypePropertyTypes(doctype.ParentId));
+                }
+            }
+            return list;
         }
     }
 }
