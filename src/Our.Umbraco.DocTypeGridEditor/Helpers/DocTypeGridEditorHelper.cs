@@ -114,10 +114,20 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var pcr = UmbracoContext.Current != null ? UmbracoContext.Current.PublishedContentRequest : null;
                 var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
-                return new DetachedPublishedContent(nameObj != null ? nameObj.ToString() : null,
+                // Create the model based on our implementation of IPublishedContent
+                IPublishedContent content = new DetachedPublishedContent(
+                    nameObj != null ? nameObj.ToString() : null,
                     contentTypes.PublishedContentType,
                     properties.ToArray(),
                     containerNode);
+
+                if (PublishedContentModelFactoryResolver.HasCurrent)
+                {
+                    // Let the current model factory create a typed model to wrap our model
+                    content = PublishedContentModelFactoryResolver.Current.Factory.CreateModel(content);
+                }
+
+                return content;
             }
 
         }
