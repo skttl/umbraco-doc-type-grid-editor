@@ -45,7 +45,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Mvc
         {
             if (!type.IsOfGenericType(typeof(DocTypeGridEditorSurfaceController<>)))
             {
-                throw new InvalidOperationException("The Type specified (" + type + ") is not of type " + typeof(DocTypeGridEditorSurfaceController<>));
+                throw new InvalidOperationException($"The Type specified ({type}) is not of type {typeof(DocTypeGridEditorSurfaceController<>)}");
             }
         }
     }

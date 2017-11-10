@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 
@@ -67,13 +68,15 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         protected string GetFullViewPath(string viewName, string baseViewPath)
         {
-            if (viewName.StartsWith("~") || viewName.StartsWith("/")
-                || viewName.StartsWith(".") || string.IsNullOrWhiteSpace(baseViewPath))
+            if (viewName.StartsWith("~") ||
+                viewName.StartsWith("/") ||
+                viewName.StartsWith(".") ||
+                string.IsNullOrWhiteSpace(baseViewPath))
             {
                 return viewName;
             }
 
-            return baseViewPath.TrimEnd('/') + "/" + viewName + ".cshtml";
+            return string.Concat(baseViewPath.EnsureEndsWith('/'), viewName, ".cshtml");
         }
     }
 }
