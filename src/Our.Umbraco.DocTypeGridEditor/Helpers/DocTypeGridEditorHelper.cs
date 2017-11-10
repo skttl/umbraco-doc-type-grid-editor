@@ -36,7 +36,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
             return (IPublishedContent)ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
-                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_", id, "_", contentTypeAlias),
+                $"Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_{id}_{contentTypeAlias}",
                 () =>
                 {
                     return ConvertValue(id, contentTypeAlias, dataJson);
