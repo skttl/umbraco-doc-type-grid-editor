@@ -27,7 +27,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         {
             return Services.ContentTypeService.GetAllContentTypes()
                 .Where(x => allowedContentTypes == null || allowedContentTypes.Length == 0 || allowedContentTypes.Any(y => Regex.IsMatch(x.Alias, y)))
-                .OrderBy(x => x.SortOrder)
+                .OrderBy(x => x.Name)
                 .Select(x => new
                 {
                     id = x.Id,
