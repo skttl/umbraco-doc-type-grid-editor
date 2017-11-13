@@ -40,12 +40,14 @@
                 nameTemplate: $scope.control.editor.config.nameTemplate,
                 dialogData: {
                     docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
-                    value: $scope.control.value.value
+                    value: $scope.control.value.value,
+                    id: $scope.control.value.id
                 },
                 callback: function (data) {
                     $scope.setValue({
                         dtgeContentTypeAlias: data.docTypeAlias,
-                        value: data.value
+                        value: data.value,
+                        id: data.id
                     });
                     $scope.setPreview($scope.control.value);
                 }
