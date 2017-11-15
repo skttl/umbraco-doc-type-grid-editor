@@ -30,10 +30,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (!string.IsNullOrWhiteSpace(previewViewPath))
                 previewViewPath = previewViewPath.EnsureEndsWith('/');
 
-            // Try looking for surface controller with action named after the DocType alias
-            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
+            // Try looking for surface controller with action named after the editor alias
+            if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
-                return helper.Action(content.DocumentTypeAlias, controllerName, new
+                return helper.Action(editorAlias, controllerName, new
                 {
                     dtgeModel = content,
                     dtgeViewPath = viewPath,
@@ -41,10 +41,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 });
             }
 
-            // Try looking for surface controller with action named after the editor alias
-            if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
+            // Try looking for surface controller with action named after the doc type alias alias
+            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
             {
-                return helper.Action(editorAlias, controllerName, new
+                return helper.Action(content.DocumentTypeAlias, controllerName, new
                 {
                     dtgeModel = content,
                     dtgeViewPath = viewPath,
@@ -58,10 +58,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             {
                 var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
 
-                // Try looking for a doc type alias action
-                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
+                // Try looking for an action named after the editor alias
+                if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
                 {
-                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, new
+                    return helper.Action(editorAlias, defaultControllerName, new
                     {
                         dtgeModel = content,
                         dtgeViewPath = viewPath,
@@ -69,10 +69,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                     });
                 }
 
-                // Try looking for an action named after the editor alias
-                if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
+                // Try looking for a doc type alias action
+                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
                 {
-                    return helper.Action(editorAlias, defaultControllerName, new
+                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, new
                     {
                         dtgeModel = content,
                         dtgeViewPath = viewPath,
