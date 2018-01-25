@@ -6,11 +6,10 @@
     "$routeParams",
     "editorState",
     'assetsService',
-    "Our.Umbraco.DocTypeGridEditor.Services.DocTypeDialogService",
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
     "umbRequestHelper",
 
-    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeDialogService, dtgeResources, umbRequestHelper) {
+    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService,  dtgeResources, umbRequestHelper) {
 
         $scope.title = "Click to insert item";
         $scope.icon = "icon-item-arrangement";

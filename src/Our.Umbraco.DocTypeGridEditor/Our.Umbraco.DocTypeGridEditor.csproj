@@ -302,7 +302,6 @@
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Config\grid.editors.config.js" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Css\doctypegrideditor.css" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.resources.js" />
-    <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.services.js" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.controllers.js" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Views\doctypegrideditor.dialog.html" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Views\doctypegrideditor.html" />
