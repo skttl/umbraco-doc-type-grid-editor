@@ -10,6 +10,7 @@ using Umbraco.Core.Logging;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.Editors;
 using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Core.Persistence;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Services;
 using Umbraco.Web;
@@ -35,7 +36,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
             return (IPublishedContent)ApplicationContext.Current.ApplicationCache.RequestCache.GetCacheItem(
-                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_", id, "_", contentTypeAlias),
+                $"Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_{id}_{contentTypeAlias}",
                 () =>
                 {
                     return ConvertValue(id, contentTypeAlias, dataJson);
@@ -113,10 +114,20 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var pcr = UmbracoContext.Current != null ? UmbracoContext.Current.PublishedContentRequest : null;
                 var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
-                return new DetachedPublishedContent(nameObj != null ? nameObj.ToString() : null,
+                // Create the model based on our implementation of IPublishedContent
+                IPublishedContent content = new DetachedPublishedContent(
+                    nameObj != null ? nameObj.ToString() : null,
                     contentTypes.PublishedContentType,
                     properties.ToArray(),
                     containerNode);
+
+                if (PublishedContentModelFactoryResolver.HasCurrent && PublishedContentModelFactoryResolver.Current.HasValue)
+                {
+                    // Let the current model factory create a typed model to wrap our model
+                    content = PublishedContentModelFactoryResolver.Current.Factory.CreateModel(content);
+                }
+
+                return content;
             }
 
         }
@@ -148,6 +159,77 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             return (string)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
                 string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_", contentTypeGuid),
                 () => Services.ContentTypeService.GetAliasByGuid(contentTypeGuid));
+        }
+
+        public static void RemapDocTypeAlias(string oldAlias, string newAlias, Transaction transaction = null)
+        {
+            var db = ApplicationContext.Current.DatabaseContext.Database;
+
+            // Update references in property data
+            // We do 2 very similar replace statements, but one is without spaces in the JSON, the other is with spaces 
+            // as we can't guarantee what format it will actually get saved in
+            var sql1 = string.Format(@"UPDATE cmsPropertyData
+SET dataNtext = CAST(REPLACE(REPLACE(CAST(dataNtext AS nvarchar(max)), '""dtgeContentTypeAlias"":""{0}""', '""dtgeContentTypeAlias"":""{1}""'), '""dtgeContentTypeAlias"": ""{0}""', '""dtgeContentTypeAlias"": ""{1}""') AS ntext)
+WHERE dataNtext LIKE '%""dtgeContentTypeAlias"":""{0}""%' OR dataNtext LIKE '%""dtgeContentTypeAlias"": ""{0}""%'", oldAlias, newAlias);
+
+            if (transaction == null)
+            {
+                using (var tr = db.GetTransaction())
+                {
+                    db.Execute(sql1);
+                    tr.Complete();
+                }
+            }
+            else
+            {
+                db.Execute(sql1);
+            }
+        }
+
+        public static void RemapPropertyAlias(string docTypeAlias, string oldAlias, string newAlias, Transaction transaction = null)
+        {
+            var db = ApplicationContext.Current.DatabaseContext.Database;
+
+            // Update references in property data
+            // We have to do it in code because there could be nested JSON so 
+            // we need to make sure it only replaces at the specific level only
+            Action doQuery = () =>
+            {
+                var rows = GetPropertyDataRows(docTypeAlias);
+                foreach (var row in rows)
+                {
+                    var tokens = row.Data.SelectTokens(string.Format("$..controls[?(@.value.dtgeContentTypeAlias == '{0}' && @.value.value.{1})].value", docTypeAlias, oldAlias)).ToList();
+                    if (tokens.Any())
+                    {
+                        foreach (var token in tokens)
+                        {
+                            token["value"][oldAlias].Rename(newAlias);
+                        }
+                        db.Execute("UPDATE [cmsPropertyData] SET [dataNtext] = @0 WHERE [id] = @1", row.RawData, row.Id);
+                    }
+                }
+            };
+
+            if (transaction == null)
+            {
+                using (var tr = db.GetTransaction())
+                {
+                    doQuery();
+                    tr.Complete();
+                }
+            }
+            else
+            {
+                doQuery();
+            }
+        }
+
+        private static IEnumerable<JsonDbRow> GetPropertyDataRows(string docTypeAlias)
+        {
+            var db = ApplicationContext.Current.DatabaseContext.Database;
+            return db.Query<JsonDbRow>(string.Format(
+                @"SELECT [id], [dataNtext] as [rawdata] FROM cmsPropertyData WHERE dataNtext LIKE '%""dtgeContentTypeAlias"":""{0}""%' OR dataNtext LIKE '%""dtgeContentTypeAlias"": ""{0}""%'",
+                docTypeAlias)).ToList();
         }
     }
 

@@ -39,6 +39,7 @@
         };
 
         $scope.setDocType = function () {
+
             $scope.overlay = {};
             $scope.overlay.show = true;
             $scope.overlay.view =
@@ -49,7 +50,8 @@
             $scope.overlay.nameTemplate = $scope.control.editor.config.nameTemplate;
             $scope.overlay.dialogData = {
                 docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
-                value: $scope.control.value.value
+                value: $scope.control.value.value,
+                id: $scope.control.value.id
             };
             $scope.overlay.close = function (oldModel) {
                 $scope.overlay.show = false;
@@ -83,11 +85,13 @@
                     newModel.dialogData.value = value;
                 } else {
                     newModel.dialogData.value = null;
+
                 }
 
                 $scope.setValue({
                     dtgeContentTypeAlias: newModel.dialogData.docTypeAlias,
-                    value: newModel.dialogData.value
+                    value: newModel.dialogData.value,
+                    id: newModel.dialogData.id
                 });
                 $scope.setPreview($scope.control.value);
                 $scope.overlay.show = false;

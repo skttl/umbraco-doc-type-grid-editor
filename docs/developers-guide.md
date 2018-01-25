@@ -44,20 +44,25 @@ The **Doc Type Grid Editor** is configured via the grid.editors.config.js config
 
 ```javascript
 [
-	...
-	{
-		"name": "Doc Type",
-		"alias": "docType",
-		"view": "/App_Plugins/../doctypegrideditor.html",
-		"render": "/App_Plugins/../doctypegrideditor.cshtml",
-		"icon": "icon-item-arrangement",
-		"config": {
-			"allowedDocTypes": [...],
-			"enablePreview": true,
-			"viewPath": "/Views/Partials/"
-	 },
-	 ...
- ]
+    ...
+    {
+        "name": "Doc Type",
+        "alias": "docType",
+        "view": "/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.html",
+        "render": "/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditor.cshtml",
+        "icon": "icon-item-arrangement",
+        "config": {
+            "allowedDocTypes": [...],
+            "nameTemplate": "",
+            "enablePreview": true,
+            "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
+            "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
+            "previewCssFilePath": "",
+            "previewJsFilePath": ""
+        }
+    },
+    ...
+]
 ```
 
 ![Doc Type Grid Editor - JSON configuration](img/screenshot-07.png)
