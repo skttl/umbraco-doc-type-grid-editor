@@ -8,11 +8,17 @@
     'assetsService',
     "Our.Umbraco.DocTypeGridEditor.Services.DocTypeDialogService",
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
+    "umbRequestHelper",
 
-    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeDialogService, dtgeResources) {
+    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeDialogService, dtgeResources, umbRequestHelper) {
 
         $scope.title = "Click to insert item";
         $scope.icon = "icon-item-arrangement";
+        $scope.overlay = {};
+        $scope.overlay.show = false;
+        $scope.overlay.view =
+            umbRequestHelper.convertVirtualToAbsolutePath(
+                "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
 
         $scope.setValue = function (data, callback) {
             $scope.control.value = data;
@@ -34,31 +40,69 @@
         };
 
         $scope.setDocType = function () {
-            dtgeDialogService.open({
-                editorName: $scope.control.editor.name,
-                allowedDocTypes: $scope.control.editor.config.allowedDocTypes || [],
-                nameTemplate: $scope.control.editor.config.nameTemplate,
-                dialogData: {
-                    docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
-                    value: $scope.control.value.value
-                },
-                callback: function (data) {
-                    $scope.setValue({
-                        dtgeContentTypeAlias: data.docTypeAlias,
-                        value: data.value
-                    });
-                    $scope.setPreview($scope.control.value);
+            $scope.overlay = {};
+            $scope.overlay.show = true;
+            $scope.overlay.view =
+                umbRequestHelper.convertVirtualToAbsolutePath(
+                    "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
+            $scope.overlay.editorName = $scope.control.editor.name;
+            $scope.overlay.allowedDocTypes = $scope.control.editor.config.allowedDocTypes || [];
+            $scope.overlay.nameTemplate = $scope.control.editor.config.nameTemplate;
+            $scope.overlay.dialogData = {
+                docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
+                value: $scope.control.value.value
+            };
+            $scope.overlay.close = function (oldModel) {
+                $scope.overlay.show = false;
+                $scope.overlay = null;
+            }
+            $scope.overlay.submit = function (newModel) {
+
+                // Copy property values to scope model value
+                if (newModel.node) {
+                    var value = {
+                        name: newModel.editorName
+                    };
+
+                    for (var t = 0; t < newModel.node.tabs.length; t++) {
+                        var tab = newModel.node.tabs[t];
+                        for (var p = 0; p < tab.properties.length; p++) {
+                            var prop = tab.properties[p];
+                            if (typeof prop.value !== "function") {
+                                value[prop.alias] = prop.value;
+                            }
+                        }
+                    }
+
+                    if (newModel.nameExp) {
+                        var newName = newModel.nameExp(value); // Run it against the stored dictionary value, NOT the node object
+                        if (newName && (newName = $.trim(newName))) {
+                            value.name = newName;
+                        }
+                    }
+
+                    newModel.dialogData.value = value;
+                } else {
+                    newModel.dialogData.value = null;
                 }
-            });
+
+                $scope.setValue({
+                    dtgeContentTypeAlias: newModel.dialogData.docTypeAlias,
+                    value: newModel.dialogData.value
+                });
+                $scope.setPreview($scope.control.value);
+                $scope.overlay.show = false;
+                $scope.overlay = null;
+            };
         };
 
         $scope.setPreview = function (model) {
             if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
-                    $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
-                    $scope.control.editor.config.viewPath,
-                    $scope.control.editor.config.previewViewPath,
-                    !!editorState.current.publishDate)
+                        $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
+                        $scope.control.editor.config.viewPath,
+                        $scope.control.editor.config.previewViewPath,
+                        !!editorState.current.publishDate)
                     .success(function (htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
@@ -114,11 +158,11 @@
         function guid() {
             function s4() {
                 return Math.floor((1 + Math.random()) * 0x10000)
-                  .toString(16)
-                  .substring(1);
+                    .toString(16)
+                    .substring(1);
             }
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-              s4() + '-' + s4() + s4() + s4();
+                s4() + '-' + s4() + s4() + s4();
         }
 
         function isGuid(input) {
@@ -138,93 +182,56 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
         function ($scope, $interpolate, formHelper, contentResource, dtgeResources) {
 
-            $scope.dialogOptions = $scope.$parent.dialogOptions;
-
             $scope.docTypes = [];
             $scope.dialogMode = "selectDocType";
             $scope.selectedDocType = null;
-            $scope.node = null;
+            $scope.model.node = null;
 
-            var nameExp = !!$scope.dialogOptions.nameTemplate
-                ? $interpolate($scope.dialogOptions.nameTemplate)
+            var nameExp = !!$scope.model.nameTemplate
+                ? $interpolate($scope.model.nameTemplate)
                 : undefined;
+
+            $scope.model.nameExp = nameExp;
 
             $scope.selectDocType = function () {
                 $scope.dialogMode = "edit";
-                $scope.dialogData.docTypeAlias = $scope.selectedDocType.alias;
+                $scope.model.dialogData.docTypeAlias = $scope.selectedDocType.alias;
                 loadNode();
             };
 
-            $scope.save = function () {
-
-                // Cause form submitting
-                if (formHelper.submitForm({ scope: $scope, formCtrl: $scope.dtgeForm })) {
-
-                    // Copy property values to scope model value
-                    if ($scope.node) {
-                        var value = {
-                            name: $scope.dialogOptions.editorName
-                        };
-
-                        for (var t = 0; t < $scope.node.tabs.length; t++) {
-                            var tab = $scope.node.tabs[t];
-                            for (var p = 0; p < tab.properties.length; p++) {
-                                var prop = tab.properties[p];
-                                if (typeof prop.value !== "function") {
-                                    value[prop.alias] = prop.value;
-                                }
-                            }
-                        }
-
-                        if (nameExp) {
-                            var newName = nameExp(value); // Run it against the stored dictionary value, NOT the node object
-                            if (newName && (newName = $.trim(newName))) {
-                                value.name = newName;
-                            }
-                        }
-
-                        $scope.dialogData.value = value;
-                    } else {
-                        $scope.dialogData.value = null;
-                    }
-
-                    $scope.submit($scope.dialogData);
-                }
-            };
-
             function loadNode() {
-                contentResource.getScaffold(-20, $scope.dialogData.docTypeAlias).then(function (data) {
+                contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
                     // Remove the last tab
                     data.tabs.pop();
 
                     // Merge current value
-                    if ($scope.dialogData.value) {
+                    if ($scope.model.dialogData.value) {
                         for (var t = 0; t < data.tabs.length; t++) {
                             var tab = data.tabs[t];
                             for (var p = 0; p < tab.properties.length; p++) {
                                 var prop = tab.properties[p];
-                                if ($scope.dialogData.value[prop.alias]) {
-                                    prop.value = $scope.dialogData.value[prop.alias];
+                                if ($scope.model.dialogData.value[prop.alias]) {
+                                    prop.value = $scope.model.dialogData.value[prop.alias];
                                 }
                             }
                         }
                     };
 
                     // Assign the model to scope
-                    $scope.nodeContext = $scope.node = data;
+                    $scope.nodeContext = $scope.model.node = data;
                 });
             }
 
-            if ($scope.dialogData.docTypeAlias) {
+            if ($scope.model.dialogData.docTypeAlias) {
                 $scope.dialogMode = "edit";
                 loadNode();
             } else {
                 $scope.dialogMode = "selectDocType";
                 // No data type, so load a list to choose from
-                dtgeResources.getContentTypes($scope.dialogOptions.allowedDocTypes).then(function (docTypes) {
+                dtgeResources.getContentTypes($scope.model.allowedDocTypes).then(function (docTypes) {
                     $scope.docTypes = docTypes;
                     if ($scope.docTypes.length == 1) {
-                        $scope.dialogData.docTypeAlias = $scope.docTypes[0].alias;
+                        $scope.model.dialogData.docTypeAlias = $scope.docTypes[0].alias;
                         $scope.dialogMode = "edit";
                         loadNode();
                     }
