@@ -31,7 +31,7 @@
 	<PropertyGroup>
 		<PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
 		<NuGetPackageName>Doc Type Grid Editor for Umbraco</NuGetPackageName>
-		<Copyright>Copyright &#169; 2015 Matt Brailsford, Lee Kelleher</Copyright>
+		<Copyright>Copyright &#169; 2017 UMCO</Copyright>
 		<Owners>Matt Brailsford, Lee Kelleher</Owners>
 		<IconUrl>https://our.umbraco.org/media/wiki/145708/635623742802070736_dtgepng.png</IconUrl>
 		<Tags>umbraco grid document type editor</Tags>
