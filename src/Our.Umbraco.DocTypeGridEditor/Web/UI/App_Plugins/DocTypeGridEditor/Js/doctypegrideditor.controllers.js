@@ -9,7 +9,7 @@
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
     "umbRequestHelper",
 
-    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService,  dtgeResources, umbRequestHelper) {
+    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper) {
 
         $scope.title = "Click to insert item";
         $scope.icon = "icon-item-arrangement";
@@ -42,6 +42,8 @@
 
             $scope.overlay = {};
             $scope.overlay.show = true;
+            $scope.overlay.title = "Edit item";
+            $scope.overlay.submitButtonLabelKey = "buttons_save";
             $scope.overlay.view =
                 umbRequestHelper.convertVirtualToAbsolutePath(
                     "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
