@@ -1,27 +1,25 @@
-angular
-    .module('umbraco.directives')
-    .directive('compile', compile);
+angular.module("umbraco.directives").directive("compile", [
 
-compile.$inject = ['$compile'];
+    "$compile"
 
-function compile($compile) {
+], function($compile) {
+
     var directive = {
-        restrict: 'A',
+        restrict: "A",
         scope: {
-            compile: '='
+            compile: "="
         },
-        link: link
-    }
+        link: function($scope, $element, $attrs) {
+            $scope.$watch(function () { return $scope.compile }, function (newValue, oldValue) {
+                $element.html(newValue);
+    
+                //Only compile child nodes to avoid starting an infinite loop
+                var childNodes = $element.contents();
+                $compile(childNodes)($scope);
+            });
+        }
+    };
 
     return directive;
 
-    function link($scope, $element, $attrs) {
-        $scope.$watch(function () { return $scope.compile }, function (newValue, oldValue) {
-            $element.html(newValue);
-
-            //Only compile child nodes to avoid starting an infinite loop
-            var childNodes = $element.contents();
-            $compile(childNodes)($scope);
-        });
-    }
-}
+});
