@@ -7,7 +7,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Mvc
 {
     /// <summary>
     /// A resolver used to resolve the default SurfaceController that is used to render any front-end
-    /// Umbraco partial when using Nested Content.
+    /// Umbraco partial when using DocTypeGridEditor content.
     /// </summary>
     public class DefaultDocTypeGridEditorSurfaceControllerResolver : SingleObjectResolverBase<DefaultDocTypeGridEditorSurfaceControllerResolver, Type>
     {
@@ -43,7 +43,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Mvc
         /// <param name="type"></param>
         private void ValidateType(Type type)
         {
-            if (!type.IsOfGenericType(typeof(DocTypeGridEditorSurfaceController<>)))
+            if (type.IsOfGenericType(typeof(DocTypeGridEditorSurfaceController<>)) == false)
             {
                 throw new InvalidOperationException($"The Type specified ({type}) is not of type {typeof(DocTypeGridEditorSurfaceController<>)}");
             }

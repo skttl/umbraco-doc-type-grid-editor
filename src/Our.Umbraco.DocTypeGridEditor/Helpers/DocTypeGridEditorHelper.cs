@@ -45,7 +45,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         private static IPublishedContent ConvertValue(string id, string contentTypeAlias, string dataJson)
         {
-            using (var timer = ApplicationContext.Current.ProfilingLogger.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
+            using (ApplicationContext.Current.ProfilingLogger.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
             {
                 var contentTypes = GetContentTypesByAlias(contentTypeAlias);
                 var properties = new List<IPublishedProperty>();
@@ -73,10 +73,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                         var newValue = propEditor.ValueEditor.ConvertEditorToDb(contentPropData, jProp.Value);
 
-                        /* Now that we have the DB stored value, we actually need to then convert it into it's
+                        /* Now that we have the DB stored value, we actually need to then convert it into its
                          * XML serialized state as expected by the published property by calling ConvertDbToString
                          */
-                        var propType2 = contentTypes.ContentType.CompositionPropertyTypes.Single(x => x.Alias.InvariantEquals(propType.PropertyTypeAlias));
+                        var propType2 = contentTypes.ContentType.CompositionPropertyTypes.First(x => x.Alias.InvariantEquals(propType.PropertyTypeAlias));
 
                         Property prop2 = null;
                         try
@@ -104,19 +104,18 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 }
 
                 // Parse out the name manually
-                object nameObj = null;
-                if (propValues.TryGetValue("name", out nameObj))
+                if (propValues.TryGetValue("name", out object nameObj))
                 {
                     // Do nothing, we just want to parse out the name if we can
                 }
 
                 // Get the current request node we are embedded in
-                var pcr = UmbracoContext.Current != null ? UmbracoContext.Current.PublishedContentRequest : null;
+                var pcr = UmbracoContext.Current?.PublishedContentRequest;
                 var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
                 // Create the model based on our implementation of IPublishedContent
                 IPublishedContent content = new DetachedPublishedContent(
-                    nameObj != null ? nameObj.ToString() : null,
+                    nameObj?.ToString(),
                     contentTypes.PublishedContentType,
                     properties.ToArray(),
                     containerNode);
@@ -141,8 +140,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         private static ContentTypeContainer GetContentTypesByAlias(string contentTypeAlias)
         {
-            Guid contentTypeGuid;
-            if (Guid.TryParse(contentTypeAlias, out contentTypeGuid))
+            if (Guid.TryParse(contentTypeAlias, out Guid contentTypeGuid))
                 contentTypeAlias = GetContentTypeAliasByGuid(contentTypeGuid);
 
             return (ContentTypeContainer)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
