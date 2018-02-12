@@ -206,8 +206,16 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function loadNode() {
                 contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
-                    // Remove the last tab
-                    data.tabs.pop();
+
+                    // get current umbraco version
+                    var versionArray = Umbraco.Sys.ServerVariables.application.version.split(".");
+
+                    if (parseInt(versionArray[0]) === 7 && parseInt(versionArray[1]) < 8) {
+                        // Remove the last tab, in version lower than v7.8 this is the generic properties tab
+                        data.tabs.pop();
+                    }
+
+                    
 
                     // Merge current value
                     if ($scope.model.dialogData.value) {
