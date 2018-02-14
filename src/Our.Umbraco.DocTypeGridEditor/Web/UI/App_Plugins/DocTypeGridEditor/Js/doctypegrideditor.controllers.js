@@ -184,8 +184,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
         "formHelper",
         "contentResource",
         "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
+        "Our.Umbraco.DocTypeGridEditor.Services.DocTypeGridEditorUtilityService",
 
-        function ($scope, $interpolate, formHelper, contentResource, dtgeResources) {
+        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService) {
 
             $scope.docTypes = [];
             $scope.dialogMode = "selectDocType";
@@ -206,8 +207,11 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function loadNode() {
                 contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
-                    // Remove the last tab
-                    data.tabs.pop();
+
+                    if (dtgeUtilityService.compareCurrentUmbracoVersion("7.8", { zeroExtend: true }) < 0) {
+                        // Remove the last tab
+                        data.tabs.pop();
+                    }
 
                     // Merge current value
                     if ($scope.model.dialogData.value) {
