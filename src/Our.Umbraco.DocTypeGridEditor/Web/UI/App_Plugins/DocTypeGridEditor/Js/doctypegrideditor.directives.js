@@ -1,8 +1,8 @@
 angular.module("umbraco.directives").directive("compile", [
 
-    "$compile"
+    "$compile",
 
-], function($compile) {
+    function ($compile) {
 
     var directive = {
         restrict: "A",
@@ -21,5 +21,5 @@ angular.module("umbraco.directives").directive("compile", [
     };
 
     return directive;
-
-});
+  }
+]);
