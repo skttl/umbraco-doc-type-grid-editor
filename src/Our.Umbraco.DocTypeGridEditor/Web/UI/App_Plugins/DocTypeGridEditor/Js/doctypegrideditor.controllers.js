@@ -104,10 +104,10 @@
         $scope.setPreview = function (model) {
             if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
-                        $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
-                        $scope.control.editor.config.viewPath,
-                        $scope.control.editor.config.previewViewPath,
-                        !!editorState.current.publishDate)
+                    $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
+                    $scope.control.editor.config.viewPath,
+                    $scope.control.editor.config.previewViewPath,
+                    !!editorState.current.publishDate)
                     .success(function (htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
@@ -209,7 +209,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
 
                     if (dtgeUtilityService.compareCurrentUmbracoVersion("7.8", { zeroExtend: true }) < 0) {
-                        // Remove the last tab
+                        // Remove the "Generic properties" tab (removed in v7.8)
                         data.tabs.pop();
                     }
 
