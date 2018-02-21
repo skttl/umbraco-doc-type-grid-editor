@@ -14,7 +14,7 @@
 }
 
 .dtge-dialog textarea.textstring {
-    resize: auto;
+    resize: both;
     border: 1px solid #bbbabf;
 }
 
