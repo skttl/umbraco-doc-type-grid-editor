@@ -1,4 +1,4 @@
-angular.module("umbraco.directives").directive("compile", [
+angular.module("umbraco.directives").directive("dtgeBindHtmlCompile", [
 
     "$compile",
 
@@ -7,10 +7,10 @@ angular.module("umbraco.directives").directive("compile", [
         var directive = {
             restrict: "A",
             scope: {
-                compile: "="
+                dtgeBindHtmlCompile: "="
             },
             link: function ($scope, $element, $attrs) {
-                $scope.$watch(function () { return $scope.compile }, function (newValue, oldValue) {
+                $scope.$watch(function () { return $scope.dtgeBindHtmlCompile }, function (newValue, oldValue) {
                     $element.html(newValue);
 
                     // Only compile child nodes to avoid starting an infinite loop
