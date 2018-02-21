@@ -13,6 +13,11 @@
     color: #9d261d;
 }
 
+.dtge-dialog textarea.textstring {
+    resize: both;
+    border: 1px solid #bbbabf;
+}
+
 /*
     Style the doc type grid editor previews
 

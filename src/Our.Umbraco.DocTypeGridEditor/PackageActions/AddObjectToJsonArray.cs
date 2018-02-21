@@ -45,7 +45,7 @@ namespace Our.Umbraco.DocTypeGridEditor.PackageActions
                 var trg = HttpContext.Current.Server.MapPath(GetTargetFileName(xmlData));
                 var propKey = GetKeyProperty(xmlData);
 
-                if (!File.Exists(src) || !File.Exists(trg))
+                if (File.Exists(src) == false || File.Exists(trg) == false)
                     return false;
 
                 var srcJson = File.ReadAllText(src);

@@ -1,5 +1,7 @@
+image: Visual Studio 2017
+
 # version format
-version: 0.4.1.{build}
+version: 0.5.0.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX if a rtm release build this should be blank, otherwise if empty will default to alpha
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
@@ -9,8 +11,11 @@ init:
 cache:
   - src\packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
 
+before_build:
+  - nuget restore src
+
 build_script:
-- build-appveyor.cmd
+  - build-appveyor.cmd
 
 artifacts:
   - path: artifacts\*.nupkg
@@ -19,8 +24,8 @@ artifacts:
 deploy:
     # MyGet Deployment for builds & releases
   - provider: NuGet
-    server: https://www.myget.org/F/umbraco-packages/
-    symbol_server: https://nuget.symbolsource.org/MyGet/umbraco-packages
+    server: https://www.myget.org/F/umbraco-packages/api/v2/package
+    symbol_server: https://www.myget.org/F/umbraco-packages/symbols/api/v2/package
     api_key:
       secure: 36/Ax5O+e6wENlhoTwgvoEBZV3FG4XjF429SNTej2qsGTAL+cdfA1kT/tm1St8vx
     artifact: /.*\.nupkg/
@@ -42,7 +47,7 @@ deploy:
   - provider: NuGet
     server: 
     api_key:
-      secure: eSLiOXbGVrxSG+X7PV6qTTUZ5VzS9EFj5+EufaWPfd+QXkF6gc8rZ4mGoHIVp/fL
+      secure: 0+oAleUTnr9UuJrhLW5rphRR+QGz00XX1Ui3k5kwyr2kUdEamiQ3F+gW0q8MJbDT
     artifact: /.*\.nupkg/
     on:
       branch: master

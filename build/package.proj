@@ -18,7 +18,7 @@
 	<PropertyGroup>
 		<ProjectName>Our.Umbraco.DocTypeGridEditor</ProjectName>
 		<PackageName>Doc Type Grid Editor</PackageName>
-		<MinUmbracoVersion>7.3.0</MinUmbracoVersion>
+		<MinUmbracoVersion>7.4.0</MinUmbracoVersion>
 		<Readme>Doc Type Grid Editor is an advanced grid editor for Umbraco 7</Readme>
 		<AuthorName>Matt Brailsford, Lee Kelleher</AuthorName>
 		<AuthorUrl>https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>
@@ -31,7 +31,7 @@
 	<PropertyGroup>
 		<PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
 		<NuGetPackageName>Doc Type Grid Editor for Umbraco</NuGetPackageName>
-		<Copyright>Copyright &#169; 2015 Matt Brailsford, Lee Kelleher</Copyright>
+		<Copyright>Copyright &#169; 2017 UMCO</Copyright>
 		<Owners>Matt Brailsford, Lee Kelleher</Owners>
 		<IconUrl>https://our.umbraco.org/media/wiki/145708/635623742802070736_dtgepng.png</IconUrl>
 		<Tags>umbraco grid document type editor</Tags>
@@ -195,7 +195,7 @@
 			OutputDirectory="$(ArtifactsDir)"
 			Files="@(PackageFiles)" />
 
-		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
+		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\build\tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
 			BasePath="$(BuildNuGetDir)"
 			Version="$(ProductVersion)"
