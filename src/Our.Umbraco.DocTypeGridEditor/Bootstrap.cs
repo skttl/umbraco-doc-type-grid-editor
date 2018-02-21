@@ -64,18 +64,15 @@ namespace Our.Umbraco.DocTypeGridEditor
                 }
             };
 
-            PublishedContentRequest.Prepared += PublishedContentRequest_Prepared;
-        }
-
-        private void PublishedContentRequest_Prepared(object sender, EventArgs e)
-        {
-            var request = sender as PublishedContentRequest;
-            // Check if it's a dtgePreview request and is set to redirect.
-            // If so reset the redirect url to an empty string to stop the redirect happening in preview mode.
-            if (request.Uri.Query.Contains("dtgePreview") && request.IsRedirect)
+            PublishedContentRequest.Prepared += (sender, e) =>
             {
-                request.SetRedirect(string.Empty);
-            }
+                // Check if it's a dtgePreview request and is set to redirect.
+                // If so reset the redirect url to an empty string to stop the redirect happening in preview mode.
+                if (sender is PublishedContentRequest request && request.Uri.Query.InvariantContains("dtgePreview") && request.IsRedirect)
+                {
+                    request.SetRedirect(string.Empty);
+                }
+            };
         }
     }
 }
