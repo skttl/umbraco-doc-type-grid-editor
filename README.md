@@ -89,6 +89,7 @@ Have a question?
 ### Special thanks
 
 * Thanks to [Jeavon Leopold](https://github.com/Jeavon) for being a rockstar and adding AppVeyor &amp; NuGet support.
+* Thanks to [Dave Woestenborghs](https://github.com/dawoe) for helping solve showstopper issues.
 
 
 ## License
