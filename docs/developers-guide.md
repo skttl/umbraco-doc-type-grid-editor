@@ -31,7 +31,7 @@ With the **Doc Type Grid Editor** then, we bridge that gap, allowing you to reus
 Before you get started, there are a number of things you will need:
 
 1. .NET 4.5+
-2. Umbraco 7.2.0+
+2. Umbraco 7.4.0+
 3. The **Doc Type Grid Editor** package installed
 
 ---
@@ -44,20 +44,25 @@ The **Doc Type Grid Editor** is configured via the grid.editors.config.js config
 
 ```javascript
 [
-	...
-	{
-		"name": "Doc Type",
-		"alias": "docType",
-		"view": "/App_Plugins/../doctypegrideditor.html",
-		"render": "/App_Plugins/../doctypegrideditor.cshtml",
-		"icon": "icon-item-arrangement",
-		"config": {
-			"allowedDocTypes": [...],
-			"enablePreview": true,
-			"viewPath": "/Views/Partials/"
-	 },
-	 ...
- ]
+    ...
+    {
+        "name": "Doc Type",
+        "alias": "docType",
+        "view": "/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.html",
+        "render": "/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditor.cshtml",
+        "icon": "icon-item-arrangement",
+        "config": {
+            "allowedDocTypes": [...],
+            "nameTemplate": "",
+            "enablePreview": true,
+            "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
+            "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
+            "previewCssFilePath": "",
+            "previewJsFilePath": ""
+        }
+    },
+    ...
+]
 ```
 
 ![Doc Type Grid Editor - JSON configuration](img/screenshot-07.png)
@@ -155,7 +160,7 @@ If you are not the type of developer that likes to put business logic in your vi
 Simply create your controller inheriting from the above class, giving it a class name of `{DocTypeAlias}SurfaceController` and an action name of `{DocTypeAlias}` and the **Doc Type Grid Editor** will automatically wire it up for you and use it at render time.
 
 ```csharp
-public class TestDocTypeSurfaceController 
+public class TestDocTypeSurfaceController
 	: DocTypeGridEditorSurfaceController
 {
 	public ActionResult TestDocType()

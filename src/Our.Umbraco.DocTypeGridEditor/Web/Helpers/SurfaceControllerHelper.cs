@@ -14,7 +14,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
     {
         public static bool SurfaceControllerExists(string controllerName, string actionName = "Index")
         {
-            using (var timer = ApplicationContext.Current.ProfilingLogger.DebugDuration<Bootstrap>(string.Format("SurfaceControllerExists ({0}, {1})", controllerName, actionName)))
+            using (ApplicationContext.Current.ProfilingLogger.DebugDuration<Bootstrap>(string.Format("SurfaceControllerExists ({0}, {1})", controllerName, actionName)))
             {
                 // Setup dummy route data
                 var rd = new RouteData();
@@ -66,7 +66,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
 
         public static bool SurfaceControllerExists(string name, string actionName = "Index", bool cacheResult = true)
         {
-            if (!cacheResult)
+            if (cacheResult == false)
                 return SurfaceControllerExists(name, actionName);
 
             return (bool)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(

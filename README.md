@@ -3,17 +3,16 @@
 [![Build status](https://img.shields.io/appveyor/ci/UMCO/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/UMCO/umbraco-doc-type-grid-editor)
 [![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.DocTypeGridEditor.svg)](https://www.nuget.org/packages/Our.Umbraco.DocTypeGridEditor)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
-[![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/leekelleher/umbraco-doc-type-grid-editor)
 
 
-A grid editor for Umbraco 7 that allows you to use Doc Types as a blue print for cell data.
+A grid editor for Umbraco 7 that allows you to use Doc Types as a blue print for grid-cell data.
 
 
 ## Getting Started
 
 ### Installation
 
-> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.3.0** and will support that version and above.
+> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.4.0** and will support that version and above.
 
 Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code.
 
@@ -35,7 +34,8 @@ We also have a [MyGet package repository](https://www.myget.org/gallery/umbraco-
 
 If you prefer, you can compile  Doc Type Grid Editor yourself, you'll need:
 
-* Visual Studio 2012 (or above)
+* [Visual Studio 2017 (or above, including Community Editions)](https://www.visualstudio.com/downloads/)
+* Microsoft Build Tools 2015 (aka [MSBuild 15](https://www.microsoft.com/en-us/download/details.aspx?id=48159))
 
 To clone it locally click the "Clone in Windows" button above or run the following git commands.
 
@@ -93,6 +93,8 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2014 Umbrella Inc, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
+Copyright &copy; 2017 UMCO, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
+
+Copyright &copy; 2014 Umbrella Inc
 
 Licensed under the [MIT License](LICENSE.md)

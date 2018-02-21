@@ -1,10 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using Newtonsoft.Json;
 using Our.Umbraco.DocTypeGridEditor.Web.Attributes;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
-using Umbraco.Core.Events;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
+using Umbraco.Core.Sync;
+using Umbraco.Web.Cache;
+using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.DocTypeGridEditor
 {
@@ -14,7 +16,7 @@ namespace Our.Umbraco.DocTypeGridEditor
         {
             GlobalFilters.Filters.Add(new DocTypeGridEditorPreviewAttribute());
 
-            if (!DefaultDocTypeGridEditorSurfaceControllerResolver.HasCurrent)
+            if (DefaultDocTypeGridEditorSurfaceControllerResolver.HasCurrent == false)
             {
                 DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver();
             }
@@ -22,32 +24,55 @@ namespace Our.Umbraco.DocTypeGridEditor
 
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            DataTypeService.Saved += ExpireDataTypeCache;
-            ContentTypeService.SavedContentType += ExpireContentTypeCache;
-        }
-
-        private void ExpireDataTypeCache(IDataTypeService sender, SaveEventArgs<IDataTypeDefinition> e)
-        {
-            foreach (var dataType in e.SavedEntities)
+            DataTypeCacheRefresher.CacheUpdated += (sender, e) =>
             {
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_", dataType.Key));
+                if (e.MessageType == MessageType.RefreshByJson)
+                {
+                    var payload = JsonConvert.DeserializeAnonymousType((string)e.MessageObject, new[] { new { Id = default(int), UniqueId = default(Guid) } });
+                    if (payload != null)
+                    {
+                        foreach (var item in payload)
+                        {
+                            applicationContext.ApplicationCache.RuntimeCache.ClearCacheItem(
+                                string.Concat("Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_", item.UniqueId));
 
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_", dataType.Id));
-            }
-        }
+                            applicationContext.ApplicationCache.RuntimeCache.ClearCacheItem(
+                                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_", item.Id));
+                        }
+                    }
+                }
+            };
 
-        private void ExpireContentTypeCache(IContentTypeService sender, SaveEventArgs<IContentType> e)
-        {
-            foreach (var contentType in e.SavedEntities)
+            ContentTypeCacheRefresher.CacheUpdated += (sender, e) =>
             {
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_", contentType.Alias));
+                if (e.MessageType == MessageType.RefreshByJson)
+                {
+                    var payload = JsonConvert.DeserializeAnonymousType((string)e.MessageObject, new[] { new { Alias = default(string) } });
+                    if (payload != null)
+                    {
+                        foreach (var item in payload)
+                        {
+                            applicationContext.ApplicationCache.RuntimeCache.ClearCacheItem(
+                                string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_", item.Alias));
 
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_", contentType.Key));
-            }
+                            // NOTE: Unsure how to get the doctype GUID, without hitting the database?
+                            // So we end up clearing the entire cache for this key. [LK:2018-01-30]
+                            applicationContext.ApplicationCache.RuntimeCache.ClearCacheByKeySearch(
+                                "Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_");
+                        }
+                    }
+                }
+            };
+
+            PublishedContentRequest.Prepared += (sender, e) =>
+            {
+                // Check if it's a dtgePreview request and is set to redirect.
+                // If so reset the redirect url to an empty string to stop the redirect happening in preview mode.
+                if (sender is PublishedContentRequest request && request.Uri.Query.InvariantContains("dtgePreview") && request.IsRedirect)
+                {
+                    request.SetRedirect(string.Empty);
+                }
+            };
         }
     }
 }

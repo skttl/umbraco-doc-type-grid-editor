@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Http;
+using System.Web.Http.ModelBinding;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;
@@ -13,8 +15,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
     [PluginController("DocTypeGridEditorApi")]
     public class DocTypeGridEditorApiController : UmbracoAuthorizedJsonController
     {
-        [System.Web.Http.HttpGet]
-        public object GetContentTypeAliasByGuid([System.Web.Http.ModelBinding.ModelBinder] Guid guid)
+        [HttpGet]
+        public object GetContentTypeAliasByGuid([ModelBinder] Guid guid)
         {
             return new
             {
@@ -22,12 +24,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             };
         }
 
-        [System.Web.Http.HttpGet]
-        public IEnumerable<object> GetContentTypes([System.Web.Http.ModelBinding.ModelBinder] string[] allowedContentTypes)
+        [HttpGet]
+        public IEnumerable<object> GetContentTypes([ModelBinder] string[] allowedContentTypes)
         {
             return Services.ContentTypeService.GetAllContentTypes()
                 .Where(x => allowedContentTypes == null || allowedContentTypes.Length == 0 || allowedContentTypes.Any(y => Regex.IsMatch(x.Alias, y)))
-                .OrderBy(x => x.SortOrder)
+                .OrderBy(x => x.Name)
                 .Select(x => new
                 {
                     id = x.Id,
@@ -38,8 +40,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 });
         }
 
-        [System.Web.Http.HttpGet]
-        public object GetContentTypeIcon([System.Web.Http.ModelBinding.ModelBinder] string contentTypeAlias)
+        [HttpGet]
+        public object GetContentTypeIcon([ModelBinder] string contentTypeAlias)
         {
             Guid docTypeGuid;
             if (Guid.TryParse(contentTypeAlias, out docTypeGuid))
@@ -48,11 +50,11 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
             return new
             {
-                icon = contentType != null ? contentType.Icon : ""
+                icon = contentType != null ? contentType.Icon : string.Empty
             };
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public object GetDataTypePreValues(string dtdId)
         {
             Guid guidDtdId;
