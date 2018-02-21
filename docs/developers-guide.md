@@ -31,7 +31,7 @@ With the **Doc Type Grid Editor** then, we bridge that gap, allowing you to reus
 Before you get started, there are a number of things you will need:
 
 1. .NET 4.5+
-2. Umbraco 7.2.0+
+2. Umbraco 7.4.0+
 3. The **Doc Type Grid Editor** package installed
 
 ---
@@ -160,7 +160,7 @@ If you are not the type of developer that likes to put business logic in your vi
 Simply create your controller inheriting from the above class, giving it a class name of `{DocTypeAlias}SurfaceController` and an action name of `{DocTypeAlias}` and the **Doc Type Grid Editor** will automatically wire it up for you and use it at render time.
 
 ```csharp
-public class TestDocTypeSurfaceController 
+public class TestDocTypeSurfaceController
 	: DocTypeGridEditorSurfaceController
 {
 	public ActionResult TestDocType()
