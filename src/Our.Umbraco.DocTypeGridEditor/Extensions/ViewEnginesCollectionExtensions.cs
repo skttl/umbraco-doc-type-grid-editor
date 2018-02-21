@@ -9,7 +9,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Extensions
             ControllerContext controllerContext,
             string viewName, bool isPartial = false)
         {
-            var result = !isPartial
+            var result = isPartial == false
                 ? viewEngines.FindView(controllerContext, viewName, null)
                 : viewEngines.FindPartialView(controllerContext, viewName);
 

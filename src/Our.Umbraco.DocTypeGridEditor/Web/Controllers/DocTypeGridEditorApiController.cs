@@ -50,7 +50,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
             return new
             {
-                icon = contentType != null ? contentType.Icon : ""
+                icon = contentType != null ? contentType.Icon : string.Empty
             };
         }
 

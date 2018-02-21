@@ -66,7 +66,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
 
         public static bool SurfaceControllerExists(string name, string actionName = "Index", bool cacheResult = true)
         {
-            if (!cacheResult)
+            if (cacheResult == false)
                 return SurfaceControllerExists(name, actionName);
 
             return (bool)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(

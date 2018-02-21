@@ -49,14 +49,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         protected override PartialViewResult PartialView(string viewName, object model)
         {
-            if (IsPreview && !string.IsNullOrWhiteSpace(PreviewViewPath))
+            if (IsPreview && string.IsNullOrWhiteSpace(PreviewViewPath) == false)
             {
                 var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);
                 if (ViewEngines.Engines.ViewExists(ControllerContext, previewViewPath, true))
                     return base.PartialView(previewViewPath, model);
             }
 
-            if (!string.IsNullOrWhiteSpace(ViewPath))
+            if (string.IsNullOrWhiteSpace(ViewPath) == false)
             {
                 var viewPath = GetFullViewPath(viewName, ViewPath);
                 if (ViewEngines.Engines.ViewExists(ControllerContext, viewPath, true))
