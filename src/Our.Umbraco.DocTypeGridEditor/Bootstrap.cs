@@ -6,6 +6,7 @@ using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
 using Umbraco.Core.Sync;
 using Umbraco.Web.Cache;
+using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.DocTypeGridEditor
 {
@@ -60,6 +61,16 @@ namespace Our.Umbraco.DocTypeGridEditor
                                 "Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_");
                         }
                     }
+                }
+            };
+
+            PublishedContentRequest.Prepared += (sender, e) =>
+            {
+                // Check if it's a dtgePreview request and is set to redirect.
+                // If so reset the redirect url to an empty string to stop the redirect happening in preview mode.
+                if (sender is PublishedContentRequest request && request.Uri.Query.InvariantContains("dtgePreview") && request.IsRedirect)
+                {
+                    request.SetRedirect(string.Empty);
                 }
             };
         }
