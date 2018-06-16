@@ -8,16 +8,26 @@
     'assetsService',
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
     "umbRequestHelper",
+    "localizationService",
 
-    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper) {
+    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService) {
 
         $scope.title = "Click to insert item";
+        $scope.selectContentTypeLabel = "Choose a content type";
+        var overlayTitle = "Edit item";
         $scope.icon = "icon-item-arrangement";
         $scope.overlay = {};
         $scope.overlay.show = false;
         $scope.overlay.view =
             umbRequestHelper.convertVirtualToAbsolutePath(
                 "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
+
+        // localize strings
+        localizationService.localizeMany(["docTypeGridEditor_insertItem", "docTypeGridEditor_editItem", "docTypeGridEditor_selectContentType"]).then(function (data) {
+            $scope.title = data[0];
+            overlayTitle = data[1];
+            $scope.selectContentTypeLabel = data[2];
+        });
 
         $scope.setValue = function (data, callback) {
             $scope.control.value = data;
@@ -42,7 +52,7 @@
 
             $scope.overlay = {};
             $scope.overlay.show = true;
-            $scope.overlay.title = "Edit item";
+            $scope.overlay.title = overlayTitle;
             $scope.overlay.submitButtonLabelKey = "buttons_save";
             $scope.overlay.view =
                 umbRequestHelper.convertVirtualToAbsolutePath(

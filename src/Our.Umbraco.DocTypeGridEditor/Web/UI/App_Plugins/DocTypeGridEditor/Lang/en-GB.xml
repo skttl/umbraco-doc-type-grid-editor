@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<language alias="en" intName="English" localName="english" lcid="6" culture="en-GB">
+	<area alias="docTypeGridEditor">
+		<key alias="selectContentType">Select a content type</key>
+		<key alias="editItem">Edit item</key>
+		<key alias="insertItem">Click to insert item</key>
+	</area>
+</language>

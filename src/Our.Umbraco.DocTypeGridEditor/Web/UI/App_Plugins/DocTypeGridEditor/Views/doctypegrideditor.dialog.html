@@ -2,7 +2,7 @@
 
     <div ng-switch="dialogMode">
         <div ng-switch-when="selectDocType">
-            <h5>Select a content type</h5>
+        <umb-control-group label="{{ selectContentTypeLabel }}" ng-switch-when="selectDocType">
             <ul class="umb-actions umb-actions-child">
                 <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
                     <a ng-click="selectDocType(docType.alias)">
