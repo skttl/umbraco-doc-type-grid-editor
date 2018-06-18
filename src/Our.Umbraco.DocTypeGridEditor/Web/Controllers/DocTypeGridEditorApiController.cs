@@ -36,9 +36,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         [HttpGet]
         public IEnumerable<object> GetContentTypes([ModelBinder] string[] allowedContentTypes)
         {
-            return Services.ContentTypeService.GetAllContentTypes()
+            var contentTypes = Services.ContentTypeService.GetAllContentTypes()
                 .Where(x => allowedContentTypes == null || allowedContentTypes.Length == 0 || allowedContentTypes.Any(y => Regex.IsMatch(x.Alias, y)))
                 .OrderBy(x => x.Name)
+                .ToList();
+            var blueprints = Services.ContentService.GetBlueprintsForContentTypes(contentTypes.Select(x => x.Id).ToArray()).ToArray();
+
+            return contentTypes
                 .Select(x => new
                 {
                     id = x.Id,
@@ -46,7 +50,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     name = x.Name,
                     alias = x.Alias,
                     description = x.Description,
-                    icon = x.Icon
+                    icon = x.Icon,
+                    blueprints = blueprints.Where(bp => bp.ContentTypeId == x.Id).ToDictionary(bp => bp.Id, bp => bp.Name)
                 });
         }
 
