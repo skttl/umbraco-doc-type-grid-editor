@@ -195,8 +195,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
         "contentResource",
         "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
         "Our.Umbraco.DocTypeGridEditor.Services.DocTypeGridEditorUtilityService",
+        "blueprintConfig",
 
-        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService) {
+        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService, blueprintConfig) {
 
             $scope.docTypes = [];
             $scope.dialogMode = "selectDocType";
@@ -208,12 +209,40 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 : undefined;
 
             $scope.model.nameExp = nameExp;
-
-            $scope.selectDocType = function (alias) {
+            
+            function createBlank() {
                 $scope.dialogMode = "edit";
-                $scope.model.dialogData.docTypeAlias = alias;
                 loadNode();
             };
+
+            function createOrSelectBlueprintIfAny(docType) {
+
+                $scope.model.dialogData.docTypeAlias = docType.alias;
+                var blueprintIds = _.keys(docType.blueprints || {});
+                $scope.selectedDocType = docType;
+
+                if (blueprintIds.length) {
+                    if (blueprintConfig.skipSelect) {
+                        createFromBlueprint(blueprintIds[0]);
+                    } else {
+                        $scope.dialogMode = "selectBlueprint";
+                    }
+                } else {
+                    createBlank();
+                }
+            };
+
+            function createFromBlueprint(blueprintId) {
+                contentResource.getBlueprintScaffold(-20, blueprintId).then(function (data) {
+                    // Assign the model to scope
+                    $scope.nodeContext = $scope.model.node = data;
+                    $scope.dialogMode = "edit";
+                });
+            };
+
+            $scope.createBlank = createBlank;
+            $scope.createOrSelectBlueprintIfAny = createOrSelectBlueprintIfAny;
+            $scope.createFromBlueprint = createFromBlueprint;
 
             function loadNode() {
                 contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
@@ -250,9 +279,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 dtgeResources.getContentTypes($scope.model.allowedDocTypes).then(function (docTypes) {
                     $scope.docTypes = docTypes;
                     if ($scope.docTypes.length == 1) {
-                        $scope.model.dialogData.docTypeAlias = $scope.docTypes[0].alias;
-                        $scope.dialogMode = "edit";
-                        loadNode();
+                        createOrSelectBlueprintIfAny($scope.docTypes[0]);
                     }
                 });
             }
