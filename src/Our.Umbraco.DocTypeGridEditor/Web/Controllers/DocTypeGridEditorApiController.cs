@@ -1,13 +1,19 @@
-﻿using System;
+﻿using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Our.Umbraco.DocTypeGridEditor.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Web.Editors;
+using Umbraco.Web.Models;
 using Umbraco.Web.Mvc;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
@@ -85,6 +91,38 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             var preValue = Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dtd.Id);
             var propEditor = PropertyEditorResolver.Current.GetByAlias(dtd.PropertyEditorAlias);
             return propEditor.PreValueEditor.ConvertDbToEditor(propEditor.DefaultPreValues, preValue);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage GetPreviewMarkup([FromBody] FormDataCollection item, [FromUri] int nodeId)
+        {
+            // Get page container node
+            var page = UmbracoContext.ContentCache.GetById(nodeId);
+            if (page == null)
+            {
+                // If unpublished, then fake PublishedContent (with IContent object)
+                page = new UnpublishedContent(nodeId, Services);
+            }
+
+            var culture = UmbracoContext.Application.Services.ContentService.GetById(nodeId).GetCulture();
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
+            // Construct preview model
+            var model = new PreviewModel { Page = page, Values = item };
+
+            // Render view
+            var markup = Helpers.ViewHelper.RenderPartial("~/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditorPreviewer.cshtml", model);
+
+            // Return response
+            var response = new HttpResponseMessage
+            {
+                Content = new StringContent(markup ?? string.Empty)
+            };
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Text.Html);
+
+            return response;
         }
     }
 }

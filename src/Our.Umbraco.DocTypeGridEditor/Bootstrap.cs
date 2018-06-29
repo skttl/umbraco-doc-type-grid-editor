@@ -1,8 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
-using Newtonsoft.Json;
-using Our.Umbraco.DocTypeGridEditor.Web.Attributes;
+﻿using Newtonsoft.Json;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
+using System;
 using Umbraco.Core;
 using Umbraco.Core.Sync;
 using Umbraco.Web.Cache;
@@ -14,8 +12,6 @@ namespace Our.Umbraco.DocTypeGridEditor
     {
         protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            GlobalFilters.Filters.Add(new DocTypeGridEditorPreviewAttribute());
-
             if (DefaultDocTypeGridEditorSurfaceControllerResolver.HasCurrent == false)
             {
                 DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver();
