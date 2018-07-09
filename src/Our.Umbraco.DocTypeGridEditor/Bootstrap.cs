@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
-using System;
 using Umbraco.Core;
 using Umbraco.Core.Sync;
 using Umbraco.Web.Cache;

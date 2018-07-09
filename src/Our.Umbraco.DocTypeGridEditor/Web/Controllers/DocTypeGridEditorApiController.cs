@@ -1,6 +1,4 @@
-﻿using Our.Umbraco.DocTypeGridEditor.Extensions;
-using Our.Umbraco.DocTypeGridEditor.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -10,6 +8,8 @@ using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Our.Umbraco.DocTypeGridEditor.Models;
 using Umbraco.Core.Models;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Web.Editors;
