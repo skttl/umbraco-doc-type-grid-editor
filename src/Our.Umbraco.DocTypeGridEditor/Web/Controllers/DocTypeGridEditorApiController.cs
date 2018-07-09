@@ -36,6 +36,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     guid = x.Key,
                     name = x.Name,
                     alias = x.Alias,
+                    description = x.Description,
                     icon = x.Icon
                 });
         }

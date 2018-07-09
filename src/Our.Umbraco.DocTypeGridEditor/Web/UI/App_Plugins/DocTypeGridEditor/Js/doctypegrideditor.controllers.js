@@ -199,9 +199,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             $scope.model.nameExp = nameExp;
 
-            $scope.selectDocType = function () {
+            $scope.selectDocType = function (alias) {
                 $scope.dialogMode = "edit";
-                $scope.model.dialogData.docTypeAlias = $scope.selectedDocType.alias;
+                $scope.model.dialogData.docTypeAlias = alias;
                 loadNode();
             };
 
