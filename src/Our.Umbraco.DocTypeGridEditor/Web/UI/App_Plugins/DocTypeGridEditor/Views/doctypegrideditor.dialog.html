@@ -18,7 +18,7 @@
         </umb-control-group>
 
         <div ng-switch-when="selectBlueprint">
-            <h5>Select a blueprint</h5>
+            <h5><localize key="blueprints_selectBlueprint">Select a blueprint</localize></h5>
 
             <ul class="umb-actions umb-actions-child">
                 <li ng-repeat="(key, value) in selectedDocType.blueprints | orderBy:'name':false">
