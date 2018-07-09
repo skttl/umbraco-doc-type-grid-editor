@@ -6,6 +6,7 @@ using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
 using Umbraco.Core.Models;
+using Umbraco.Web;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
