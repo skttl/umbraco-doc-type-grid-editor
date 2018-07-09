@@ -53,7 +53,7 @@
             $scope.overlay = {};
             $scope.overlay.show = true;
             $scope.overlay.title = overlayTitle;
-            $scope.overlay.submitButtonLabelKey = "buttons_save";
+            $scope.overlay.submitButtonLabelKey = "bulk_done";
             $scope.overlay.view =
                 umbRequestHelper.convertVirtualToAbsolutePath(
                     "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
