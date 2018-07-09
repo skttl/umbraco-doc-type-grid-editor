@@ -31,26 +31,24 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (string.IsNullOrWhiteSpace(previewViewPath) == false)
                 previewViewPath = previewViewPath.EnsureEndsWith('/');
 
+            var routeValues = new
+            {
+                dtgeModel = content,
+                dtgeViewPath = viewPath,
+                dtgePreviewViewPath = previewViewPath,
+                dtgePreview = isPreview
+            };
+
             // Try looking for surface controller with action named after the editor alias
             if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
-                return helper.Action(editorAlias, controllerName, new
-                {
-                    dtgeModel = content,
-                    dtgeViewPath = viewPath,
-                    dtgePreviewViewPath = previewViewPath
-                });
+                return helper.Action(editorAlias, controllerName, routeValues);
             }
 
             // Try looking for surface controller with action named after the doc type alias alias
             if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
             {
-                return helper.Action(content.DocumentTypeAlias, controllerName, new
-                {
-                    dtgeModel = content,
-                    dtgeViewPath = viewPath,
-                    dtgePreviewViewPath = previewViewPath
-                });
+                return helper.Action(content.DocumentTypeAlias, controllerName, routeValues);
             }
 
             // See if a default surface controller has been registered
@@ -62,32 +60,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 // Try looking for an action named after the editor alias
                 if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
                 {
-                    return helper.Action(editorAlias, defaultControllerName, new
-                    {
-                        dtgeModel = content,
-                        dtgeViewPath = viewPath,
-                        dtgePreviewViewPath = previewViewPath
-                    });
+                    return helper.Action(editorAlias, defaultControllerName, routeValues);
                 }
 
                 // Try looking for a doc type alias action
                 if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
                 {
-                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, new
-                    {
-                        dtgeModel = content,
-                        dtgeViewPath = viewPath,
-                        dtgePreviewViewPath = previewViewPath
-                    });
+                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, routeValues);
                 }
 
                 // Just go with a default action name
-                return helper.Action("Index", defaultControllerName, new
-                {
-                    dtgeModel = content,
-                    dtgeViewPath = viewPath,
-                    dtgePreviewViewPath = previewViewPath
-                });
+                return helper.Action("Index", defaultControllerName, routeValues);
             }
 
             // Check for preview view

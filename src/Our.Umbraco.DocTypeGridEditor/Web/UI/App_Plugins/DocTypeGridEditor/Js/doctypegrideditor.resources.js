@@ -35,7 +35,7 @@
                 );
             },
             getEditorMarkupForDocTypePartial: function (nodeId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath, published) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/" + (published ? nodeId : "") + "?dtgePreview=1" + (published ? "" : "&nodeId=" + nodeId));
+                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetPreviewMarkup?pageId=" + pageId);
                 return $http({
                     method: 'POST',
                     url: url,
