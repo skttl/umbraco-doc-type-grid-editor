@@ -116,8 +116,7 @@
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
-                    $scope.control.editor.config.previewViewPath,
-                    !!editorState.current.publishDate)
+                    $scope.control.editor.config.previewViewPath)
                     .success(function (htmlResult) {
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
