@@ -1,8 +1,7 @@
-﻿<div class="dtge-dialog " ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
+﻿<div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
 
     <div ng-switch="dialogMode">
-        <div ng-switch-when="selectDocType">
-        <umb-control-group label="{{ selectContentTypeLabel }}" ng-switch-when="selectDocType">
+        <umb-control-group label="{{selectContentTypeLabel}}" ng-switch-when="selectDocType">
             <ul class="umb-actions umb-actions-child">
                 <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
                     <a ng-click="selectDocType(docType.alias)">
@@ -16,7 +15,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </umb-control-group>
 
         <div ng-switch-when="edit">
 
