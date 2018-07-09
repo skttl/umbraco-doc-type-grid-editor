@@ -34,8 +34,8 @@
                     'Failed to retrieve datatypes'
                 );
             },
-            getEditorMarkupForDocTypePartial: function (nodeId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetPreviewMarkup?dtgePreview=1&nodeId=" + nodeId);
+            getEditorMarkupForDocTypePartial: function (pageId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath) {
+                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetPreviewMarkup?dtgePreview=1&pageId=" + pageId);
                 return $http({
                     method: 'POST',
                     url: url,

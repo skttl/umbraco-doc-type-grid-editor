@@ -94,17 +94,23 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage GetPreviewMarkup([FromBody] FormDataCollection item, [FromUri] int nodeId)
+        public HttpResponseMessage GetPreviewMarkup([FromBody] FormDataCollection item, [FromUri] int pageId)
         {
-            // Get page container node
-            var page = UmbracoContext.ContentCache.GetById(nodeId);
-            if (page == null)
+            var page = default(IPublishedContent);
+
+            // If the page is new, then the ID will be zero
+            if (pageId > 0)
             {
-                // If unpublished, then fake PublishedContent (with IContent object)
-                page = new UnpublishedContent(nodeId, Services);
+                // Get page container node
+                page = UmbracoContext.ContentCache.GetById(pageId);
+                if (page == null)
+                {
+                    // If unpublished, then fake PublishedContent (with IContent object)
+                    page = new UnpublishedContent(pageId, Services);
+                }
             }
 
-            var culture = UmbracoContext.Application.Services.ContentService.GetById(nodeId).GetCulture();
+            var culture = UmbracoContext.Application.Services.ContentService.GetById(pageId).GetCulture();
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 
