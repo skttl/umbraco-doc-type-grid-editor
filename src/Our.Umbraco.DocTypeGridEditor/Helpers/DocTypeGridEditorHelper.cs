@@ -234,6 +234,7 @@ WHERE dataNtext LIKE '%""dtgeContentTypeAlias"":""{0}""%' OR dataNtext LIKE '%""
     public class ContentTypeContainer
     {
         public PublishedContentType PublishedContentType { get; set; }
+
         public IContentType ContentType { get; set; }
     }
 }
