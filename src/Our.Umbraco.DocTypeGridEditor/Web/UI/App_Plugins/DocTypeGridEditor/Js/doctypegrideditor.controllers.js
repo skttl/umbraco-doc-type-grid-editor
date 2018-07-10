@@ -12,9 +12,14 @@
 
     function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService) {
 
-        $scope.title = "Click to insert item";
-        $scope.selectContentTypeLabel = "Choose a content type";
-        var overlayTitle = "Edit item";
+        const defaultTitle = "Click to insert item",
+            defaultSelectContentTypeLabel = "Choose a Content Type",
+            defaultOverlayTitle = "Edit tem";
+
+        $scope.title = defaultTitle;
+        $scope.selectContentTypeLabel = defaultSelectContentTypeLabel;
+
+        var overlayTitle = defaultOverlayTitle;
         $scope.icon = "icon-item-arrangement";
         $scope.overlay = {};
         $scope.overlay.show = false;
@@ -24,9 +29,9 @@
 
         // localize strings
         localizationService.localizeMany(["docTypeGridEditor_insertItem", "docTypeGridEditor_editItem", "docTypeGridEditor_selectContentType"]).then(function (data) {
-            $scope.title = data[0];
-            overlayTitle = data[1];
-            $scope.selectContentTypeLabel = data[2];
+            if ($scope.title === defaultTitle) $scope.title = data[0];
+            if (overlayTitle === defaultOverlayTitle) overlayTitle = data[1];
+            if ($scope.selectContentTypeLabel === defaultSelectContentTypeLabel) $scope.selectContentTypeLabel = data[2];
         });
 
         $scope.setValue = function (data, callback) {

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-
-<language alias="da" intName="Danish" localName="dansk" lcid="6" culture="da-DK">
+<language alias="da" intName="Danish" localName="Dansk" lcid="1030" culture="da-DK">
 	<area alias="docTypeGridEditor">
 		<key alias="selectContentType">Vælg en indholdstype</key>
 		<key alias="editItem">Rediger indhold</key>
