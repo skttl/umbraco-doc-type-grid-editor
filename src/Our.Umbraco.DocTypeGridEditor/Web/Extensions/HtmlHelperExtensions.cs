@@ -12,6 +12,18 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
     public static class HtmlHelperExtensions
     {
+        // HACK: This is to ensure backwards-compatibility for existing websites.
+        // TODO: Once we bump the major version number, we can remove this stub method.
+        public static HtmlString RenderDocTypeGridEditorItem(
+             this HtmlHelper helper,
+             IPublishedContent content,
+             string editorAlias,
+             string viewPath,
+             string previewViewPath)
+        {
+            return helper.RenderDocTypeGridEditorItem(content, editorAlias, viewPath, previewViewPath, false);
+        }
+
         public static HtmlString RenderDocTypeGridEditorItem(
             this HtmlHelper helper,
             IPublishedContent content,
