@@ -49,8 +49,6 @@ To clone it locally click the "Clone in Windows" button above or run the followi
 
 For details on how to use the Doc Type Grid Editor package, please refer to our [Developers Guide](docs/developers-guide.md) documentation.
 
-A PDF download is also available: [Doc Type Grid Editor - Developers Guide v1.0.pdf](docs/Doc-Type-Grid-Editor--Developers-Guide-v1.0.pdf)
-
 ---
 
 ## Known Issues
@@ -89,6 +87,7 @@ Have a question?
 ### Special thanks
 
 * Thanks to [Jeavon Leopold](https://github.com/Jeavon) for being a rockstar and adding AppVeyor &amp; NuGet support.
+* Thanks to [Dave Woestenborghs](https://github.com/dawoe) for helping solve showstopper issues.
 
 
 ## License

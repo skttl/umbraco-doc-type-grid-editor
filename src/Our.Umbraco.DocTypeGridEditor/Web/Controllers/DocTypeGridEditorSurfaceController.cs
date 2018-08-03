@@ -1,5 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
@@ -29,7 +31,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         public bool IsPreview
         {
-            get { return Request.QueryString["dtgePreview"] == "1"; }
+            get { return ControllerContext.RouteData.Values.TryGetValue("dtgePreview", out object value) && Convert.ToBoolean(value); }
         }
 
         protected PartialViewResult CurrentPartialView(object model = null)
@@ -52,14 +54,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             if (IsPreview && string.IsNullOrWhiteSpace(PreviewViewPath) == false)
             {
                 var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);
-                if (ViewEngines.Engines.ViewExists(ControllerContext, previewViewPath, true))
+                if (ViewHelper.ViewExists(ControllerContext, previewViewPath, true))
                     return base.PartialView(previewViewPath, model);
             }
 
             if (string.IsNullOrWhiteSpace(ViewPath) == false)
             {
                 var viewPath = GetFullViewPath(viewName, ViewPath);
-                if (ViewEngines.Engines.ViewExists(ControllerContext, viewPath, true))
+                if (ViewHelper.ViewExists(ControllerContext, viewPath, true))
                     return base.PartialView(viewPath, model);
             }
 

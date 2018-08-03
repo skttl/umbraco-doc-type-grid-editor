@@ -4,12 +4,12 @@
 
 1. [Introduction](#introduction)
 2. [Getting Set Up](#getting-set-up)
-  * [System Requirements](#system-requirements)
+  a. [System Requirements](#system-requirements)
 3. [Configuring The Doc Type Grid Editor](#configuring-the-doc-type-grid-editor)
 4. [Hooking Up The Doc Type Grid Editor](#hooking-up-the-doc-type-grid-editor)
 5. [Rendering a Doc Type Grid Editor](#rendering-a-doc-type-grid-editor)
-  * [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
-  * [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
+  a. [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
+  b. [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
 6. [Useful Links](#useful-links)
 
 ---
@@ -82,7 +82,7 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 
 | Member          | Type     | Description |
 |-----------------|----------|-------------|
-| AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". |
+| AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". However if a single doc type is matched, (aka **Single Doc Type Mode**), then dropdown selection stage (in the DTGE panel) will be skipped. |
 | EnablePreview   | Boolean  | Enables rendering a preview of the grid cell in the grid editor. |
 | ViewPath        | String   | Set's an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering. Defaults to `~/Views/Partials/` |
 
@@ -139,11 +139,11 @@ Because we treat your data as a standard `IPublishedContent` entity, that means 
 
 #### Rendering Alternative Preview Content
 
-If your front end view is rather complex, you may decide that you want to feed the back office preview an alternative, less complex view. To do this, within your Razor view/partial, simply check for a querystring parameter `dtgePreview` being set to "1" to detect being in preview mode to provide an alternative view.
+If your front end view is rather complex, you may decide that you want to feed the back office preview an alternative, less complex view. To do this, within your Razor view/partial, check for a RouteData parameter `dtgePreview` being set to true to detect being in preview mode to provide an alternative view.
 
 ```
 @inherits Umbraco.Web.Mvc.UmbracoViewPage
-@if (Request.QueryString["dtgePreview"] == "1")
+@if (ViewContext.RouteData.Values["dtgePreview"])
 {
 	// Render preview view
 }

@@ -8,16 +8,31 @@
     'assetsService',
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
     "umbRequestHelper",
+    "localizationService",
 
-    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper) {
+    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService) {
 
-        $scope.title = "Click to insert item";
+        const defaultTitle = "Click to insert item",
+            defaultSelectContentTypeLabel = "Choose a Content Type",
+            defaultOverlayTitle = "Edit tem";
+
+        $scope.title = defaultTitle;
+        $scope.selectContentTypeLabel = defaultSelectContentTypeLabel;
+
+        var overlayTitle = defaultOverlayTitle;
         $scope.icon = "icon-item-arrangement";
         $scope.overlay = {};
         $scope.overlay.show = false;
         $scope.overlay.view =
             umbRequestHelper.convertVirtualToAbsolutePath(
                 "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
+
+        // localize strings
+        localizationService.localizeMany(["docTypeGridEditor_insertItem", "docTypeGridEditor_editItem", "docTypeGridEditor_selectContentType"]).then(function (data) {
+            if ($scope.title === defaultTitle) $scope.title = data[0];
+            if (overlayTitle === defaultOverlayTitle) overlayTitle = data[1];
+            if ($scope.selectContentTypeLabel === defaultSelectContentTypeLabel) $scope.selectContentTypeLabel = data[2];
+        });
 
         $scope.setValue = function (data, callback) {
             $scope.control.value = data;
@@ -42,8 +57,8 @@
 
             $scope.overlay = {};
             $scope.overlay.show = true;
-            $scope.overlay.title = "Edit item";
-            $scope.overlay.submitButtonLabelKey = "buttons_save";
+            $scope.overlay.title = overlayTitle;
+            $scope.overlay.submitButtonLabelKey = "bulk_done";
             $scope.overlay.view =
                 umbRequestHelper.convertVirtualToAbsolutePath(
                     "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
@@ -199,9 +214,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             $scope.model.nameExp = nameExp;
 
-            $scope.selectDocType = function () {
+            $scope.selectDocType = function (alias) {
                 $scope.dialogMode = "edit";
-                $scope.model.dialogData.docTypeAlias = $scope.selectedDocType.alias;
+                $scope.model.dialogData.docTypeAlias = alias;
                 loadNode();
             };
 

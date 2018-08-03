@@ -1,11 +1,20 @@
-﻿<div class="dtge-dialog " ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
+﻿<div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
 
     <div ng-switch="dialogMode">
-
-        <umb-control-group label="Choose a content type" ng-switch-when="selectDocType">
-            <select class="umb-editor" ng-change="selectDocType()" name="selectDocType" ng-model="$parent.$parent.selectedDocType" ng-options="dt as dt.name for dt in docTypes" required>
-                <option value=""><localize key="choose" />...</option>
-            </select>
+        <umb-control-group label="{{selectContentTypeLabel}}" ng-switch-when="selectDocType">
+            <ul class="umb-actions umb-actions-child">
+                <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
+                    <a ng-click="selectDocType(docType.alias)">
+                        <i class="large {{docType.icon}}"></i>
+                        <span class="menu-label">
+                            {{docType.name}}
+                            <small>
+                                {{docType.description}}
+                            </small>
+                        </span>
+                    </a>
+                </li>
+            </ul>
         </umb-control-group>
 
         <div ng-switch-when="edit">
