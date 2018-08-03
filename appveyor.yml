@@ -1,12 +1,12 @@
 image: Visual Studio 2017
 
 # version format
-version: 0.5.0.{build}
+version: 0.6.0.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX if a rtm release build this should be blank, otherwise if empty will default to alpha
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 init:
-  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=
+  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 
 cache:
   - src\packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
