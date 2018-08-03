@@ -18,7 +18,7 @@
 	<PropertyGroup>
 		<ProjectName>Our.Umbraco.DocTypeGridEditor</ProjectName>
 		<PackageName>Doc Type Grid Editor</PackageName>
-		<MinUmbracoVersion>7.4.0</MinUmbracoVersion>
+		<MinUmbracoVersion>7.7.0</MinUmbracoVersion>
 		<Readme>Doc Type Grid Editor is an advanced grid editor for Umbraco 7</Readme>
 		<AuthorName>Matt Brailsford, Lee Kelleher</AuthorName>
 		<AuthorUrl>https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>

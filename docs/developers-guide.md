@@ -4,12 +4,12 @@
 
 1. [Introduction](#introduction)
 2. [Getting Set Up](#getting-set-up)
-  a. [System Requirements](#system-requirements)
+   - [System Requirements](#system-requirements)
 3. [Configuring The Doc Type Grid Editor](#configuring-the-doc-type-grid-editor)
 4. [Hooking Up The Doc Type Grid Editor](#hooking-up-the-doc-type-grid-editor)
 5. [Rendering a Doc Type Grid Editor](#rendering-a-doc-type-grid-editor)
-  a. [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
-  b. [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
+   - [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
+   - [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
 6. [Useful Links](#useful-links)
 
 ---
@@ -31,7 +31,7 @@ With the **Doc Type Grid Editor** then, we bridge that gap, allowing you to reus
 Before you get started, there are a number of things you will need:
 
 1. .NET 4.5+
-2. Umbraco 7.4.0+
+2. Umbraco 7.7.0+
 3. The **Doc Type Grid Editor** package installed
 
 ---
@@ -65,8 +65,6 @@ The **Doc Type Grid Editor** is configured via the grid.editors.config.js config
 ]
 ```
 
-![Doc Type Grid Editor - JSON configuration](img/screenshot-07.png)
-
 For the main part, the root properties shouldn’t need to be modified, however the only properties that MUST not be changed are the **view** and **render** properties.
 
 | Member | Type   | Description |
@@ -82,7 +80,7 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 
 | Member          | Type     | Description |
 |-----------------|----------|-------------|
-| AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". However if a single doc type is matched, (aka **Single Doc Type Mode**), then dropdown selection stage (in the DTGE panel) will be skipped. |
+| AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". However if a single doc type is matched, (aka **Single Doc Type Mode**), then doc type selection stage (in the DTGE panel) will be skipped. |
 | EnablePreview   | Boolean  | Enables rendering a preview of the grid cell in the grid editor. |
 | ViewPath        | String   | Set's an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering. Defaults to `~/Views/Partials/` |
 
