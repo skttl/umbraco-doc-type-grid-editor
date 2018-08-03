@@ -128,7 +128,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 };
             }
 
-            // TODO: Review this, the call feels heavy.
+            // Set the culture for the preview
             if (page != null)
             {
                 var culture = page.GetCulture();

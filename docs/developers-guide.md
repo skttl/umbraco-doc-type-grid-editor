@@ -4,12 +4,12 @@
 
 1. [Introduction](#introduction)
 2. [Getting Set Up](#getting-set-up)
-  * [System Requirements](#system-requirements)
+  a. [System Requirements](#system-requirements)
 3. [Configuring The Doc Type Grid Editor](#configuring-the-doc-type-grid-editor)
 4. [Hooking Up The Doc Type Grid Editor](#hooking-up-the-doc-type-grid-editor)
 5. [Rendering a Doc Type Grid Editor](#rendering-a-doc-type-grid-editor)
-  * [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
-  * [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
+  a. [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
+  b. [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
 6. [Useful Links](#useful-links)
 
 ---
