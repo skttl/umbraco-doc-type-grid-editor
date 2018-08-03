@@ -107,10 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Css\doctypegrideditor.css" />
-    <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.directives.js" />
-    <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.services.js" />
-    <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.resources.js" />
-    <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.controllers.js" />
+    <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Js\doctypegrideditor.js" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Lang\da-DK.xml" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Lang\en-GB.xml" />
     <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\Lang\en-US.xml" />

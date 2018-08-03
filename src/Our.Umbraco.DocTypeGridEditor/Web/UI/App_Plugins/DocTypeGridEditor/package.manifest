@@ -18,10 +18,7 @@
     }
   ],
   "javascript": [
-    "~/App_Plugins/DocTypeGridEditor/Js/doctypegrideditor.resources.js",
-    "~/App_Plugins/DocTypeGridEditor/Js/doctypegrideditor.services.js",
-    "~/App_Plugins/DocTypeGridEditor/Js/doctypegrideditor.controllers.js",
-    "~/App_Plugins/DocTypeGridEditor/Js/doctypegrideditor.directives.js"
+    "~/App_Plugins/DocTypeGridEditor/Js/doctypegrideditor.js"
   ],
   "css": [
     "~/App_Plugins/DocTypeGridEditor/Css/doctypegrideditor.css"
