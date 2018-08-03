@@ -10,7 +10,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
     {
         private class DummyController : Controller { }
 
-        internal static string RenderPartial(string partialName, object model, HttpContextBase httpContext = null)
+        public static string RenderPartial(string partialName, object model, HttpContextBase httpContext = null)
         {
             using (var sw = new StringWriter())
             {
@@ -33,6 +33,18 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
 
                 return sw.ToString();
             }
+        }
+
+        public static bool ViewExists(ControllerContext controllerContext, string viewName, bool isPartial = false)
+        {
+            var result = isPartial == false
+                ? ViewEngines.Engines.FindView(controllerContext, viewName, null)
+                : ViewEngines.Engines.FindPartialView(controllerContext, viewName);
+
+            if (result.View != null)
+                return true;
+
+            return false;
         }
     }
 }

@@ -96,7 +96,6 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
-    <Compile Include="Extensions\ViewEnginesCollectionExtensions.cs" />
     <Compile Include="Helpers\DocTypeGridEditorHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Models\DetachedPublishedContent.cs" />

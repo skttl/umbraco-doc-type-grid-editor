@@ -90,19 +90,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 && isPreview)
             {
                 var fullPreviewViewPath = $"{previewViewPath}{editorAlias}.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
                 fullPreviewViewPath = $"{previewViewPath}{content.DocumentTypeAlias}.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
                 fullPreviewViewPath = $"{previewViewPath}Default.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
@@ -112,26 +112,26 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (string.IsNullOrWhiteSpace(viewPath) == false)
             {
                 var fullViewPath = $"{viewPath}{editorAlias}.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
 
                 fullViewPath = $"{viewPath}{content.DocumentTypeAlias}.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
 
                 fullViewPath = $"{viewPath}Default.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
             }
 
             // Resort to standard partial views
-            if (ViewEngines.Engines.ViewExists(helper.ViewContext, editorAlias, true))
+            if (ViewHelper.ViewExists(helper.ViewContext, editorAlias, true))
             {
                 return helper.Partial(editorAlias, content);
             }
