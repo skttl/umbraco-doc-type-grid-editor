@@ -14,6 +14,7 @@ using Umbraco.Core.Persistence;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Services;
 using Umbraco.Web;
+using Umbraco.Web.Models;
 
 namespace Our.Umbraco.DocTypeGridEditor.Helpers
 {
@@ -103,6 +104,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                     }
                 }
 
+                // Parse out the GUID id manually
+                if (Guid.TryParse(id, out Guid key) == false)
+                {
+                    key = Guid.Empty;
+                }
+
                 // Parse out the name manually
                 if (propValues.TryGetValue("name", out object nameObj))
                 {
@@ -115,6 +122,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                 // Create the model based on our implementation of IPublishedContent
                 IPublishedContent content = new DetachedPublishedContent(
+                    key,
                     nameObj?.ToString(),
                     contentTypes.PublishedContentType,
                     properties.ToArray(),
