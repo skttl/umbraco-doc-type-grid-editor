@@ -82,7 +82,7 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 
 | Member          | Type     | Description |
 |-----------------|----------|-------------|
-| AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". |
+| AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". However if a single doc type is matched, (aka **Single Doc Type Mode**), then dropdown selection stage (in the DTGE panel) will be skipped. |
 | EnablePreview   | Boolean  | Enables rendering a preview of the grid cell in the grid editor. |
 | ViewPath        | String   | Set's an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering. Defaults to `~/Views/Partials/` |
 
