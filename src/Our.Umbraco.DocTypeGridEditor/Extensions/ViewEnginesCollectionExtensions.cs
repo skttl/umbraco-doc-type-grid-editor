@@ -7,7 +7,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Extensions
         public static bool ViewExists(
             this ViewEngineCollection viewEngines,
             ControllerContext controllerContext,
-            string viewName, bool isPartial = false)
+            string viewName,
+            bool isPartial = false)
         {
             var result = isPartial == false
                 ? viewEngines.FindView(controllerContext, viewName, null)
