@@ -31,7 +31,7 @@ With the **Doc Type Grid Editor** then, we bridge that gap, allowing you to reus
 Before you get started, there are a number of things you will need:
 
 1. .NET 4.5+
-2. Umbraco 7.4.0+
+2. Umbraco 7.6.0+
 3. The **Doc Type Grid Editor** package installed
 
 ---
