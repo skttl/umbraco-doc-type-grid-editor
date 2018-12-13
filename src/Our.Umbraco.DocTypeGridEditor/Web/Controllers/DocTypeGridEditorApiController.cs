@@ -99,6 +99,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         [HttpPost]
         public HttpResponseMessage GetPreviewMarkup([FromBody] PreviewData data, [FromUri] int pageId)
         {
+            // Set DTGE's preview to be in "preview mode", (storing the original value in a temp variable for resetting it later).
+            var inPreviewMode = UmbracoContext.InPreviewMode;
+            UmbracoContext.InPreviewMode = true;
+
             var page = default(IPublishedContent);
 
             // If the page is new, then the ID will be zero
@@ -108,7 +112,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 page = UmbracoContext.ContentCache.GetById(pageId);
                 if (page == null)
                 {
-                    // If unpublished, then fake PublishedContent (with IContent object)
+                    // If unpublished, then fake PublishedContent
                     page = new UnpublishedContent(pageId, Services);
                 }
             }
@@ -152,6 +156,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             // Render view
             var partialName = "~/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditorPreviewer.cshtml";
             var markup = Helpers.ViewHelper.RenderPartial(partialName, model, UmbracoContext.HttpContext);
+
+            // Restore the "preview mode" to its original value
+            UmbracoContext.InPreviewMode = inPreviewMode;
 
             // Return response
             var response = new HttpResponseMessage
