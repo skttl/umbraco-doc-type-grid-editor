@@ -99,10 +99,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         [HttpPost]
         public HttpResponseMessage GetPreviewMarkup([FromBody] PreviewData data, [FromUri] int pageId)
         {
-            // Set DTGE's preview to be in "preview mode", (storing the original value in a temp variable for resetting it later).
-            var inPreviewMode = UmbracoContext.InPreviewMode;
-            UmbracoContext.InPreviewMode = true;
-
             var page = default(IPublishedContent);
 
             // If the page is new, then the ID will be zero
@@ -139,6 +135,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 System.Threading.Thread.CurrentThread.CurrentCulture = culture;
                 System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
             }
+
+            // Set DTGE's preview to be in "preview mode", (storing the original value in a temp variable for resetting it later).
+            var inPreviewMode = UmbracoContext.InPreviewMode;
+            UmbracoContext.InPreviewMode = true;
 
             // Get content node object
             var content = DocTypeGridEditorHelper.ConvertValueToContent(data.Id, data.ContentTypeAlias, data.Value);
