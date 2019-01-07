@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
+﻿using System.Web.Mvc;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
 using Umbraco.Core.Models;
@@ -31,7 +29,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         public bool IsPreview
         {
-            get { return ControllerContext.RouteData.Values.TryGetValue("dtgePreview", out object value) && Convert.ToBoolean(value); }
+            get { return UmbracoContext.InPreviewMode; }
         }
 
         protected PartialViewResult CurrentPartialView(object model = null)
