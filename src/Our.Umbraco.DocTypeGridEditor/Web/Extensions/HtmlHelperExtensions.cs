@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
@@ -51,8 +50,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 dtgePreview = isPreview
             };
 
-            var viewData = new ViewDataDictionary() { { "dtgePreview", isPreview } };
-
             // Try looking for surface controller with action named after the editor alias
             if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
@@ -93,19 +90,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 var fullPreviewViewPath = $"{previewViewPath}{editorAlias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
-                    return helper.Partial(fullPreviewViewPath, content, viewData);
+                    return helper.Partial(fullPreviewViewPath, content);
                 }
 
                 fullPreviewViewPath = $"{previewViewPath}{content.DocumentTypeAlias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
-                    return helper.Partial(fullPreviewViewPath, content, viewData);
+                    return helper.Partial(fullPreviewViewPath, content);
                 }
 
                 fullPreviewViewPath = $"{previewViewPath}Default.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
-                    return helper.Partial(fullPreviewViewPath, content, viewData);
+                    return helper.Partial(fullPreviewViewPath, content);
                 }
             }
 
@@ -115,29 +112,29 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 var fullViewPath = $"{viewPath}{editorAlias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
-                    return helper.Partial(fullViewPath, content, viewData);
+                    return helper.Partial(fullViewPath, content);
                 }
 
                 fullViewPath = $"{viewPath}{content.DocumentTypeAlias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
-                    return helper.Partial(fullViewPath, content, viewData);
+                    return helper.Partial(fullViewPath, content);
                 }
 
                 fullViewPath = $"{viewPath}Default.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
-                    return helper.Partial(fullViewPath, content, viewData);
+                    return helper.Partial(fullViewPath, content);
                 }
             }
 
             // Resort to standard partial views
             if (ViewHelper.ViewExists(helper.ViewContext, editorAlias, true))
             {
-                return helper.Partial(editorAlias, content, viewData);
+                return helper.Partial(editorAlias, content);
             }
 
-            return helper.Partial(content.DocumentTypeAlias, content, viewData);
+            return helper.Partial(content.DocumentTypeAlias, content);
         }
     }
 }

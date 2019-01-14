@@ -50,8 +50,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         protected override PartialViewResult PartialView(string viewName, object model)
         {
-            ViewData.Add("dtgePreview", IsPreview);
-
             if (IsPreview && string.IsNullOrWhiteSpace(PreviewViewPath) == false)
             {
                 var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);

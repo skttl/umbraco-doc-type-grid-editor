@@ -139,11 +139,11 @@ Because we treat your data as a standard `IPublishedContent` entity, that means 
 
 #### Rendering Alternative Preview Content
 
-If your front end view is rather complex, you may decide that you want to feed the back office preview an alternative, less complex view. To do this, within your Razor view/partial, check `ViewData["dtgePreview"]` is set to true to detect being in preview mode to provide an alternative view.
+If your front end view is rather complex, you may decide that you want to feed the back office preview an alternative, less complex view. To do this, within your Razor view/partial, check for a querystring parameter `dtgePreview` being set to "1" to detect being in preview mode to provide an alternative view.
 
 ```
 @inherits Umbraco.Web.Mvc.UmbracoViewPage
-@if (ViewData["dtgePreview"] == true)
+@if (Request.QueryString["dtgePreview"] == "1")
 {
 	// Render preview view
 }
