@@ -4,12 +4,12 @@
 
 1. [Introduction](#introduction)
 2. [Getting Set Up](#getting-set-up)
-  a. [System Requirements](#system-requirements)
+    1. [System Requirements](#system-requirements)
 3. [Configuring The Doc Type Grid Editor](#configuring-the-doc-type-grid-editor)
 4. [Hooking Up The Doc Type Grid Editor](#hooking-up-the-doc-type-grid-editor)
 5. [Rendering a Doc Type Grid Editor](#rendering-a-doc-type-grid-editor)
-  a. [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
-  b. [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
+    1. [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
+    2. [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
 6. [Useful Links](#useful-links)
 
 ---
@@ -139,11 +139,11 @@ Because we treat your data as a standard `IPublishedContent` entity, that means 
 
 #### Rendering Alternative Preview Content
 
-If your front end view is rather complex, you may decide that you want to feed the back office preview an alternative, less complex view. To do this, within your Razor view/partial, check for a RouteData parameter `dtgePreview` being set to true to detect being in preview mode to provide an alternative view.
+If your front end view is rather complex, you may decide that you want to feed the back office preview an alternative, less complex view. To do this, within your Razor view/partial, check for a querystring parameter `dtgePreview` being set to "1" to detect being in preview mode to provide an alternative view.
 
 ```
 @inherits Umbraco.Web.Mvc.UmbracoViewPage
-@if (ViewContext.RouteData.Values["dtgePreview"])
+@if (Request.QueryString["dtgePreview"] == "1")
 {
 	// Render preview view
 }

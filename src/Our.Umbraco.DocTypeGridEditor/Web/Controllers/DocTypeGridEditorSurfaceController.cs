@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.Mvc;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
 using Umbraco.Core.Models;

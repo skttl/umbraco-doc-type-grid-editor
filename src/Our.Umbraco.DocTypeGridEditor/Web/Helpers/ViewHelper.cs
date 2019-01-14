@@ -3,6 +3,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Umbraco.Core.Logging;
+using Umbraco.Web;
+using Umbraco.Web.Mvc;
+using UmbracoWebConstants = Umbraco.Core.Constants.Web;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
 {
@@ -10,15 +13,26 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
     {
         private class DummyController : Controller { }
 
-        public static string RenderPartial(string partialName, object model, HttpContextBase httpContext = null)
+        public static string RenderPartial(string partialName, object model, HttpContextBase httpContext = null, UmbracoContext umbracoContext = null)
         {
             using (var sw = new StringWriter())
             {
                 if (httpContext == null)
                     httpContext = new HttpContextWrapper(HttpContext.Current);
 
+                if (umbracoContext == null)
+                    umbracoContext = UmbracoContext.Current;
+
                 var routeData = new RouteData();
                 routeData.Values.Add("controller", "DummyController");
+
+                if (umbracoContext.PublishedContentRequest != null)
+                {
+                    routeData.DataTokens[UmbracoWebConstants.UmbracoRouteDefinitionDataToken] = new RouteDefinition
+                    {
+                        PublishedContentRequest = umbracoContext.PublishedContentRequest
+                    };
+                }
 
                 var controllerContext = new ControllerContext(new RequestContext(httpContext, routeData), new DummyController());
 

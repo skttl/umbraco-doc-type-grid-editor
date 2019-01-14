@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
@@ -86,8 +85,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             }
 
             // Check for preview view
-            if (string.IsNullOrWhiteSpace(previewViewPath) == false
-                && isPreview)
+            if (string.IsNullOrWhiteSpace(previewViewPath) == false && isPreview)
             {
                 var fullPreviewViewPath = $"{previewViewPath}{editorAlias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
