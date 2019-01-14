@@ -46,7 +46,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             {
                 dtgeModel = content,
                 dtgeViewPath = viewPath,
-                dtgePreviewViewPath = previewViewPath
+                dtgePreviewViewPath = previewViewPath,
+                dtgePreview = isPreview
             };
 
             // Try looking for surface controller with action named after the editor alias
