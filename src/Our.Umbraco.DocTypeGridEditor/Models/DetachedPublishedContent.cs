@@ -8,20 +8,24 @@ using Umbraco.Web.Models;
 
 namespace Our.Umbraco.DocTypeGridEditor.Models
 {
-    internal class DetachedPublishedContent : PublishedContentBase
+    internal class DetachedPublishedContent : PublishedContentWithKeyBase
     {
+        private readonly Guid _key;
         private readonly string _name;
         private readonly PublishedContentType _contentType;
         private readonly IEnumerable<IPublishedProperty> _properties;
         private readonly bool _isPreviewing;
         private readonly IPublishedContent _containerNode;
 
-        public DetachedPublishedContent(string name,
+        public DetachedPublishedContent(
+            Guid key,
+            string name,
             PublishedContentType contentType,
             IEnumerable<IPublishedProperty> properties,
             IPublishedContent containerNode = null,
             bool isPreviewing = false)
         {
+            _key = key;
             _name = name;
             _contentType = contentType;
             _properties = properties;
@@ -29,50 +33,25 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             _isPreviewing = isPreviewing;
         }
 
-        public override int Id
-        {
-            get { return 0; }
-        }
+        public override Guid Key => _key;
 
-        public override string Name
-        {
-            get { return _name; }
-        }
+        public override int Id => 0;
 
-        public override bool IsDraft
-        {
-            get { return _isPreviewing; }
-        }
+        public override string Name => _name;
 
-        public override PublishedItemType ItemType
-        {
-            get { return PublishedItemType.Content; }
-        }
+        public override bool IsDraft => _isPreviewing;
 
-        public override PublishedContentType ContentType
-        {
-            get { return _contentType; }
-        }
+        public override PublishedItemType ItemType => PublishedItemType.Content;
 
-        public override string DocumentTypeAlias
-        {
-            get { return _contentType.Alias; }
-        }
+        public override PublishedContentType ContentType => _contentType;
 
-        public override int DocumentTypeId
-        {
-            get { return _contentType.Id; }
-        }
+        public override string DocumentTypeAlias => _contentType.Alias;
 
-        public override ICollection<IPublishedProperty> Properties
-        {
-            get { return _properties.ToArray(); }
-        }
+        public override int DocumentTypeId => _contentType.Id;
 
-        public override IPublishedProperty GetProperty(string alias)
-        {
-            return _properties.FirstOrDefault(x => x.PropertyTypeAlias.InvariantEquals(alias));
-        }
+        public override ICollection<IPublishedProperty> Properties => _properties.ToArray();
+
+        public override IPublishedProperty GetProperty(string alias) => _properties.FirstOrDefault(x => x.PropertyTypeAlias.InvariantEquals(alias));
 
         public override IPublishedProperty GetProperty(string alias, bool recurse)
         {
@@ -82,74 +61,32 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             return GetProperty(alias);
         }
 
-        public override IPublishedContent Parent
-        {
-            get { return null; }
-        }
+        public override IPublishedContent Parent => null;
 
-        public override IEnumerable<IPublishedContent> Children
-        {
-            get { return Enumerable.Empty<IPublishedContent>(); }
-        }
+        public override IEnumerable<IPublishedContent> Children => Enumerable.Empty<IPublishedContent>();
 
-        public override int TemplateId
-        {
-            get { return 0; }
-        }
+        public override int TemplateId => 0;
 
-        public override int SortOrder
-        {
-            get { return 0; }
-        }
+        public override int SortOrder => 0;
 
-        public override string UrlName
-        {
-            get { return null; }
-        }
+        public override string UrlName => null;
 
-        public override string WriterName
-        {
-            get { return _containerNode != null ? _containerNode.WriterName : null; }
-        }
+        public override string WriterName => _containerNode?.WriterName;
 
-        public override string CreatorName
-        {
-            get { return _containerNode != null ? _containerNode.CreatorName : null; }
-        }
+        public override string CreatorName => _containerNode?.CreatorName;
 
-        public override int WriterId
-        {
-            get { return _containerNode != null ? _containerNode.WriterId : 0; }
-        }
+        public override int WriterId => _containerNode?.WriterId ?? 0;
 
-        public override int CreatorId
-        {
-            get { return _containerNode != null ? _containerNode.CreatorId : 0; }
-        }
+        public override int CreatorId => _containerNode?.CreatorId ?? 0;
 
-        public override string Path
-        {
-            get { return null; }
-        }
+        public override string Path => null;
 
-        public override DateTime CreateDate
-        {
-            get { return _containerNode != null ? _containerNode.CreateDate : DateTime.MinValue; }
-        }
+        public override DateTime CreateDate => _containerNode?.CreateDate ?? DateTime.MinValue;
 
-        public override DateTime UpdateDate
-        {
-            get { return _containerNode != null ? _containerNode.UpdateDate : DateTime.MinValue; }
-        }
+        public override DateTime UpdateDate => _containerNode?.UpdateDate ?? DateTime.MinValue;
 
-        public override Guid Version
-        {
-            get { return _containerNode != null ? _containerNode.Version : Guid.Empty; }
-        }
+        public override Guid Version => _containerNode?.Version ?? Guid.Empty;
 
-        public override int Level
-        {
-            get { return 0; }
-        }
+        public override int Level => 0;
     }
 }

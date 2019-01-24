@@ -103,11 +103,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                     }
                 }
 
-                // Parse out the name manually
-                if (propValues.TryGetValue("name", out object nameObj))
-                {
-                    // Do nothing, we just want to parse out the name if we can
-                }
+                // Manually parse out the special properties
+                propValues.TryGetValue("name", out object nameObj);
+                Guid.TryParse(id, out Guid key);
 
                 // Get the current request node we are embedded in
                 var pcr = UmbracoContext.Current?.PublishedContentRequest;
@@ -115,6 +113,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                 // Create the model based on our implementation of IPublishedContent
                 IPublishedContent content = new DetachedPublishedContent(
+                    key,
                     nameObj?.ToString(),
                     contentTypes.PublishedContentType,
                     properties.ToArray(),
