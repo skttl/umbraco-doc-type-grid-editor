@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web
@@ -18,71 +17,58 @@ namespace Our.Umbraco.DocTypeGridEditor.Web
         public string ViewPath { get; set; }
 
         #region IPublishedContent Implementation
+        
+        public IPublishedProperty GetProperty(string alias) => Item.GetProperty(alias);
+        
+        public PublishedContentType ContentType => Item.ContentType;
 
-        int IPublishedContent.GetIndex()
-        {
-            return Item.GetIndex();
-        }
+        public Guid Key => Item.Key;
 
-        IPublishedProperty IPublishedContent.GetProperty(string alias)
-        {
-            return Item.GetProperty(alias);
-        }
+        public IEnumerable<IPublishedProperty> Properties => Item.Properties;
 
-        IPublishedProperty IPublishedContent.GetProperty(string alias, bool recurse)
-        {
-            return Item.GetProperty(alias, recurse);
-        }
+        public string GetUrl(string culture = null) => Item.GetUrl(culture);
 
-        IEnumerable<IPublishedContent> IPublishedContent.ContentSet => Item.ContentSet;
+        public PublishedCultureInfo GetCulture(string culture = null) => Item.GetCulture(culture);
 
-        PublishedContentType IPublishedContent.ContentType => Item.ContentType;
+        public bool IsDraft(string culture = null) => Item.IsDraft(culture);
 
-        int IPublishedContent.Id => Item.Id;
+        public bool IsPublished(string culture = null) => Item.IsPublished(culture);
 
-        int IPublishedContent.TemplateId => Item.TemplateId;
+        public int Id => Item.Id;
 
-        int IPublishedContent.SortOrder => Item.SortOrder;
+        public string Name => Item.Name;
 
-        string IPublishedContent.Name => Item.Name;
+        public string UrlSegment => Item.UrlSegment;
 
-        string IPublishedContent.UrlName => Item.UrlName;
+        public int SortOrder => Item.SortOrder;
 
-        string IPublishedContent.DocumentTypeAlias => Item.DocumentTypeAlias;
+        public int Level => Item.Level;
 
-        int IPublishedContent.DocumentTypeId => Item.DocumentTypeId;
+        public string Path => Item.Path;
 
-        string IPublishedContent.WriterName => Item.WriterName;
+        public int? TemplateId => Item.TemplateId;
 
-        string IPublishedContent.CreatorName => Item.CreatorName;
+        public int CreatorId => Item.CreatorId;
 
-        int IPublishedContent.WriterId => Item.WriterId;
+        public string CreatorName => Item.CreatorName;
 
-        int IPublishedContent.CreatorId => Item.CreatorId;
+        public DateTime CreateDate => Item.CreateDate;
 
-        string IPublishedContent.Path => Item.Path;
+        public int WriterId => Item.WriterId;
 
-        DateTime IPublishedContent.CreateDate => Item.CreateDate;
+        public string WriterName => Item.WriterName;
 
-        DateTime IPublishedContent.UpdateDate => Item.UpdateDate;
+        public DateTime UpdateDate => Item.UpdateDate;
 
-        Guid IPublishedContent.Version => Item.Version;
+        public string Url => Item.Url;
 
-        int IPublishedContent.Level => Item.Level;
+        public IReadOnlyDictionary<string, PublishedCultureInfo> Cultures => Item.Cultures;
 
-        string IPublishedContent.Url => Item.Url;
+        public PublishedItemType ItemType => Item.ItemType;
 
-        PublishedItemType IPublishedContent.ItemType => Item.ItemType;
+        public IPublishedContent Parent => Item.Parent;
 
-        bool IPublishedContent.IsDraft => Item.IsDraft;
-
-        IPublishedContent IPublishedContent.Parent => Item.Parent;
-
-        IEnumerable<IPublishedContent> IPublishedContent.Children => Item.Children;
-
-        ICollection<IPublishedProperty> IPublishedContent.Properties => Item.Properties;
-
-        object IPublishedContent.this[string alias] => Item[alias];
+        public IEnumerable<IPublishedContent> Children => Item.Children;
 
         #endregion
     }

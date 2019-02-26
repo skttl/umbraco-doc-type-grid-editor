@@ -2,74 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Core;
-using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
-using Umbraco.Web.Models;
 
 namespace Our.Umbraco.DocTypeGridEditor.Models
 {
-    internal class DetachedPublishedContent : PublishedContentWithKeyBase
+    internal class DetachedPublishedContent : PublishedContentModel
     {
-        private readonly Guid _key;
         private readonly string _name;
         private readonly PublishedContentType _contentType;
         private readonly IEnumerable<IPublishedProperty> _properties;
         private readonly bool _isPreviewing;
         private readonly IPublishedContent _containerNode;
 
-        public DetachedPublishedContent(
-            Guid key,
-            string name,
-            PublishedContentType contentType,
-            IEnumerable<IPublishedProperty> properties,
-            IPublishedContent containerNode = null,
-            bool isPreviewing = false)
+        public DetachedPublishedContent(IPublishedContent content) : base(content)
         {
-            _key = key;
-            _name = name;
-            _contentType = contentType;
-            _properties = properties;
-            _containerNode = containerNode;
-            _isPreviewing = isPreviewing;
+            _name = content.Name;
+            _contentType = content.ContentType;
+            _properties = content.Properties;
+            _isPreviewing = content.IsDraft();
+            _containerNode = content.Parent;
         }
-
-        public override Guid Key => _key;
 
         public override int Id => 0;
 
         public override string Name => _name;
 
-        public override bool IsDraft => _isPreviewing;
+        public override bool IsDraft(string culture = null) => _isPreviewing;
 
         public override PublishedItemType ItemType => PublishedItemType.Content;
 
         public override PublishedContentType ContentType => _contentType;
-
-        public override string DocumentTypeAlias => _contentType.Alias;
-
-        public override int DocumentTypeId => _contentType.Id;
-
-        public override ICollection<IPublishedProperty> Properties => _properties.ToArray();
-
-        public override IPublishedProperty GetProperty(string alias) => _properties.FirstOrDefault(x => x.PropertyTypeAlias.InvariantEquals(alias));
-
-        public override IPublishedProperty GetProperty(string alias, bool recurse)
-        {
-            if (recurse)
-                throw new NotSupportedException();
-
-            return GetProperty(alias);
-        }
+        
+        public override IPublishedProperty GetProperty(string alias) => _properties.FirstOrDefault(x => x.PropertyType.Alias.InvariantEquals(alias));
 
         public override IPublishedContent Parent => null;
 
         public override IEnumerable<IPublishedContent> Children => Enumerable.Empty<IPublishedContent>();
 
-        public override int TemplateId => 0;
-
         public override int SortOrder => 0;
 
-        public override string UrlName => null;
+        public override string GetUrl(string culture = null) => null;
 
         public override string WriterName => _containerNode?.WriterName;
 
@@ -85,8 +57,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         public override DateTime UpdateDate => _containerNode?.UpdateDate ?? DateTime.MinValue;
 
-        public override Guid Version => _containerNode?.Version ?? Guid.Empty;
-
         public override int Level => 0;
+
     }
 }

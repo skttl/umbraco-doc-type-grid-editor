@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web.Mvc;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers

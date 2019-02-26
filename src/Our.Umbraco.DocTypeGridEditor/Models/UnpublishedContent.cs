@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Umbraco.Core;
+using Umbraco.Core.Composing.CompositionExtensions;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Services;
+using Umbraco.Web.Composing;
 using Umbraco.Web.Models;
 
 namespace Our.Umbraco.DocTypeGridEditor.Models
 {
-    internal class UnpublishedContent : PublishedContentWithKeyBase
+    internal class UnpublishedContent : IPublishedContent
     {
         private readonly IContent content;
 
@@ -29,74 +32,97 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
         public UnpublishedContent(IContent content, ServiceContext serviceContext)
             : base()
         {
-            Mandate.ParameterNotNull(content, nameof(content));
-            Mandate.ParameterNotNull(serviceContext, nameof(serviceContext));
-
             var userService = new Lazy<IUserService>(() => serviceContext.UserService);
 
             this.content = content;
+            var contentType = Current.Services.ContentTypeService.Get(this.ContentType.Id);
 
-            this.children = new Lazy<IEnumerable<IPublishedContent>>(() => this.content.Children().Select(x => new UnpublishedContent(x, serviceContext)).ToList());
-            this.contentType = new Lazy<PublishedContentType>(() => PublishedContentType.Get(this.ItemType, this.DocumentTypeAlias));
+            //this.children = new Lazy<IEnumerable<IPublishedContent>>(() => this.content.Children().Select(x => new UnpublishedContent(x, serviceContext)).ToList());
+            this.contentType = new Lazy<PublishedContentType>(() => Current.PublishedContentTypeFactory.CreateContentType(contentType));
             this.creatorName = new Lazy<string>(() => this.content.GetCreatorProfile(userService.Value).Name);
-            this.parent = new Lazy<IPublishedContent>(() => new UnpublishedContent(this.content.Parent(), serviceContext));
-            this.properties = new Lazy<Dictionary<string, IPublishedProperty>>(() => MapProperties(PropertyEditorResolver.Current, serviceContext));
+            this.parent = new Lazy<IPublishedContent>(() => new UnpublishedContent(Current.Services.ContentService.GetById(this.content.ParentId), serviceContext));
+            this.properties = new Lazy<Dictionary<string, IPublishedProperty>>(() => MapProperties(serviceContext));
             this.urlName = new Lazy<string>(() => this.content.Name.ToUrlSegment());
             this.writerName = new Lazy<string>(() => this.content.GetWriterProfile(userService.Value).Name);
         }
 
-        public override Guid Key => this.content.Key;
+        public Guid Key => this.content.Key;
 
-        public override PublishedItemType ItemType => PublishedItemType.Content;
+        IEnumerable<IPublishedProperty> IPublishedElement.Properties => Properties;
 
-        public override int Id => this.content.Id;
+        public IReadOnlyDictionary<string, PublishedCultureInfo> Cultures { get; }
 
-        public override int TemplateId => this.content.Template?.Id ?? default(int);
+        public PublishedItemType ItemType => PublishedItemType.Content;
 
-        public override int SortOrder => this.content.SortOrder;
+        public string GetUrl(string culture = null)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override string Name => this.content.Name;
+        public PublishedCultureInfo GetCulture(string culture = null)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override string UrlName => this.urlName.Value;
+        bool IPublishedContent.IsDraft(string culture)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override string DocumentTypeAlias => this.content.ContentType?.Alias;
+        public bool IsPublished(string culture = null)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override int DocumentTypeId => this.content.ContentType?.Id ?? default(int);
+        public int Id => this.content.Id;
 
-        public override string WriterName => this.writerName.Value;
+        public string UrlSegment { get; }
+        public int SortOrder => this.content.SortOrder;
 
-        public override string CreatorName => this.creatorName.Value;
+        public string Name => this.content.Name;
 
-        public override int WriterId => this.content.WriterId;
+        public string UrlName => this.urlName.Value;
 
-        public override int CreatorId => this.content.CreatorId;
+        public string DocumentTypeAlias => this.content.ContentType?.Alias;
 
-        public override string Path => this.content.Path;
+        public int DocumentTypeId => this.content.ContentType?.Id ?? default(int);
 
-        public override DateTime CreateDate => this.content.CreateDate;
+        public string WriterName => this.writerName.Value;
 
-        public override DateTime UpdateDate => this.content.UpdateDate;
+        public string CreatorName => this.creatorName.Value;
 
-        public override Guid Version => this.content.Version;
+        public int WriterId => this.content.WriterId;
 
-        public override int Level => this.content.Level;
+        int? IPublishedContent.TemplateId => this.content.TemplateId;
 
-        public override bool IsDraft => true;
+        public int CreatorId => this.content.CreatorId;
 
-        public override IPublishedContent Parent => this.parent.Value;
+        public string Path => this.content.Path;
 
-        public override IEnumerable<IPublishedContent> Children => this.children.Value;
+        public DateTime CreateDate => this.content.CreateDate;
 
-        public override PublishedContentType ContentType => this.contentType.Value;
+        public DateTime UpdateDate => this.content.UpdateDate;
+        public string Url { get; }
 
-        public override ICollection<IPublishedProperty> Properties => this.properties.Value.Values;
 
-        public override IPublishedProperty GetProperty(string alias)
+        public int Level => this.content.Level;
+
+        public bool IsDraft => true;
+
+        public IPublishedContent Parent => this.parent.Value;
+
+        public IEnumerable<IPublishedContent> Children => this.children.Value;
+
+        public PublishedContentType ContentType => this.contentType.Value;
+
+        public ICollection<IPublishedProperty> Properties => this.properties.Value.Values;
+
+        public IPublishedProperty GetProperty(string alias)
         {
             return this.properties.Value.TryGetValue(alias, out IPublishedProperty property) ? property : null;
         }
 
-        private Dictionary<string, IPublishedProperty> MapProperties(PropertyEditorResolver resolver, ServiceContext services)
+        private Dictionary<string, IPublishedProperty> MapProperties(ServiceContext services)
         {
             var contentType = this.contentType.Value;
             var properties = this.content.Properties;
@@ -105,18 +131,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
             foreach (var propertyType in contentType.PropertyTypes)
             {
-                var property = properties.FirstOrDefault(x => x.Alias.InvariantEquals(propertyType.PropertyTypeAlias));
-                var value = property?.Value;
+                var property = properties.FirstOrDefault(x => x.Alias.InvariantEquals(propertyType.DataType.EditorAlias));
+                var value = property?.GetValue();
                 if (value != null)
                 {
-                    var propertyEditor = resolver.GetByAlias(propertyType.PropertyEditorAlias);
-                    if (propertyEditor != null)
+                    Current.PropertyEditors.TryGet(propertyType.DataType.EditorAlias, out var editor);
+                    if (editor != null)
                     {
-                        value = propertyEditor.ValueEditor.ConvertDbToString(property, property.PropertyType, services.DataTypeService);
+                        // TODO: FIXME!
+                        value = editor.GetValueEditor().ConvertDbToString(property.PropertyType, value, services.DataTypeService);
                     }
                 }
 
-                items.Add(propertyType.PropertyTypeAlias, new UnpublishedProperty(propertyType, value));
+                items.Add(propertyType.DataType.EditorAlias, new UnpublishedProperty(propertyType, value));
             }
 
             return items;

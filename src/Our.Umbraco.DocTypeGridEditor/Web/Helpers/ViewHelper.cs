@@ -2,8 +2,8 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Umbraco.Core.Logging;
 using Umbraco.Web;
+using Umbraco.Web.Composing;
 using Umbraco.Web.Mvc;
 using UmbracoWebConstants = Umbraco.Core.Constants.Web;
 
@@ -21,16 +21,16 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
                     httpContext = new HttpContextWrapper(HttpContext.Current);
 
                 if (umbracoContext == null)
-                    umbracoContext = UmbracoContext.Current;
+                    umbracoContext = Current.UmbracoContext;
 
                 var routeData = new RouteData();
                 routeData.Values.Add("controller", "DummyController");
 
-                if (umbracoContext.PublishedContentRequest != null)
+                if (umbracoContext.PublishedRequest != null)
                 {
                     routeData.DataTokens[UmbracoWebConstants.UmbracoRouteDefinitionDataToken] = new RouteDefinition
                     {
-                        PublishedContentRequest = umbracoContext.PublishedContentRequest
+                        PublishedRequest = umbracoContext.PublishedRequest
                     };
                 }
 
@@ -39,7 +39,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Helpers
                 var viewResult = ViewEngines.Engines.FindPartialView(controllerContext, partialName);
                 if (viewResult.View == null)
                 {
-                    LogHelper.Warn(typeof(ViewHelper), $"No view found for partial '{partialName}'");
+                    Current.Logger.Warn(typeof(ViewHelper), $"No view found for partial '{partialName}'");
                     return null;
                 }
 

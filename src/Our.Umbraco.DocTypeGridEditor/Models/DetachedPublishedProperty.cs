@@ -24,16 +24,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
             _rawValue = value;
 
-            _sourceValue = new Lazy<object>(() => _propertyType.ConvertDataToSource(_rawValue, _isPreview));
-            _objectValue = new Lazy<object>(() => _propertyType.ConvertSourceToObject(_sourceValue.Value, _isPreview));
-            _xpathValue = new Lazy<object>(() => _propertyType.ConvertSourceToXPath(_sourceValue.Value, _isPreview));
+            // TODO: FIXME!
+            //_sourceValue = new Lazy<object>(() => _propertyType.ConvertDataToSource(_rawValue, _isPreview));
+            //_objectValue = new Lazy<object>(() => _propertyType.ConvertSourceToObject(_sourceValue.Value, _isPreview));
+            //_xpathValue = new Lazy<object>(() => _propertyType.ConvertSourceToXPath(_sourceValue.Value, _isPreview));
         }
 
         public string PropertyTypeAlias
         {
             get
             {
-                return _propertyType.PropertyTypeAlias;
+                return _propertyType.DataType.EditorAlias;
             }
         }
 
@@ -56,5 +57,28 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
         {
             get { return _xpathValue.Value; }
         }
+
+        bool IPublishedProperty.HasValue(string culture, string segment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetSourceValue(string culture = null, string segment = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetValue(string culture = null, string segment = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetXPathValue(string culture = null, string segment = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PublishedPropertyType PropertyType { get; }
+        public string Alias { get; }
     }
 }

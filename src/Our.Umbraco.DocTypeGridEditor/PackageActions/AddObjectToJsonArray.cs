@@ -3,13 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
-using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using umbraco.cms.businesslogic.packager.standardPackageActions;
-using umbraco.interfaces;
 using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Core.Logging;
+using Umbraco.Core.PackageActions;
 using Formatting = Newtonsoft.Json.Formatting;
 using XmlHelper = Our.Umbraco.DocTypeGridEditor.Helpers.XmlHelper;
 
@@ -21,23 +20,23 @@ namespace Our.Umbraco.DocTypeGridEditor.PackageActions
         {
             return "AddObjectToJsonArray";
         }
-
-        private string GetKeyProperty(XmlNode xmlData)
+        
+        private string GetKeyProperty(System.Xml.Linq.XElement xmlData)
         {
             return XmlHelper.GetAttributeValueFromNode(xmlData, "keyProperty");
         }
 
-        private string GetSourceFileName(XmlNode xmlData)
+        private string GetSourceFileName(System.Xml.Linq.XElement xmlData)
         {
             return XmlHelper.GetAttributeValueFromNode(xmlData, "sourceFile");
         }
 
-        private string GetTargetFileName(XmlNode xmlData)
+        private string GetTargetFileName(System.Xml.Linq.XElement xmlData)
         {
             return XmlHelper.GetAttributeValueFromNode(xmlData, "targetFile");
         }
 
-        public bool Execute(string packageName, XmlNode xmlData)
+        public bool Execute(string packageName, System.Xml.Linq.XElement xmlData)
         {
             try
             {
@@ -71,13 +70,13 @@ namespace Our.Umbraco.DocTypeGridEditor.PackageActions
             }
             catch (Exception ex)
             {
-                LogHelper.Error<AddObjectToJsonArray>("[DocTypeGridEditor] Error merging grid editor config.", ex);
+                Current.Logger.Error<AddObjectToJsonArray>("[DocTypeGridEditor] Error merging grid editor config.", ex);
 
                 return false;
             }
         }
 
-        public bool Undo(string packageName, XmlNode xmlData)
+        public bool Undo(string packageName, System.Xml.Linq.XElement xmlData)
         {
             try
             {
@@ -112,22 +111,22 @@ namespace Our.Umbraco.DocTypeGridEditor.PackageActions
             }
             catch (Exception ex)
             {
-                LogHelper.Error<AddObjectToJsonArray>("[DocTypeGridEditor] Error unmerging grid editor config.", ex);
+                Current.Logger.Error<AddObjectToJsonArray>("[DocTypeGridEditor] Error unmerging grid editor config.", ex);
 
                 return false;
             }
         }
 
-        public XmlNode SampleXml()
-        {
-            var sample = string.Format(
-                "<Action runat=\"install\" undo=\"true\" alias=\"{0}\" " +
-                    "keyProperty=\"alias\" " +
-                    "sourceFile=\"~/path/to/srcJson.js\" " +
-                    "targetFile=\"~/path/to/trgJson.js\" />",
-                Alias());
+        //public XmlNode SampleXml()
+        //{
+        //    var sample = string.Format(
+        //        "<Action runat=\"install\" undo=\"true\" alias=\"{0}\" " +
+        //            "keyProperty=\"alias\" " +
+        //            "sourceFile=\"~/path/to/srcJson.js\" " +
+        //            "targetFile=\"~/path/to/trgJson.js\" />",
+        //        Alias());
 
-            return helper.parseStringToXmlNode(sample);
-        }
+        //    return helper.parseStringToXmlNode(sample);
+        //}
     }
 }
