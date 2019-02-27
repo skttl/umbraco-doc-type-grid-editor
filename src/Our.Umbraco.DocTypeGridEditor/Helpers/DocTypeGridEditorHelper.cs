@@ -24,7 +24,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             _umbracoContext = umbracoContext;
         }
 
-        public IPublishedContent ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
+        public IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
         {
             if (string.IsNullOrWhiteSpace(contentTypeAlias))
                 return null;
@@ -43,7 +43,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 });
         }
 
-        private static IPublishedContent ConvertValue(string id, string contentTypeAlias, string dataJson)
+        private static IPublishedElement ConvertValue(string id, string contentTypeAlias, string dataJson)
         {
             using (Current.ProfilingLogger.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
             {
@@ -75,7 +75,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                     /* Now that we have the DB stored value, we actually need to then convert it into its
                      * XML serialized state as expected by the published property by calling ConvertDbToString
                      */
-                    var propType2 = contentTypes.ContentType.CompositionPropertyTypes.First(x => x.Alias.InvariantEquals(propType.DataType.EditorAlias));
+                    var propType2 = contentTypes.ContentType.CompositionPropertyTypes.First(x => x.PropertyEditorAlias.InvariantEquals(propType.DataType.EditorAlias));
 
                     // TODO: Do we still need this weird tag conversion?
                     //Property prop2 = null;

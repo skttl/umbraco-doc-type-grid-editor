@@ -82,15 +82,18 @@
                         name: newModel.editorName
                     };
 
-                    for (var t = 0; t < newModel.node.tabs.length; t++) {
-                        var tab = newModel.node.tabs[t];
-                        for (var p = 0; p < tab.properties.length; p++) {
-                            var prop = tab.properties[p];
-                            if (typeof prop.value !== "function") {
-                                value[prop.alias] = prop.value;
-                            }
-                        }
-                    }
+					for (var v = 0; v < newModel.node.variants.length; v++) {
+							var variant = newModel.node.variants[v];
+						for (var t = 0; t < variant.tabs.length; t++) {
+							var tab = variant.tabs[t];
+							for (var p = 0; p < tab.properties.length; p++) {
+								var prop = tab.properties[p];
+								if (typeof prop.value !== "function") {
+									value[prop.alias] = prop.value;
+								}
+							}
+						}
+					}
 
                     if (newModel.nameExp) {
                         var newName = newModel.nameExp(value); // Run it against the stored dictionary value, NOT the node object
@@ -222,23 +225,21 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function loadNode() {
                 contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
-
-                    if (dtgeUtilityService.compareCurrentUmbracoVersion("7.8", { zeroExtend: true }) < 0) {
-                        // Remove the "Generic properties" tab (removed in v7.8)
-                        data.tabs.pop();
-                    }
-
+                    
                     // Merge current value
                     if ($scope.model.dialogData.value) {
-                        for (var t = 0; t < data.tabs.length; t++) {
-                            var tab = data.tabs[t];
-                            for (var p = 0; p < tab.properties.length; p++) {
-                                var prop = tab.properties[p];
-                                if ($scope.model.dialogData.value[prop.alias]) {
-                                    prop.value = $scope.model.dialogData.value[prop.alias];
-                                }
-                            }
-                        }
+						for (var v = 0; v < data.variants.length; v++) {
+							var variant = data.variants[v];
+							for (var t = 0; t < variant.tabs.length; t++) {
+								var tab = variant.tabs[t];
+								for (var p = 0; p < tab.properties.length; p++) {
+									var prop = tab.properties[p];
+									if ($scope.model.dialogData.value[prop.alias]) {
+										prop.value = $scope.model.dialogData.value[prop.alias];
+									}
+								}
+							}
+						 }
                     };
 
                     // Assign the model to scope
