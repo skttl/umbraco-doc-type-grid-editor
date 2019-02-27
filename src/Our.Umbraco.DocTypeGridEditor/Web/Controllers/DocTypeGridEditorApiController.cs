@@ -41,8 +41,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         {
             _umbracoContext = umbracoContext;
             _contentTypeService = contentTypeService;
-            this._dataTypeService = dataTypeService;
-            this._contentCache = contentCache;
+            _dataTypeService = dataTypeService;
+            _contentCache = contentCache;
         }
 
         [HttpGet]
@@ -90,9 +90,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         {
             Guid docTypeGuid;
             if (Guid.TryParse(contentTypeAlias, out docTypeGuid))
-                contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
+                contentTypeAlias = Current.Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
 
-            var contentType = _contentTypeService.Get(contentTypeAlias);
+            var contentType = Current.Services.ContentTypeService.Get(contentTypeAlias);
             return new
             {
                 icon = contentType != null ? contentType.Icon : string.Empty
@@ -146,7 +146,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             if (pageId > 0)
             {
                 // Get page container node
-                page = _contentCache.GetById(pageId);
+                page = Umbraco.Content(pageId);
                 if (page == null)
                 {
                     // If unpublished, then fake PublishedContent
@@ -174,9 +174,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             // Set the culture for the preview
             if (page != null)
             {
-                var culture = new CultureInfo(page.GetCulture().Culture);
-                System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-                System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                if (page.GetCulture() != null)
+                {
+                    var culture = new CultureInfo(page.GetCulture().Culture);
+                    System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                }
             }
 
             // Get content node object
