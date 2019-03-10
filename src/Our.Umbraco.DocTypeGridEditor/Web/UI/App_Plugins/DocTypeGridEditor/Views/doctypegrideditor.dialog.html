@@ -1,7 +1,7 @@
-﻿<div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
+<div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
 
-    <div ng-switch="dialogMode">
-        <umb-control-group label="{{selectContentTypeLabel}}" ng-switch="selectDocType">
+    <div>
+        <umb-control-group label="{{selectContentTypeLabel}}" ng-if="dialogMode == 'selectDocType'">
             <ul class="umb-actions umb-actions-child">
                 <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
                     <a ng-click="selectDocType(docType.alias)">
@@ -17,18 +17,40 @@
             </ul>
         </umb-control-group>
 
-        <div ng-switch="edit">
+        <div ng-if="dialogMode == 'edit'">
 
-            <fieldset ng-repeat="tab in model.node.tabs">
-                <legend style="font-size: 18px;">{{tab.label || tab.alias}}</legend>
+            <ng-form name="tabbedContentForm">
+                <div class="umb-group-panel" retrive-dom-element="registerPropertyGroup(element[0], attributes.appAnchor)" data-app-anchor="{{group.id}}" data-element="group-{{group.alias}}" ng-repeat="group in model.node.variants[0].tabs track by group.label">
 
-                <umb-property property="property"
-                              ng-repeat="property in tab.properties">
-                    <umb-editor model="property"></umb-editor>
-                </umb-property>
+                    <div class="umb-group-panel__header">
+                        <div>{{ group.label }}</div>
+                    </div>
 
-            </fieldset>
+                    <div class="umb-group-panel__content">
+                        <umb-property data-element="property-{{property.alias}}"
+                                      ng-repeat="property in group.properties track by property.alias"
+                                      property="property"
+                                      show-inherit="content.variants.length > 1 && !property.culture && !activeVariant.language.isDefault"
+                                      inherits-from="defaultVariant.language.name">
 
+                            <div ng-class="{'o-40 cursor-not-allowed': content.variants.length > 1 && !activeVariant.language.isDefault && !property.culture && !property.unlockInvariantValue}">
+                                <umb-property-editor model="property"
+                                                     preview="content.variants.length > 1 && !activeVariant.language.isDefault && !property.culture && !property.unlockInvariantValue">
+                                </umb-property-editor>
+                            </div>
+
+                        </umb-property>
+                    </div>
+
+                </div>
+
+                <umb-empty-state ng-if="content.tabs.length === 0"
+                                 position="center">
+                    <localize key="content_noProperties"></localize>
+                </umb-empty-state>
+
+            </ng-form>
+            <pre>{{ model | json }}</pre>
         </div>
     </div>
 
