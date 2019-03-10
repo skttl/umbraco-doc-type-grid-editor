@@ -13,7 +13,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
         // TODO: Once we bump the major version number, we can remove this stub method.
         public static HtmlString RenderDocTypeGridEditorItem(
              this HtmlHelper helper,
-             IPublishedContent content,
+             IPublishedElement content,
              string editorAlias,
              string viewPath,
              string previewViewPath)
@@ -23,7 +23,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 
         public static HtmlString RenderDocTypeGridEditorItem(
             this HtmlHelper helper,
-            IPublishedContent content,
+            IPublishedElement content,
             string editorAlias = "",
             string viewPath = "",
             string previewViewPath = "",

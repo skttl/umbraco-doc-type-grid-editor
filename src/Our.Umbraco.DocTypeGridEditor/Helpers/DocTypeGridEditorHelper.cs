@@ -15,16 +15,10 @@ using Umbraco.Web;
 
 namespace Our.Umbraco.DocTypeGridEditor.Helpers
 {
-    public class DocTypeGridEditorHelper
+    public static class DocTypeGridEditorHelper
     {
-        private readonly IUmbracoContextAccessor _umbracoContext;
 
-        public DocTypeGridEditorHelper(IUmbracoContextAccessor umbracoContext)
-        {
-            _umbracoContext = umbracoContext;
-        }
-
-        public IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
+        public static IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
         {
             if (string.IsNullOrWhiteSpace(contentTypeAlias))
                 return null;
@@ -32,10 +26,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             if (dataJson == null)
                 return null;
 
-            if (_umbracoContext == null)
+            if (Current.UmbracoContext == null)
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
-            return (IPublishedContent)Current.AppCaches.RuntimeCache.GetCacheItem(
+            return (IPublishedElement)Current.AppCaches.RuntimeCache.GetCacheItem(
                 $"Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_{id}_{contentTypeAlias}",
                 () =>
                 {
@@ -45,8 +39,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
         private static IPublishedElement ConvertValue(string id, string contentTypeAlias, string dataJson)
         {
-            using (Current.ProfilingLogger.DebugDuration<DocTypeGridEditorHelper>(string.Format("ConvertValue ({0}, {1})", id, contentTypeAlias)))
-            {
                 var contentTypes = GetContentTypesByAlias(contentTypeAlias);
                 var properties = new List<IPublishedProperty>();
 
@@ -112,22 +104,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var containerNode = pcr != null && pcr.HasPublishedContent ? pcr.PublishedContent : null;
 
                 // Create the model based on our implementation of IPublishedContent
-                
                 // TODO: FIXME!
-                //var content = new DetachedPublishedContent(
-                //    nameObj?.ToString(),
-                //    contentTypes.PublishedContentType,
-                //    properties.ToArray(),
-                //    containerNode);
+                var content = new DetachedPublishedElement(
+                    key,
+                    contentTypes.PublishedContentType,
+                    properties.ToArray());
 
-                //if (PublishedContentModelFactoryResolver.HasCurrent && PublishedContentModelFactoryResolver.Current.HasValue)
-                //{
-                //    // Let the current model factory create a typed model to wrap our model
-                //    content = PublishedContentModelFactoryResolver.Current.Factory.CreateModel(content);
-                //}
-
-                return pcr.PublishedContent;
-            }
+                return content;
 
         }
 

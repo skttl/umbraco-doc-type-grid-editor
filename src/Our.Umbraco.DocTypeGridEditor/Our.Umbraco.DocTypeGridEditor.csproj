@@ -220,7 +220,7 @@
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Helpers\DocTypeGridEditorHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
-    <Compile Include="Models\DetachedPublishedContent.cs" />
+    <Compile Include="Models\DetachedPublishedElement.cs" />
     <Compile Include="Models\DetachedPublishedProperty.cs" />
     <Compile Include="Models\JsonDbRow.cs" />
     <Compile Include="Models\UnpublishedContent.cs" />

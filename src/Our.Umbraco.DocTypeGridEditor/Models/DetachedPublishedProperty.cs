@@ -1,6 +1,7 @@
 ﻿using System;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
+using PropertyEditors = Umbraco.Core.PropertyEditors;
 
 namespace Our.Umbraco.DocTypeGridEditor.Models
 {
@@ -25,9 +26,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             _rawValue = value;
 
             // TODO: FIXME!
-            //_sourceValue = new Lazy<object>(() => _propertyType.ConvertDataToSource(_rawValue, _isPreview));
-            //_objectValue = new Lazy<object>(() => _propertyType.ConvertSourceToObject(_sourceValue.Value, _isPreview));
-            //_xpathValue = new Lazy<object>(() => _propertyType.ConvertSourceToXPath(_sourceValue.Value, _isPreview));
+            _sourceValue = new Lazy<object>(() => _propertyType.ConvertSourceToInter(null, _rawValue, _isPreview));
+            _objectValue = new Lazy<object>(() => _propertyType.ConvertInterToObject(null, PropertyEditors.PropertyCacheLevel.None, _sourceValue.Value, _isPreview));
+            _xpathValue = new Lazy<object>(() => _propertyType.ConvertInterToXPath(null, PropertyEditors.PropertyCacheLevel.None, _sourceValue.Value, _isPreview));
         }
 
         public string PropertyTypeAlias
@@ -60,22 +61,22 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         bool IPublishedProperty.HasValue(string culture, string segment)
         {
-            throw new NotImplementedException();
+            return HasValue;
         }
 
         public object GetSourceValue(string culture = null, string segment = null)
         {
-            throw new NotImplementedException();
+            return DataValue;
         }
 
         public object GetValue(string culture = null, string segment = null)
         {
-            throw new NotImplementedException();
+            return Value;
         }
 
         public object GetXPathValue(string culture = null, string segment = null)
         {
-            throw new NotImplementedException();
+            return XPathValue;
         }
 
         public PublishedPropertyType PropertyType { get; }
