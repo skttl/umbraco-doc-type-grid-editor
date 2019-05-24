@@ -15,8 +15,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Extensions
                 string.Concat("Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_", id),
                 () =>
                 {
-                    using (var scope = Current.ScopeProvider.CreateScope())
+                    using (var scope = Current.ScopeProvider.CreateScope(autoComplete:true))
                         return scope.Database.ExecuteScalar<string>("SELECT [cmsContentType].[alias] FROM [cmsContentType] INNER JOIN [umbracoNode] ON [cmsContentType].[nodeId] = [umbracoNode].[id] WHERE [umbracoNode].[uniqueID] = @0", id);
+
                 });
         }
     }
