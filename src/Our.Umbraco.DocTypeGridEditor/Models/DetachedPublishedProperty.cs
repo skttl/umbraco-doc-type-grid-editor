@@ -79,7 +79,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             return XPathValue;
         }
 
-        public PublishedPropertyType PropertyType { get; }
+        public PublishedPropertyType PropertyType
+        {
+            get
+            {
+                return _propertyType;
+            }
+        }
         public string Alias { get; }
     }
 }
