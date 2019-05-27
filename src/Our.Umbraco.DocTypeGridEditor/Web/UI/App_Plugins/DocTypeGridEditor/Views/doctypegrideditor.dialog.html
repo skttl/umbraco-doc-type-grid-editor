@@ -1,56 +1,48 @@
-<div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog">
-
-    <div>
-        <umb-control-group label="{{selectContentTypeLabel}}" ng-if="dialogMode == 'selectDocType'">
-            <ul class="umb-actions umb-actions-child">
-                <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
-                    <a ng-click="selectDocType(docType.alias)">
-                        <i class="large {{docType.icon}}"></i>
-                        <span class="menu-label">
-                            {{docType.name}}
-                            <small>
-                                {{docType.description}}
-                            </small>
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </umb-control-group>
-
-        <div ng-if="dialogMode == 'edit'">
-
-            <ng-form name="tabbedContentForm">
-                <div class="umb-group-panel" retrive-dom-element="registerPropertyGroup(element[0], attributes.appAnchor)" data-app-anchor="{{group.id}}" data-element="group-{{group.alias}}" ng-repeat="group in model.node.variants[0].tabs track by group.label">
-
-                    <div class="umb-group-panel__header">
-                        <div>{{ group.label }}</div>
-                    </div>
-
-                    <div class="umb-group-panel__content">
-                        <umb-property data-element="property-{{property.alias}}"
-                                      ng-repeat="property in group.properties track by property.alias"
-                                      property="property"
-                                      show-inherit="content.variants.length > 1 && !property.culture && !activeVariant.language.isDefault"
-                                      inherits-from="defaultVariant.language.name">
-
-                            <div ng-class="{'o-40 cursor-not-allowed': content.variants.length > 1 && !activeVariant.language.isDefault && !property.culture && !property.unlockInvariantValue}">
-                                <umb-property-editor model="property"
-                                                     preview="content.variants.length > 1 && !activeVariant.language.isDefault && !property.culture && !property.unlockInvariantValue">
-                                </umb-property-editor>
-                            </div>
-
-                        </umb-property>
-                    </div>
-
-                </div>
-
-                <umb-empty-state ng-if="content.tabs.length === 0"
-                                 position="center">
-                    <localize key="content_noProperties"></localize>
-                </umb-empty-state>
-
-            </ng-form>
-        </div>
-    </div>
-
+<div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog as vm">
+    <umb-editor-view>
+        <umb-editor-header name="model.title"
+                           name-locked="true"
+                           hide-alias="true"
+                           hide-icon="true"
+                           hide-description="true">
+        </umb-editor-header>
+        <umb-editor-container>
+            <umb-control-group label="{{selectContentTypeLabel}}" ng-if="dialogMode == 'selectDocType'">
+                <ul class="umb-actions umb-actions-child">
+                    <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
+                        <a ng-click="selectDocType(docType.alias)">
+                            <i class="large {{docType.icon}}"></i>
+                            <span class="menu-label">
+                                {{docType.name}}
+                                <small>
+                                    {{docType.description}}
+                                </small>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </umb-control-group>
+            <div ng-if="dialogMode == 'edit'">
+                <ng-form val-form-manager>
+                    <umb-tabbed-content ng-if="!vm.loading"
+                                        content="vm.content">
+                    </umb-tabbed-content>
+                </ng-form>
+            </div>
+        </umb-editor-container>
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button type="button"
+                            button-style="link"
+                            label-key="general_close"
+                            action="vm.close()">
+                </umb-button>
+                <umb-button type="button"
+                            button-style="action"
+                            label-key="general_submit"
+                            action="vm.submit(model)">
+                </umb-button>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+    </umb-editor-view>
 </div>
