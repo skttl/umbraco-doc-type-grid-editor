@@ -1,4 +1,5 @@
 ﻿using System;
+using PropertyEditors = Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 
@@ -20,10 +21,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             this.dataValue = value;
             this.hasValue = new Lazy<bool>(() => value != null && value.ToString().Trim().Length > 0);
 
-            // TODO: FIXME!
-            //this.sourceValue = new Lazy<object>(() => this.propertyType.ConvertDataToSource(this.dataValue, true));
-            //this.objectValue = new Lazy<object>(() => this.propertyType.ConvertSourceToObject(this.sourceValue.Value, true));
-            //this.xpathValue = new Lazy<object>(() => this.propertyType.ConvertSourceToXPath(this.sourceValue.Value, true));
+            this.sourceValue = new Lazy<object>(() => this.propertyType.ConvertSourceToInter(null, this.dataValue, true));
+            this.objectValue = new Lazy<object>(() => this.propertyType.ConvertInterToObject(null, PropertyEditors.PropertyCacheLevel.None, this.sourceValue.Value, true));
+            this.xpathValue = new Lazy<object>(() => this.propertyType.ConvertInterToXPath(null, PropertyEditors.PropertyCacheLevel.None, this.sourceValue.Value, true));
         }
 
         public string PropertyTypeAlias => this.propertyType.DataType.EditorAlias;
