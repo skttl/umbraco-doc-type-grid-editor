@@ -11,12 +11,6 @@ namespace Our.Umbraco.DocTypeGridEditor
     {
         public void Compose(Composition composition)
         {
-            // TODO: What is this for?
-            //if (DefaultDocTypeGridEditorSurfaceControllerResolver.HasCurrent == false)
-            //{
-            //    DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver();
-            //}
-
             DataTypeCacheRefresher.CacheUpdated += (sender, e) =>
             {
                 if (e.MessageType == MessageType.RefreshByJson)
