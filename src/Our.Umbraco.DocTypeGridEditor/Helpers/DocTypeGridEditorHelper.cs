@@ -18,7 +18,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
     public static class DocTypeGridEditorHelper
     {
 
-        public static IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
+        public static IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson, bool isPreview = false)
         {
             if (string.IsNullOrWhiteSpace(contentTypeAlias))
                 return null;
@@ -26,7 +26,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             if (dataJson == null)
                 return null;
 
-            if (Current.UmbracoContext == null)
+            if (Current.UmbracoContext == null || isPreview)
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
             return (IPublishedElement)Current.AppCaches.RuntimeCache.GetCacheItem(
