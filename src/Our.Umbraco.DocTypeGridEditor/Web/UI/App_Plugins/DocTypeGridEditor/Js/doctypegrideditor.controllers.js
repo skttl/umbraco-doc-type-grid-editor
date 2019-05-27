@@ -126,7 +126,8 @@
                     $scope.control.editor.config.viewPath,
                     $scope.control.editor.config.previewViewPath,
                     !!editorState.current.publishDate)
-                    .success(function (htmlResult) {
+                    .then(function (response) {
+                        var htmlResult = response.data;
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
                         }
