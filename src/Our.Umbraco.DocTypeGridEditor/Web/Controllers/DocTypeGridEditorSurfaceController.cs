@@ -8,7 +8,7 @@ using Umbraco.Web.Mvc;
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 {
     public abstract class DocTypeGridEditorSurfaceController
-        : DocTypeGridEditorSurfaceController<IPublishedContent>
+        : DocTypeGridEditorSurfaceController<IPublishedElement>
     { }
 
     public abstract class DocTypeGridEditorSurfaceController<TModel> : SurfaceController

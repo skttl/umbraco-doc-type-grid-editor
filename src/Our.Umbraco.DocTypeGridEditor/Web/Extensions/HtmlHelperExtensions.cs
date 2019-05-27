@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using Our.Umbraco.DocTypeGridEditor.Composing;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
 using Umbraco.Core.Models.PublishedContent;
@@ -48,28 +49,27 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 return helper.Action(content.ContentType.Alias, controllerName, routeValues);
             }
 
-            // TODO: FIXME!
             //// See if a default surface controller has been registered
-            //var defaultController = DefaultDocTypeGridEditorSurfaceControllerResolver.Current.GetDefaultControllerType();
-            //if (defaultController != null)
-            //{
-            //    var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
+            var defaultController = Current.DefaultDocTypeGridEditorSurfaceControllerType;
+            if (defaultController != null)
+            {
+                var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
 
-            //    // Try looking for an action named after the editor alias
-            //    if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
-            //    {
-            //        return helper.Action(editorAlias, defaultControllerName, routeValues);
-            //    }
+                // Try looking for an action named after the editor alias
+                if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
+                {
+                    return helper.Action(editorAlias, defaultControllerName, routeValues);
+                }
 
-            //    // Try looking for a doc type alias action
-            //    if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
-            //    {
-            //        return helper.Action(content.DocumentTypeAlias, defaultControllerName, routeValues);
-            //    }
+                // Try looking for a doc type alias action
+                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.ContentType.Alias, true))
+                {
+                    return helper.Action(content.ContentType.Alias, defaultControllerName, routeValues);
+                }
 
-            //    // Just go with a default action name
-            //    return helper.Action("Index", defaultControllerName, routeValues);
-            //}
+                // Just go with a default action name
+                return helper.Action("Index", defaultControllerName, routeValues);
+            }
 
             // Check for preview view
             if (string.IsNullOrWhiteSpace(previewViewPath) == false && isPreview)
