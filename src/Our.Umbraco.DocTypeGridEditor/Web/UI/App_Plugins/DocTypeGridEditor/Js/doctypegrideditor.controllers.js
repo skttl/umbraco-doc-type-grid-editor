@@ -61,6 +61,7 @@
             overlayOptions.editorName = $scope.control.editor.name;
             overlayOptions.allowedDocTypes = $scope.control.editor.config.allowedDocTypes || [];
             overlayOptions.nameTemplate = $scope.control.editor.config.nameTemplate;
+            overlayOptions.size = $scope.control.editor.config.largeDialog ? null : "small";
 
             overlayOptions.dialogData = {
                 docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
