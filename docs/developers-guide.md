@@ -89,6 +89,7 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 | EnablePreview   | Boolean  | Enables rendering a preview of the grid cell in the grid editor. |
 | LargeDialog     | Boolean  | Makes the editing dialog larger. Especially useful for grid editors with complex property editors. |
 | ViewPath        | String   | Set's an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering. Defaults to `~/Views/Partials/` |
+| ShowDocTypeSelectAsGrid | Boolean | Makes the content type selection dialog render a grid, in stead of the default list with descriptions |
 
 ---
 

@@ -59,8 +59,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         {
             var allContentTypes = Current.Services.ContentTypeService.GetAll().ToList();
             var contentTypes = allContentTypes
+                .Where(x => x.IsElement)
                 .Where(x => allowedContentTypes == null || allowedContentTypes.Length == 0 || allowedContentTypes.Any(y => Regex.IsMatch(x.Alias, y)))
                 .OrderBy(x => x.Name)
+                .ToList();
+
+            var blueprints = Current.Services.ContentService.GetBlueprintsForContentTypes(contentTypes.Select(x => x.Id).ToArray()).ToArray();
+
+            return contentTypes
                 .Select(x => new
                 {
                     id = x.Id,
@@ -68,21 +74,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     name = x.Name,
                     alias = x.Alias,
                     description = x.Description,
-                    icon = x.Icon
+                    icon = x.Icon,
+                    blueprints = blueprints.Where(bp => bp.ContentTypeId == x.Id).Select(bp => new
+                    {
+                        id = bp.Id,
+                        name = bp.Name
+                    })
                 });
-
-            //foreach (var contentType in allContentTypes)
-            //{
-            //    var firstGroup = contentType.PropertyGroups.FirstOrDefault();
-            //    if(firstGroup != null)
-            //        foreach (var prop in firstGroup.PropertyTypes)
-            //        {
-            //            var test = GetDataTypePreValues(prop.DataTypeId.ToString());
-            //        }
-               
-            //}
-
-            return contentTypes;
         }
 
         [HttpGet]
