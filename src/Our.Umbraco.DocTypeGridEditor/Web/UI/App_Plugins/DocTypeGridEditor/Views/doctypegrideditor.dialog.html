@@ -13,21 +13,22 @@
             </umb-load-indicator>
             <div ng-if="!vm.loading" ng-switch="dialogMode">
                 <div ng-switch-when="selectDocType">
+
+                    <div class="form-search" ng-hide="docTypes.length < 0 && model.filter === false" style="margin-bottom: 15px;">
+                        <i class="icon-search"></i>
+                        <input type="text"
+                               ng-model="searchTerm"
+                               class="umb-search-field search-query input-block-level -full-width-input"
+                               localize="placeholder"
+                               placeholder="@placeholders_filter"
+                               umb-auto-focus
+                               no-dirty-check />
+                    </div>
+
                     <umb-box>
                         <p class="abstract" ng-if="docTypes && docTypes.length === 0">
                             <localize key="create_noDocumentTypes" />
                         </p>
-
-                        <div class="form-search" ng-hide="docTypes.length < 0 && model.filter === false" style="margin-bottom: 15px;">
-                            <i class="icon-search"></i>
-                            <input type="text"
-                                   ng-model="searchTerm"
-                                   class="umb-search-field search-query input-block-level -full-width-input"
-                                   localize="placeholder"
-                                   placeholder="@placeholders_filter"
-                                   umb-auto-focus
-                                   no-dirty-check />
-                        </div>
 
                         <ul class="umb-actions umb-actions-child" ng-if="docTypes.length > 0 && !model.showDocTypeSelectAsGrid">
 
