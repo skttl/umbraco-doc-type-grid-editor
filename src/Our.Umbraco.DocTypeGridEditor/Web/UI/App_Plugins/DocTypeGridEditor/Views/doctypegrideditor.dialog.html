@@ -7,9 +7,11 @@
                            hide-icon="true"
                            hide-description="true">
         </umb-editor-header>
-        <umb-editor-container ng-if="!vm.loading">
 
-            <div ng-switch="dialogMode">
+        <umb-editor-container>
+            <umb-load-indicator ng-if="vm.loading">
+            </umb-load-indicator>
+            <div ng-if="!vm.loading" ng-switch="dialogMode">
                 <div ng-switch-when="selectDocType">
 
                     <p class="abstract" ng-if="docTypes && docTypes.length === 0">
