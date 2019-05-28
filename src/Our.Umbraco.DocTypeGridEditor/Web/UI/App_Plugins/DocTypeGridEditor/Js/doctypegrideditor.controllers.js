@@ -221,7 +221,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             }
 
             $scope.docTypes = [];
-            $scope.dialogMode = "selectDocType";
+            $scope.dialogMode = null;
             $scope.selectedDocType = null;
             $scope.model.node = null;
 
