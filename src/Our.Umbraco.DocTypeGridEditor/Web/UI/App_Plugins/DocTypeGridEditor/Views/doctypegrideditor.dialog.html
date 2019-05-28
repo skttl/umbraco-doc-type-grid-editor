@@ -1,4 +1,5 @@
 <div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog as vm">
+        
     <umb-editor-view>
         <umb-editor-header name="model.title"
                            name-locked="true"
@@ -6,29 +7,38 @@
                            hide-icon="true"
                            hide-description="true">
         </umb-editor-header>
-        <umb-editor-container>
-            <umb-control-group label="{{selectContentTypeLabel}}" ng-if="dialogMode == 'selectDocType'">
-                <ul class="umb-actions umb-actions-child">
-                    <li data-element="action-create-{{docType.alias}}" ng-repeat="docType in docTypes | orderBy:'name':false">
-                        <a ng-click="selectDocType(docType.alias)">
-                            <i class="large {{docType.icon}}"></i>
-                            <span class="menu-label">
-                                {{docType.name}}
-                                <small>
-                                    {{docType.description}}
-                                </small>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </umb-control-group>
-            <div ng-if="dialogMode == 'edit'">
-                <ng-form val-form-manager>
-                    <umb-tabbed-content ng-if="!vm.loading"
-                                        content="vm.content">
-                    </umb-tabbed-content>
-                </ng-form>
-            </div>
+        <umb-editor-container ng-if="!vm.loading && dialogMode == 'edit'">
+            <ng-form val-form-manager>
+                <umb-tabbed-content content="vm.content"></umb-tabbed-content>
+            </ng-form>
+        </umb-editor-container>
+        <umb-editor-container ng-if="!vm.loading && dialogMode == 'selectDocType'">
+            <umb-box>
+                <umb-box-content>
+                    <div class="form-search" ng-hide="model.filter === false" style="margin-bottom: 15px;">
+                        <i class="icon-search"></i>
+                        <input type="text"
+                               ng-model="searchTerm"
+                               class="umb-search-field search-query input-block-level -full-width-input"
+                               localize="placeholder"
+                               placeholder="@placeholders_filter"
+                               umb-auto-focus
+                               no-dirty-check />
+                    </div>
+
+                    <ul class="umb-card-grid -three-in-row">
+                        <li ng-repeat="docType in docTypes | orderBy:'name' | filter:searchTerm"
+                            ng-click="selectDocType(docType.alias)">
+                            <a class="umb-card-grid-item" href="" title="{{ docType.name }}">
+                                <span>
+                                    <i class="{{ docType.icon }}"></i>
+                                    {{ docType.name }}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </umb-box-content>
+            </umb-box>
         </umb-editor-container>
         <umb-editor-footer>
             <umb-editor-footer-content-right>
