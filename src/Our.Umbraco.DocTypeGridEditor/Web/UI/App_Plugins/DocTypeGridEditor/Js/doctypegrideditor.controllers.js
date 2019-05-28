@@ -211,6 +211,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             vm.loading = true;
             function submit() {
                 if ($scope.model.submit) {
+                    $scope.$broadcast('formSubmitting', { scope: $scope });
                     $scope.model.submit($scope.model);
                 }
             }
