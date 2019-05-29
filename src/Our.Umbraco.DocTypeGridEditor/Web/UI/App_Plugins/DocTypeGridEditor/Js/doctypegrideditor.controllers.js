@@ -44,7 +44,9 @@
                 $scope.title = $scope.control.value.value.name;
             }
             if ("dtgeContentTypeAlias" in $scope.control.value && $scope.control.value.dtgeContentTypeAlias) {
-                dtgeResources.getContentTypeIcon($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
+                dtgeResources.getContentType($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
+                    $scope.title = data2.title;                    
+                    $scope.description = data2.description;
                     if (data2.icon) {
                         $scope.icon = data2.icon;
                     }
