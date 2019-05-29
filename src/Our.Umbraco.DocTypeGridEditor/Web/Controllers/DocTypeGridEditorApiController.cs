@@ -86,7 +86,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         }
 
         [HttpGet]
-        public object GetContentTypeIcon([ModelBinder] string contentTypeAlias)
+        public object GetContentType([ModelBinder] string contentTypeAlias)
         {
             Guid docTypeGuid;
             if (Guid.TryParse(contentTypeAlias, out docTypeGuid))

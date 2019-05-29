@@ -20,7 +20,7 @@
                     'Failed to retrieve content types'
                 );
             },
-            getContentTypeIcon: function (contentTypeAlias) {
+            getContentType: function (contentTypeAlias) {
                 var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeIcon?contentTypeAlias=" + contentTypeAlias);
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
