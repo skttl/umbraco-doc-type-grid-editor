@@ -13,77 +13,80 @@
             </umb-load-indicator>
             <div ng-if="!vm.loading" ng-switch="dialogMode">
                 <div ng-switch-when="selectDocType">
-
-                    <div class="form-search" ng-hide="docTypes.length < 0 && model.filter === false" style="margin-bottom: 15px;">
-                        <i class="icon-search"></i>
-                        <input type="text"
-                               ng-model="searchTerm"
-                               class="umb-search-field search-query input-block-level -full-width-input"
-                               localize="placeholder"
-                               placeholder="@placeholders_filter"
-                               umb-auto-focus
-                               no-dirty-check />
-                    </div>
-
                     <umb-box>
-                        <p class="abstract" ng-if="docTypes && docTypes.length === 0">
-                            <localize key="create_noDocumentTypes" />
-                        </p>
+                        <umb-box-content>
+                            <p class="abstract" ng-if="docTypes && docTypes.length === 0">
+                                <localize key="create_noDocumentTypes" />
+                            </p>
 
-                        <ul class="umb-actions umb-actions-child" ng-if="docTypes.length > 0 && !model.showDocTypeSelectAsGrid">
+                            <div class="form-search" ng-hide="docTypes.length < 0 && model.filter === false" style="margin-bottom: 15px;">
+                                <i class="icon-search"></i>
+                                <input type="text"
+                                       ng-model="searchTerm"
+                                       class="umb-search-field search-query input-block-level -full-width-input"
+                                       localize="placeholder"
+                                       placeholder="@placeholders_filter"
+                                       umb-auto-focus
+                                       no-dirty-check />
+                            </div>
 
-                            <li class="umb-action" ng-repeat="docType in docTypes | orderBy:'name' | filter:searchTerm">
-                                <a class="umb-action-link" ng-click="createOrSelectBlueprintIfAny(docType)">
-                                    <i class="large icon {{docType.icon}}"></i>
-                                    <span class="menu-label">
-                                        {{docType.name}}
-                                        <small>
-                                            {{docType.description}}
-                                        </small>
-                                    </span>
-                                </a>
-                            </li>
+                            <ul class="umb-actions umb-actions-child" ng-if="docTypes.length > 0 && !model.showDocTypeSelectAsGrid">
 
-                        </ul>
+                                <li class="umb-action" ng-repeat="docType in docTypes | orderBy:'name' | filter:searchTerm">
+                                    <a class="umb-action-link" ng-click="createOrSelectBlueprintIfAny(docType)">
+                                        <i class="large icon {{docType.icon}}"></i>
+                                        <span class="menu-label">
+                                            {{docType.name}}
+                                            <small>
+                                                {{docType.description}}
+                                            </small>
+                                        </span>
+                                    </a>
+                                </li>
 
-                        <ul class="umb-card-grid -three-in-row" ng-if="docTypes.length > 0 && model.showDocTypeSelectAsGrid">
-                            <li ng-repeat="docType in docTypes | orderBy:'name' | filter:searchTerm"
-                                ng-click="createOrSelectBlueprintIfAny(docType)">
-                                <a class="umb-card-grid-item" href="" title="{{ docType.name }}">
-                                    <span>
-                                        <i class="{{ docType.icon }}"></i>
-                                        {{ docType.name }}
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
+                            </ul>
+
+                            <ul class="umb-card-grid -three-in-row" ng-if="docTypes.length > 0 && model.showDocTypeSelectAsGrid">
+                                <li ng-repeat="docType in docTypes | orderBy:'name' | filter:searchTerm"
+                                    ng-click="createOrSelectBlueprintIfAny(docType)">
+                                    <a class="umb-card-grid-item" href="" title="{{ docType.name }}">
+                                        <span>
+                                            <i class="{{ docType.icon }}"></i>
+                                            {{ docType.name }}
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </umb-box-content>
                     </umb-box>
                 </div>
 
 
                 <div ng-switch-when="selectBlueprint">
                     <umb-box>
-                        <ul class="umb-actions umb-actions-child">
+                        <umb-box-content>
+                            <ul class="umb-actions umb-actions-child">
 
-                            <li class="umb-action" ng-repeat="blueprint in selectedDocType.blueprints | orderBy:'name':false">
-                                <a class="umb-action-link" ng-click="createFromBlueprint(blueprint.id)">
-                                    <i class="large icon {{selectedDocType.icon}}"></i>
-                                    <span class="menu-label">
-                                        {{blueprint.name}}
-                                    </span>
-                                </a>
-                            </li>
+                                <li class="umb-action" ng-repeat="blueprint in selectedDocType.blueprints | orderBy:'name':false">
+                                    <a class="umb-action-link" ng-click="createFromBlueprint(blueprint.id)">
+                                        <i class="large icon {{selectedDocType.icon}}"></i>
+                                        <span class="menu-label">
+                                            {{blueprint.name}}
+                                        </span>
+                                    </a>
+                                </li>
 
-                            <li class="umb-action sep" ng-show="vm.blueprintConfig.allowBlank">
-                                <a class="umb-action-link" ng-click="createBlank()">
-                                    <i class="large icon {{selectedDocType.icon}}"></i>
-                                    <span class="menu-label">
-                                        <localize key="blueprints_blankBlueprint">Blank</localize>
-                                    </span>
-                                </a>
-                            </li>
+                                <li class="umb-action sep" ng-show="vm.blueprintConfig.allowBlank">
+                                    <a class="umb-action-link" ng-click="createBlank()">
+                                        <i class="large icon {{selectedDocType.icon}}"></i>
+                                        <span class="menu-label">
+                                            <localize key="blueprints_blankBlueprint">Blank</localize>
+                                        </span>
+                                    </a>
+                                </li>
 
-                        </ul>
+                            </ul>
+                        </umb-box-content>
                     </umb-box>
                 </div>
                 <ng-form val-form-manager ng-switch-when="edit">
