@@ -34,6 +34,8 @@
             overlayOptions.titles.selectContentType = data[2];
             overlayOptions.titles.selectBlueprint = data[3];
         });
+        
+        $scope.title = overlayOptions.titles.selectContentType;
 
         $scope.setValue = function (data, callback) {
             $scope.control.value = data;
