@@ -95,8 +95,8 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2017 UMCO, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
+Copyright &copy; 2019 UMCO, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
 
-Copyright &copy; 2014 Umbrella Inc
+Copyright &copy; 2019 Umbrella Inc
 
 Licensed under the [MIT License](LICENSE.md)
