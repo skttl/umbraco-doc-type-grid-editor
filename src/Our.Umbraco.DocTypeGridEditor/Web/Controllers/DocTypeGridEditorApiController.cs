@@ -181,7 +181,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             }
 
             // Get content node object
-            var content = DocTypeGridEditorHelper.ConvertValueToContent(data.Id, data.ContentTypeAlias, data.Value, true);
+            var content = DocTypeGridEditorHelper.ConvertValueToContent(data.Id, data.ContentTypeAlias, data.Value);
 
             // Construct preview model
             var model = new PreviewModel
