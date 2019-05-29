@@ -105,6 +105,7 @@
                             button-style="action"
                             label-key="general_submit"
                             shortcut="ctrl+s"
+                            ng-if="dialogMode == 'edit'"
                             action="vm.submit(model)">
                 </umb-button>
             </umb-editor-footer-content-right>
