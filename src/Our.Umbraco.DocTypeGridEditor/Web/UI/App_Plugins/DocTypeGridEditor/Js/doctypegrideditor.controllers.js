@@ -1,6 +1,7 @@
 ﻿angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor", [
 
     "$scope",
+    "$rootScope",
     "$timeout",
     "editorState",
     'assetsService',
@@ -9,7 +10,7 @@
     "localizationService",
     "editorService",
 
-    function ($scope, $timeout, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService, editorService) {
+    function ($scope, $rootScope, $timeout, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService, editorService) {
 
         var overlayOptions = {
             view: umbRequestHelper.convertVirtualToAbsolutePath(
@@ -27,6 +28,9 @@
 
         $scope.icon = "icon-item-arrangement";
 
+        // init cached content types if it doesnt exist.
+        if (!$rootScope.dtgeContentTypes) $rootScope.dtgeContentTypes = {};
+
         // localize strings
         localizationService.localizeMany(["docTypeGridEditor_insertItem", "docTypeGridEditor_editItem", "docTypeGridEditor_selectContentType", "blueprints_selectBlueprint"]).then(function (data) {
             overlayOptions.titles.insertItem = data[0];
@@ -36,7 +40,10 @@
         });
 
         $scope.setValue = function (data, callback) {
+            $scope.title = $scope.control.editor.name;
+            $scope.icon = $scope.control.editor.icon;
             $scope.control.value = data;
+
             if (!("id" in $scope.control.value) || $scope.control.value.id == "") {
                 $scope.control.value.id = guid();
             }
@@ -44,14 +51,32 @@
                 $scope.title = $scope.control.value.value.name;
             }
             if ("dtgeContentTypeAlias" in $scope.control.value && $scope.control.value.dtgeContentTypeAlias) {
-                dtgeResources.getContentType($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
-                    $scope.title = data2.title;                    
-                    $scope.description = data2.description;
-                    $scope.icon = data2.icon;
-                });
+                if (!$rootScope.dtgeContentTypes[$scope.control.value.dtgeContentTypeAlias]) {
+
+                    dtgeResources.getContentType($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
+                        var contentType = {
+                            title: data2.title,
+                            description: data2.description,
+                            icon: data2.icon
+                        };
+
+                        // save to cached content types
+                        $rootScope.dtgeContentTypes[$scope.control.value.dtgeContentTypeAlias] = contentType;
+                        $scope.setTitleAndDescription(contentType);
+                    });
+                }
+                else {
+                    $scope.setTitleAndDescription($rootScope.dtgeContentTypes[$scope.control.value.dtgeContentTypeAlias]);
+                }
             }
             if (callback)
                 callback();
+        };
+
+        $scope.setTitleAndDescription = function (contentType) {
+            $scope.title = contentType.title;
+            $scope.description = contentType.description;
+            $scope.icon = contentType.icon;
         };
 
         $scope.setDocType = function () {
