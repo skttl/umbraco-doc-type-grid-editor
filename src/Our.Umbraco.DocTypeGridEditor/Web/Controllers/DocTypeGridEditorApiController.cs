@@ -93,7 +93,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             var contentType = Current.Services.ContentTypeService.Get(contentTypeAlias);
             return new
             {
-                icon = contentType != null ? contentType.Icon : string.Empty
+                icon = contentType != null ? contentType.Icon : "icon-item-arrangement",
+                title = contentType != null ? contentType.Name : "Doc Type",
+                description = contentType != null ? contentType.Description : string.Empty
             };
         }
 

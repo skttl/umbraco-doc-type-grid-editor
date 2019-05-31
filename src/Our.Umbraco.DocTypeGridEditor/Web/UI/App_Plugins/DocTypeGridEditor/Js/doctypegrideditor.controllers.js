@@ -34,8 +34,6 @@
             overlayOptions.titles.selectContentType = data[2];
             overlayOptions.titles.selectBlueprint = data[3];
         });
-        
-        $scope.title = overlayOptions.titles.selectContentType;
 
         $scope.setValue = function (data, callback) {
             $scope.control.value = data;
@@ -49,9 +47,7 @@
                 dtgeResources.getContentType($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
                     $scope.title = data2.title;                    
                     $scope.description = data2.description;
-                    if (data2.icon) {
-                        $scope.icon = data2.icon;
-                    }
+                    $scope.icon = data2.icon;
                 });
             }
             if (callback)

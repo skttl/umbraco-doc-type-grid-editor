@@ -21,7 +21,7 @@
                 );
             },
             getContentType: function (contentTypeAlias) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeIcon?contentTypeAlias=" + contentTypeAlias);
+                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentType?contentTypeAlias=" + contentTypeAlias);
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
                     'Failed to retrieve content type icon'
