@@ -25,7 +25,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
             _rawValue = value;
 
-            // TODO: FIXME!
             _sourceValue = new Lazy<object>(() => _propertyType.ConvertSourceToInter(null, _rawValue, _isPreview));
             _objectValue = new Lazy<object>(() => _propertyType.ConvertInterToObject(null, PropertyEditors.PropertyCacheLevel.None, _sourceValue.Value, _isPreview));
             _xpathValue = new Lazy<object>(() => _propertyType.ConvertInterToXPath(null, PropertyEditors.PropertyCacheLevel.None, _sourceValue.Value, _isPreview));

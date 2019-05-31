@@ -138,7 +138,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
                     Current.PropertyEditors.TryGet(propertyType.DataType.EditorAlias, out var editor);
                     if (editor != null)
                     {
-                        // TODO: FIXME!
                         value = editor.GetValueEditor().ConvertDbToString(property.PropertyType, value, services.DataTypeService);
                     }
                 }

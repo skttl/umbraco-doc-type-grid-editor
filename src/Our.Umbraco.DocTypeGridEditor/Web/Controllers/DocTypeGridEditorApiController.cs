@@ -126,11 +126,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 return null;
 
             // Convert to editor config
-            //var preValue = Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dtd.Id);
-            //var propEditor = PropertyEditorResolver.Current.GetByAlias(dtd.PropertyEditorAlias);
-            //return propEditor.PreValueEditor.ConvertDbToEditor(propEditor.DefaultPreValues, preValue);
-            
-            // TODO: FIXME! This is not the data we were expecting, not sure what we were actually expecting and why :)
             var dataType = Current.Services.DataTypeService.GetDataType(dtd.Id);
             var propEditor = dataType.Editor;
             var content = propEditor.GetValueEditor().ConvertDbToString(new PropertyType(dataType), dataType.Configuration, Current.Services.DataTypeService);
@@ -153,23 +148,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     page = new UnpublishedContent(pageId, Services);
                 }
             }
-
-            // NOTE: The previous previewer had a content node associated with the request,
-            // meaning that an implementation may have used this to traverse the content-tree.
-            // In order to maintain backward-compatibility, we must ensure the PublishedContentRequest context.
-
-            // TODO: Do we still need this hack?
-            //if (UmbracoContext.PublishedContentRequest == null)
-            //{
-            //    UmbracoContext.PublishedContentRequest = new PublishedContentRequest(
-            //        Request.RequestUri,
-            //        UmbracoContext.RoutingContext,
-            //        UmbracoConfig.For.UmbracoSettings().WebRouting,
-            //        null)
-            //    {
-            //        PublishedContent = page
-            //    };
-            //}
 
             // Set the culture for the preview
             if (page != null)
