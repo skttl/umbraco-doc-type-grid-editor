@@ -1,8 +1,7 @@
 <div ng-controller="Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor">
-    <div class="umb-editor-placeholder dtge-editor-placeholder"
-         ng-click="setDocType()"
-         ng-class="{ 'dtge-editor-placeholder--preview' : preview }">
-        <div ng-if="!preview">
+    <div ng-click="setDocType()">
+        <div ng-if="!preview"
+             class="umb-editor-placeholder dtge-editor-placeholder">
             <i class="icon {{icon}}"></i>
             <div class="help-text">
                 {{title}}
