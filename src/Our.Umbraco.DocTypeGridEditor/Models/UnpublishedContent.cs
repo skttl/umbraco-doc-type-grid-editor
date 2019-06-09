@@ -35,7 +35,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             var userService = new Lazy<IUserService>(() => serviceContext.UserService);
 
             this.content = content;
-            var contentType = Current.Services.ContentTypeService.Get(this.ContentType.Id);
+            var contentType = Current.Services.ContentTypeService.Get(this.content.ContentType.Id);
 
             //this.children = new Lazy<IEnumerable<IPublishedContent>>(() => this.content.Children().Select(x => new UnpublishedContent(x, serviceContext)).ToList());
             this.contentType = new Lazy<PublishedContentType>(() => Current.PublishedContentTypeFactory.CreateContentType(contentType));
@@ -56,22 +56,22 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         public string GetUrl(string culture = null)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public PublishedCultureInfo GetCulture(string culture = null)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         bool IPublishedContent.IsDraft(string culture)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool IsPublished(string culture = null)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public int Id => this.content.Id;
