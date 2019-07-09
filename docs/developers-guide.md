@@ -180,7 +180,7 @@ By inheriting from the `DocTypeGridEditorSurfaceController` base class, you'll a
 
 | Member                                            | Type              | Description |
 |---------------------------------------------------|-------------------|-------------|
-| Model                                             | IPublishedContent | The IPublishedContent instance for you cells data. |
+| Model                                             | IPublishedElement | The IPublishedElement instance of your cell's data. |
 | ViewPath                                          | String            | A reference to the currently configured ViewPath |
 | CurrentPartialView(object model = null)           | Method            | Helper method to return you to the default partial view for this cell. If no model is passed in, the standard Model will be passed down. |
 | PartialView(string viewName, object model = null) | Method            | Helper method to return you to an alternative partial view for this cell. If no model is passed in, the standard Model will be passed down. |
