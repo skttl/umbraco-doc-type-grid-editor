@@ -1,8 +1,8 @@
-﻿using Our.Umbraco.DocTypeGridEditor.Composing;
-using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using Our.Umbraco.DocTypeGridEditor.Composing;
+using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
 using Umbraco.Core.Models.PublishedContent;
 
@@ -10,20 +10,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
     public static class HtmlHelperExtensions
     {
-        public static IPublishedContent GetContainerPage(this HtmlHelper helper)
-        {
-            //return helper.ViewData["DTGE_ContainerPage"] as IPublishedContent;
-            if (helper.ViewContext.TempData.ContainsKey("dtgeContainerPage"))
-            {
-                return helper.ViewContext.TempData["dtgeContainerPage"] as IPublishedContent;
-            }
-            return null;
-        }
-
         public static HtmlString RenderDocTypeGridEditorItem(
             this HtmlHelper helper,
             IPublishedElement content,
-            IPublishedContent containerPage,
             string editorAlias = "",
             string viewPath = "",
             string previewViewPath = "",
@@ -39,12 +28,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 
             if (string.IsNullOrWhiteSpace(previewViewPath) == false)
                 previewViewPath = previewViewPath.EnsureEndsWith('/');
-
-            //Store the container page reference away for later
-            if (containerPage != null)
-            {
-                helper.ViewContext.TempData["dtgeContainerPage"] = containerPage;
-            }
 
             var routeValues = new
             {
