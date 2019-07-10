@@ -7,14 +7,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 {
     internal class UnpublishedProperty : IPublishedProperty
     {
-        private readonly PublishedPropertyType propertyType;
+        private readonly IPublishedPropertyType propertyType;
         private readonly object dataValue;
         private readonly Lazy<bool> hasValue;
         private readonly Lazy<object> sourceValue;
         private readonly Lazy<object> objectValue;
         private readonly Lazy<object> xpathValue;
 
-        public UnpublishedProperty(PublishedPropertyType propertyType, object value)
+        public UnpublishedProperty(IPublishedPropertyType propertyType, object value)
         {
             this.propertyType = propertyType;
 
@@ -42,7 +42,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         public object GetXPathValue(string culture = null, string segment = null) => this.xpathValue.Value;
 
-        public PublishedPropertyType PropertyType => this.PropertyType;
+        public IPublishedPropertyType PropertyType => this.PropertyType;
 
         public string Alias => this.Alias;
     }

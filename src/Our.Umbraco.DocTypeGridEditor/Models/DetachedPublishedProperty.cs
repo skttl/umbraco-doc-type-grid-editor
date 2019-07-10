@@ -7,18 +7,18 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 {
     internal class DetachedPublishedProperty : IPublishedProperty
     {
-        private readonly PublishedPropertyType _propertyType;
+        private readonly IPublishedPropertyType _propertyType;
         private readonly object _rawValue;
         private readonly Lazy<object> _sourceValue;
         private readonly Lazy<object> _objectValue;
         private readonly Lazy<object> _xpathValue;
         private readonly bool _isPreview;
 
-        public DetachedPublishedProperty(PublishedPropertyType propertyType, object value)
+        public DetachedPublishedProperty(IPublishedPropertyType propertyType, object value)
             : this(propertyType, value, false)
         { }
 
-        public DetachedPublishedProperty(PublishedPropertyType propertyType, object value, bool isPreview)
+        public DetachedPublishedProperty(IPublishedPropertyType propertyType, object value, bool isPreview)
         {
             _propertyType = propertyType;
             _isPreview = isPreview;
@@ -78,7 +78,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             return XPathValue;
         }
 
-        public PublishedPropertyType PropertyType
+        public IPublishedPropertyType PropertyType
         {
             get
             {

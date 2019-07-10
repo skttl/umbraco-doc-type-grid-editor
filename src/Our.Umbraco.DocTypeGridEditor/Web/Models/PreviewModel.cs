@@ -20,7 +20,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web
         
         public IPublishedProperty GetProperty(string alias) => Item.GetProperty(alias);
         
-        public PublishedContentType ContentType => Item.ContentType;
+        public IPublishedContentType ContentType => Item.ContentType;
 
         public Guid Key => Item.Key;
 

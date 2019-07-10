@@ -18,7 +18,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
         private readonly IContent content;
 
         private readonly Lazy<IEnumerable<IPublishedContent>> children;
-        private readonly Lazy<PublishedContentType> contentType;
+        private readonly Lazy<IPublishedContentType> contentType;
         private readonly Lazy<string> creatorName;
         private readonly Lazy<IPublishedContent> parent;
         private readonly Lazy<Dictionary<string, IPublishedProperty>> properties;
@@ -38,7 +38,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             var contentType = Current.Services.ContentTypeService.Get(this.content.ContentType.Id);
 
             //this.children = new Lazy<IEnumerable<IPublishedContent>>(() => this.content.Children().Select(x => new UnpublishedContent(x, serviceContext)).ToList());
-            this.contentType = new Lazy<PublishedContentType>(() => Current.PublishedContentTypeFactory.CreateContentType(contentType));
+            this.contentType = new Lazy<IPublishedContentType>(() => Current.PublishedContentTypeFactory.CreateContentType(contentType));
             this.creatorName = new Lazy<string>(() => this.content.GetCreatorProfile(userService.Value).Name);
             this.parent = new Lazy<IPublishedContent>(() => new UnpublishedContent(Current.Services.ContentService.GetById(this.content.ParentId), serviceContext));
             this.properties = new Lazy<Dictionary<string, IPublishedProperty>>(() => MapProperties(serviceContext));
@@ -113,9 +113,11 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 
         public IEnumerable<IPublishedContent> Children => this.children.Value;
 
-        public PublishedContentType ContentType => this.contentType.Value;
+        public IPublishedContentType ContentType => this.contentType.Value;
 
         public ICollection<IPublishedProperty> Properties => this.properties.Value.Values;
+
+        public IEnumerable<IPublishedContent> ChildrenForAllCultures => this.children.Value;
 
         public IPublishedProperty GetProperty(string alias)
         {

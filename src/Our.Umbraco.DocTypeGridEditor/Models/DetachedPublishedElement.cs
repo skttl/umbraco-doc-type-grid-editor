@@ -8,7 +8,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
 {
     internal class DetachedPublishedElement : IPublishedElement
     {
-        private readonly PublishedContentType _contentType;
+        private readonly IPublishedContentType _contentType;
         private readonly IEnumerable<IPublishedProperty> _properties;
         private readonly bool _isPreviewing;
         private readonly Guid _key;
@@ -16,7 +16,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
         
         public DetachedPublishedElement(
             Guid key,
-            PublishedContentType contentType,
+            IPublishedContentType contentType,
             IEnumerable<IPublishedProperty> properties,
             bool isPreviewing = false)
         {
@@ -25,7 +25,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
             _properties = properties;
             _isPreviewing = isPreviewing;
 }
-        public PublishedContentType ContentType => _contentType;
+        public IPublishedContentType ContentType => _contentType;
         
         public IPublishedProperty GetProperty(string alias) => _properties.FirstOrDefault(x => x.PropertyType.Alias.InvariantEquals(alias));
 
