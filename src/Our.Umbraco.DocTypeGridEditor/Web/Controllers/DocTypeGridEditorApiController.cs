@@ -19,6 +19,7 @@ using Umbraco.Web.Composing;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.PublishedCache;
+using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 {
@@ -149,6 +150,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 }
             }
 
+            if (UmbracoContext.PublishedRequest == null)
+            {
+                var router = Current.Factory.GetInstance(typeof(IPublishedRouter)) as IPublishedRouter;
+                UmbracoContext.PublishedRequest = router.CreateRequest(UmbracoContext, Request.RequestUri);
+                UmbracoContext.PublishedRequest.PublishedContent = page;
+            }
+
             // Set the culture for the preview
             if (page != null)
             {
@@ -156,6 +164,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 if (page.Cultures != null && page.Cultures.ContainsKey(currentCulture))
                 {
                     var culture = new CultureInfo(page.Cultures[currentCulture].Culture);
+                    UmbracoContext.PublishedRequest.Culture = culture;
                     System.Threading.Thread.CurrentThread.CurrentCulture = culture;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
                 }
@@ -176,7 +185,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
             // Render view
             var partialName = "~/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditorPreviewer.cshtml";
-            var markup = Helpers.ViewHelper.RenderPartial(partialName, model, UmbracoContext.HttpContext);
+            var markup = Helpers.ViewHelper.RenderPartial(partialName, model, UmbracoContext.HttpContext, UmbracoContext);
 
             // Return response
             var response = new HttpResponseMessage
