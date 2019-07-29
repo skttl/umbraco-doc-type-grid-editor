@@ -1,31 +1,18 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using Our.Umbraco.DocTypeGridEditor.Composing;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
-using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
-using Umbraco.Core.Models;
-using Umbraco.Web;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
     public static class HtmlHelperExtensions
     {
-        // HACK: This is to ensure backwards-compatibility for existing websites.
-        // TODO: Once we bump the major version number, we can remove this stub method.
-        public static HtmlString RenderDocTypeGridEditorItem(
-             this HtmlHelper helper,
-             IPublishedContent content,
-             string editorAlias,
-             string viewPath,
-             string previewViewPath)
-        {
-            return helper.RenderDocTypeGridEditorItem(content, editorAlias, viewPath, previewViewPath, false);
-        }
-
         public static HtmlString RenderDocTypeGridEditorItem(
             this HtmlHelper helper,
-            IPublishedContent content,
+            IPublishedElement content,
             string editorAlias = "",
             string viewPath = "",
             string previewViewPath = "",
@@ -34,7 +21,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             if (content == null)
                 return new HtmlString(string.Empty);
 
-            var controllerName = $"{content.DocumentTypeAlias}Surface";
+            var controllerName = $"{content.ContentType.Alias}Surface";
 
             if (string.IsNullOrWhiteSpace(viewPath) == false)
                 viewPath = viewPath.EnsureEndsWith('/');
@@ -57,13 +44,13 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
             }
 
             // Try looking for surface controller with action named after the doc type alias alias
-            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
+            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.ContentType.Alias, true))
             {
-                return helper.Action(content.DocumentTypeAlias, controllerName, routeValues);
+                return helper.Action(content.ContentType.Alias, controllerName, routeValues);
             }
 
-            // See if a default surface controller has been registered
-            var defaultController = DefaultDocTypeGridEditorSurfaceControllerResolver.Current.GetDefaultControllerType();
+            //// See if a default surface controller has been registered
+            var defaultController = Current.DefaultDocTypeGridEditorSurfaceControllerType;
             if (defaultController != null)
             {
                 var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
@@ -75,9 +62,9 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 }
 
                 // Try looking for a doc type alias action
-                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
+                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.ContentType.Alias, true))
                 {
-                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, routeValues);
+                    return helper.Action(content.ContentType.Alias, defaultControllerName, routeValues);
                 }
 
                 // Just go with a default action name
@@ -93,7 +80,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
-                fullPreviewViewPath = $"{previewViewPath}{content.DocumentTypeAlias}.cshtml";
+                fullPreviewViewPath = $"{previewViewPath}{content.ContentType.Alias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
@@ -115,7 +102,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                     return helper.Partial(fullViewPath, content);
                 }
 
-                fullViewPath = $"{viewPath}{content.DocumentTypeAlias}.cshtml";
+                fullViewPath = $"{viewPath}{content.ContentType.Alias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
@@ -134,7 +121,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
                 return helper.Partial(editorAlias, content);
             }
 
-            return helper.Partial(content.DocumentTypeAlias, content);
+            return helper.Partial(content.ContentType.Alias, content);
         }
     }
 }

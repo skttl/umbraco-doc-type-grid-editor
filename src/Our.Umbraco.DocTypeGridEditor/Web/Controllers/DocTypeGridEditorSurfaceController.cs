@@ -2,13 +2,13 @@
 using System.Web.Mvc;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
 using Umbraco.Core;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web.Mvc;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 {
     public abstract class DocTypeGridEditorSurfaceController
-        : DocTypeGridEditorSurfaceController<IPublishedContent>
+        : DocTypeGridEditorSurfaceController<IPublishedElement>
     { }
 
     public abstract class DocTypeGridEditorSurfaceController<TModel> : SurfaceController

@@ -30,8 +30,8 @@ With the **Doc Type Grid Editor** then, we bridge that gap, allowing you to reus
 
 Before you get started, there are a number of things you will need:
 
-1. .NET 4.5+
-2. Umbraco 7.6.0+
+1. .NET 4.7.2+
+2. Umbraco 8.0.2+
 3. The **Doc Type Grid Editor** package installed
 
 ---
@@ -39,6 +39,8 @@ Before you get started, there are a number of things you will need:
 ### Configuring The Doc Type Grid Editor
 
 The **Doc Type Grid Editor** is configured via the grid.editors.config.js config file located in the `~/Config` folder. A default configuration should be installed along with the package, but for details on the configuration options, please see below.
+
+You can also add your editors using a package.manifest file in a folder in the `~/App_Plugins` folder.
 
 #### Example
 
@@ -55,6 +57,7 @@ The **Doc Type Grid Editor** is configured via the grid.editors.config.js config
             "allowedDocTypes": [...],
             "nameTemplate": "",
             "enablePreview": true,
+			"largeDialog": true,
             "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
             "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
             "previewCssFilePath": "",
@@ -84,7 +87,9 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 |-----------------|----------|-------------|
 | AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". However if a single doc type is matched, (aka **Single Doc Type Mode**), then dropdown selection stage (in the DTGE panel) will be skipped. |
 | EnablePreview   | Boolean  | Enables rendering a preview of the grid cell in the grid editor. |
+| LargeDialog     | Boolean  | Makes the editing dialog larger. Especially useful for grid editors with complex property editors. |
 | ViewPath        | String   | Set's an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering. Defaults to `~/Views/Partials/` |
+| ShowDocTypeSelectAsGrid | Boolean | Makes the content type selection dialog render a grid, in stead of the default list with descriptions |
 
 ---
 
@@ -175,7 +180,7 @@ By inheriting from the `DocTypeGridEditorSurfaceController` base class, you'll a
 
 | Member                                            | Type              | Description |
 |---------------------------------------------------|-------------------|-------------|
-| Model                                             | IPublishedContent | The IPublishedContent instance for you cells data. |
+| Model                                             | IPublishedElement | The IPublishedElement instance of your cell's data. |
 | ViewPath                                          | String            | A reference to the currently configured ViewPath |
 | CurrentPartialView(object model = null)           | Method            | Helper method to return you to the default partial view for this cell. If no model is passed in, the standard Model will be passed down. |
 | PartialView(string viewName, object model = null) | Method            | Helper method to return you to an alternative partial view for this cell. If no model is passed in, the standard Model will be passed down. |

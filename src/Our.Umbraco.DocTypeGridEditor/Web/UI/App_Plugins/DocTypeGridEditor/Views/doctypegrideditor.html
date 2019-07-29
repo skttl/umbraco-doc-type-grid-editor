@@ -1,10 +1,14 @@
-﻿<div ng-controller="Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor">
-    <div class="usky-editor-placeholder dtge-editor-placeholder"
-         ng-click="setDocType()"
-         ng-class="{ 'dtge-editor-placeholder--preview' : preview }">
-        <div ng-if="!preview">
+<div ng-controller="Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor">
+    <div ng-click="setDocType()">
+        <div ng-if="!preview"
+             class="umb-editor-placeholder dtge-editor-placeholder">
             <i class="icon {{icon}}"></i>
-            <div class="help-text">{{title}}</div>
+            <div class="help-text">
+                {{title}}
+            </div>
+            <div class="description-text" ng-if="description">
+                <small>{{description}}</small>
+            </div>
         </div>
         <div ng-if="preview"
              style="text-align: left;"
@@ -12,9 +16,4 @@
              prevent-default>
         </div>
     </div>
-    <umb-overlay ng-if="overlay.show"
-                 model="overlay"
-                 view="overlay.view"
-                 position="right">
-    </umb-overlay>
 </div>

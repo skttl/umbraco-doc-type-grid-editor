@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,13 +11,14 @@ using System.Web.Http.ModelBinding;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Helpers;
 using Our.Umbraco.DocTypeGridEditor.Models;
-using Umbraco.Core.Configuration;
 using Umbraco.Core.Models;
-using Umbraco.Core.PropertyEditors;
+using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Core.Services;
 using Umbraco.Web;
+using Umbraco.Web.Composing;
 using Umbraco.Web.Editors;
-using Umbraco.Web.Models;
 using Umbraco.Web.Mvc;
+using Umbraco.Web.PublishedCache;
 using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
@@ -24,21 +26,48 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
     [PluginController("DocTypeGridEditorApi")]
     public class DocTypeGridEditorApiController : UmbracoAuthorizedJsonController
     {
+        private readonly IUmbracoContextAccessor _umbracoContext;
+        private readonly IContentTypeService _contentTypeService;
+        private readonly IDataTypeService _dataTypeService;
+        private readonly IPublishedContentCache _contentCache;
+
+        public DocTypeGridEditorApiController()
+        {
+        }
+
+        public DocTypeGridEditorApiController(IUmbracoContextAccessor umbracoContext,
+            IContentTypeService contentTypeService,
+            IDataTypeService dataTypeService,
+            IPublishedContentCache contentCache)
+        {
+            _umbracoContext = umbracoContext;
+            _contentTypeService = contentTypeService;
+            _dataTypeService = dataTypeService;
+            _contentCache = contentCache;
+        }
+
         [HttpGet]
         public object GetContentTypeAliasByGuid([ModelBinder] Guid guid)
         {
             return new
             {
-                alias = Services.ContentTypeService.GetAliasByGuid(guid)
+                alias = _contentTypeService.GetAliasByGuid(guid)
             };
         }
 
         [HttpGet]
         public IEnumerable<object> GetContentTypes([ModelBinder] string[] allowedContentTypes)
         {
-            return Services.ContentTypeService.GetAllContentTypes()
+            var allContentTypes = Current.Services.ContentTypeService.GetAll().ToList();
+            var contentTypes = allContentTypes
+                .Where(x => x.IsElement)
                 .Where(x => allowedContentTypes == null || allowedContentTypes.Length == 0 || allowedContentTypes.Any(y => Regex.IsMatch(x.Alias, y)))
                 .OrderBy(x => x.Name)
+                .ToList();
+
+            var blueprints = Current.Services.ContentService.GetBlueprintsForContentTypes(contentTypes.Select(x => x.Id).ToArray()).ToArray();
+
+            return contentTypes
                 .Select(x => new
                 {
                     id = x.Id,
@@ -46,21 +75,28 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     name = x.Name,
                     alias = x.Alias,
                     description = x.Description,
-                    icon = x.Icon
+                    icon = x.Icon,
+                    blueprints = blueprints.Where(bp => bp.ContentTypeId == x.Id).Select(bp => new
+                    {
+                        id = bp.Id,
+                        name = bp.Name
+                    })
                 });
         }
 
         [HttpGet]
-        public object GetContentTypeIcon([ModelBinder] string contentTypeAlias)
+        public object GetContentType([ModelBinder] string contentTypeAlias)
         {
             Guid docTypeGuid;
             if (Guid.TryParse(contentTypeAlias, out docTypeGuid))
-                contentTypeAlias = Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
+                contentTypeAlias = Current.Services.ContentTypeService.GetAliasByGuid(docTypeGuid);
 
-            var contentType = Services.ContentTypeService.GetContentType(contentTypeAlias);
+            var contentType = Current.Services.ContentTypeService.Get(contentTypeAlias);
             return new
             {
-                icon = contentType != null ? contentType.Icon : string.Empty
+                icon = contentType != null ? contentType.Icon : "icon-item-arrangement",
+                title = contentType != null ? contentType.Name : "Doc Type",
+                description = contentType != null ? contentType.Description : string.Empty
             };
         }
 
@@ -70,17 +106,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             Guid guidDtdId;
             int intDtdId;
 
-            IDataTypeDefinition dtd;
+            IDataType dtd;
 
             // Parse the ID
             if (int.TryParse(dtdId, out intDtdId))
             {
                 // Do nothing, we just want the int ID
-                dtd = Services.DataTypeService.GetDataTypeDefinitionById(intDtdId);
+                dtd = Current.Services.DataTypeService.GetDataType(intDtdId);
             }
             else if (Guid.TryParse(dtdId, out guidDtdId))
             {
-                dtd = Services.DataTypeService.GetDataTypeDefinitionById(guidDtdId);
+                dtd = Current.Services.DataTypeService.GetDataType(guidDtdId);
             }
             else
             {
@@ -91,9 +127,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 return null;
 
             // Convert to editor config
-            var preValue = Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dtd.Id);
-            var propEditor = PropertyEditorResolver.Current.GetByAlias(dtd.PropertyEditorAlias);
-            return propEditor.PreValueEditor.ConvertDbToEditor(propEditor.DefaultPreValues, preValue);
+            var dataType = Current.Services.DataTypeService.GetDataType(dtd.Id);
+            var propEditor = dataType.Editor;
+            var content = propEditor.GetValueEditor().ConvertDbToString(new PropertyType(dataType), dataType.Configuration, Current.Services.DataTypeService);
+            return content;
         }
 
         [HttpPost]
@@ -105,7 +142,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             if (pageId > 0)
             {
                 // Get page container node
-                page = UmbracoContext.ContentCache.GetById(pageId);
+                page = Umbraco.Content(pageId);
                 if (page == null)
                 {
                     // If unpublished, then fake PublishedContent
@@ -113,27 +150,24 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 }
             }
 
-            // NOTE: The previous previewer had a content node associated with the request,
-            // meaning that an implementation may have used this to traverse the content-tree.
-            // In order to maintain backward-compatibility, we must ensure the PublishedContentRequest context.
-            if (UmbracoContext.PublishedContentRequest == null)
+            if (UmbracoContext.PublishedRequest == null)
             {
-                UmbracoContext.PublishedContentRequest = new PublishedContentRequest(
-                    Request.RequestUri,
-                    UmbracoContext.RoutingContext,
-                    UmbracoConfig.For.UmbracoSettings().WebRouting,
-                    null)
-                {
-                    PublishedContent = page
-                };
+                var router = Current.Factory.GetInstance(typeof(IPublishedRouter)) as IPublishedRouter;
+                UmbracoContext.PublishedRequest = router.CreateRequest(UmbracoContext, Request.RequestUri);
+                UmbracoContext.PublishedRequest.PublishedContent = page;
             }
 
             // Set the culture for the preview
             if (page != null)
             {
-                var culture = page.GetCulture();
-                System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-                System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                var currentCulture = page.GetCultureFromDomains();
+                if (page.Cultures != null && page.Cultures.ContainsKey(currentCulture))
+                {
+                    var culture = new CultureInfo(page.Cultures[currentCulture].Culture);
+                    UmbracoContext.PublishedRequest.Culture = culture;
+                    System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                }
             }
 
             // Get content node object
@@ -151,7 +185,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
             // Render view
             var partialName = "~/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditorPreviewer.cshtml";
-            var markup = Helpers.ViewHelper.RenderPartial(partialName, model, UmbracoContext.HttpContext);
+            var markup = Helpers.ViewHelper.RenderPartial(partialName, model, UmbracoContext.HttpContext, UmbracoContext);
 
             // Return response
             var response = new HttpResponseMessage
