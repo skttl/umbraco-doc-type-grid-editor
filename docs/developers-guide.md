@@ -106,11 +106,11 @@ With the Doc Type Grid Editor enabled, from within your grid editor, you should 
 
 From there, simply click the **Doc Type** icon. If you have multiple document types matching the `AllowedDocTypes` setting in the selected grid editor (the default **Doc Type**, lets you pick between all available document types), you need to choose the document type you wish to render. 
 
-![Doc Type Grid Editor - Select Doc Type](img/screenshot-03.png)
+![Doc Type Grid Editor - Select Doc Type](img/screenshot-03b.png)
 
 If you have any Content Templates available for the selected document type, you need to choose which template to use for the content.
 
-![Doc Type Grid Editor - Select Doc Type](img/screenshot-03b.png)
+![Doc Type Grid Editor - Select Doc Type](img/screenshot-03.png)
 
 Then you should be presented with a form for all the fields in your document type.
 
