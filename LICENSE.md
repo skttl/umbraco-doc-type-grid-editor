@@ -1,3 +1,4 @@
+Copyright &copy; 2019 Søren Kottal, Our Umbraco and other contributors
 Copyright &copy; 2017 UMCO, Our Umbraco and other contributors
 Copyright &copy; 2014 Umbrella Inc
 

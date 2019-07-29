@@ -19,8 +19,8 @@
 		<ProjectName>Our.Umbraco.DocTypeGridEditor</ProjectName>
 		<PackageName>Doc Type Grid Editor</PackageName>
 		<MinUmbracoVersion>8.0.0</MinUmbracoVersion>
-		<Readme>Doc Type Grid Editor is an advanced grid editor for Umbraco 7</Readme>
-		<AuthorName>Matt Brailsford, Lee Kelleher</AuthorName>
+		<Readme>Doc Type Grid Editor is an advanced grid editor for Umbraco 8</Readme>
+		<AuthorName>Matt Brailsford, Lee Kelleher, Søren Kottal</AuthorName>
 		<AuthorUrl>https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>
 		<PackageLicenseName>MIT license</PackageLicenseName>
 		<PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
@@ -32,7 +32,7 @@
 		<PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
 		<NuGetPackageName>Doc Type Grid Editor for Umbraco</NuGetPackageName>
 		<Copyright>Copyright &#169; 2019 UMCO</Copyright>
-		<Owners>Matt Brailsford, Lee Kelleher</Owners>
+		<Owners>Matt Brailsford, Lee Kelleher, Søren Kottal</Owners>
 		<IconUrl>https://our.umbraco.org/media/wiki/145708/635623742802070736_dtgepng.png</IconUrl>
 		<Tags>umbraco grid document type editor</Tags>
 		<Language>en-GB</Language>
