@@ -205,5 +205,5 @@ By inheriting from the `DocTypeGridEditorSurfaceController` base class, you'll a
 
 ### Useful Links
 
-* [Source Code](https://github.com/umco/umbraco-doc-type-grid-editor)
+* [Source Code](https://github.com/skttl/umbraco-doc-type-grid-editor)
 * [Our Umbraco Project Page](http://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
