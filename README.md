@@ -1,6 +1,6 @@
 # Doc Type Grid Editor
 
-[![Build status](https://img.shields.io/appveyor/ci/UMCO/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/UMCO/umbraco-doc-type-grid-editor)
+[![Build status](https://img.shields.io/appveyor/ci/skttl/umbraco-doc-type-grid-editor.svg)](https://ci.appveyor.com/project/skttl/umbraco-doc-type-grid-editor)
 [![NuGet release](https://img.shields.io/nuget/v/Our.Umbraco.DocTypeGridEditor.svg)](https://www.nuget.org/packages/Our.Umbraco.DocTypeGridEditor)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
 
@@ -39,7 +39,7 @@ If you prefer, you can compile  Doc Type Grid Editor yourself, you'll need:
 
 To clone it locally click the "Clone in Windows" button above or run the following git commands.
 
-	git clone https://github.com/umco/umbraco-doc-type-grid-editor.git umbraco-doc-type-grid-editor
+	git clone https://github.com/skttl/umbraco-doc-type-grid-editor.git umbraco-doc-type-grid-editor
 	cd umbraco-doc-type-grid-editor
 	.\build.cmd
 
@@ -78,12 +78,12 @@ Anyone and everyone is welcome to contribute. Please take a moment to review the
 Have a question?
 
 * [Doc Type Grid Editor Forum](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor/doc-type-grid-editor-feedback/) on Our Umbraco
-* [Raise an issue](https://github.com/umco/umbraco-doc-type-grid-editor/issues) on GitHub
+* [Raise an issue](https://github.com/skttl/umbraco-doc-type-grid-editor/issues) on GitHub
 
 
 ## Dev Team
 
-* [Søren Kottal](https://github.com/skttl)
+* [SÃ¸ren Kottal](https://github.com/skttl)
 
 ### Special thanks
 
@@ -95,9 +95,9 @@ Have a question?
 
 ## License
 
-Copyright &copy; 2019 Søren Kottal, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
+Copyright &copy; 2019 SÃ¸ren Kottal, Our Umbraco and [other contributors](https://github.com/skttl/umbraco-doc-type-grid-editor/graphs/contributors)
 
-Copyright &copy; 2017 UMCO, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
+Copyright &copy; 2017 UMCO, Our Umbraco and [other contributors](https://github.com/skttl/umbraco-doc-type-grid-editor/graphs/contributors)
 
 Copyright &copy; 2014 Umbrella Inc
 
