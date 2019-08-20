@@ -1,12 +1,12 @@
 image: Visual Studio 2017
 
 # version format
-version: 0.6.1.{build}
+version: 1.0.0.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX if a rtm release build this should be blank, otherwise if empty will default to alpha
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 init:
-  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=
+  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 
 cache:
   - src\packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
@@ -27,7 +27,7 @@ deploy:
     server: https://www.myget.org/F/umbraco-packages/api/v2/package
     symbol_server: https://www.myget.org/F/umbraco-packages/symbols/api/v2/package
     api_key:
-      secure: 36/Ax5O+e6wENlhoTwgvoEBZV3FG4XjF429SNTej2qsGTAL+cdfA1kT/tm1St8vx
+      secure: MopTO3Wq0dA16UdDqhP2GIzXLzZqS4SxGPCGiwN1i1hEL0AYLscuJVq6Ot7XYD2m
     artifact: /.*\.nupkg/
     on:
       branch: develop
@@ -48,7 +48,7 @@ deploy:
     server: 
     skip_symbols: true
     api_key:
-      secure: vEophXSqus5F60LRBY4/j1l6K/S5+n3/yYpiID3O7JJW1gyj+0q0enuHhN3tgdhl
+      secure: RYtJVVEuX1s2cy3Wo1Xly0yvp1n40wDdndhNsXQGgrAUmZDnlwujEycsLxUL8NsN
     artifact: /.*\.nupkg/
     on:
       branch: master

@@ -3,39 +3,47 @@
     "$scope",
     "$rootScope",
     "$timeout",
-    "$routeParams",
     "editorState",
     'assetsService',
     "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
     "umbRequestHelper",
     "localizationService",
+    "editorService",
 
-    function ($scope, $rootScope, $timeout, $routeParams, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService) {
+    function ($scope, $rootScope, $timeout, editorState, assetsService, dtgeResources, umbRequestHelper, localizationService, editorService) {
 
-        const defaultTitle = "Click to insert item",
-            defaultSelectContentTypeLabel = "Choose a Content Type",
-            defaultOverlayTitle = "Edit tem";
+        var overlayOptions = {
+            view: umbRequestHelper.convertVirtualToAbsolutePath(
+                "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html"),
+            model: {},
+            titles: {
+                insertItem: "Click to insert item",
+                editItem: "Edit item",
+                selectContentType: "Choose a Content Type",
+                selectBlueprint: "Choose a Content Template"
+            },
+            title: "Edit item",
+            submitButtonlabelKey: "bulk_done"
+        };
 
-        $scope.title = defaultTitle;
-        $scope.selectContentTypeLabel = defaultSelectContentTypeLabel;
-
-        var overlayTitle = defaultOverlayTitle;
         $scope.icon = "icon-item-arrangement";
-        $scope.overlay = {};
-        $scope.overlay.show = false;
-        $scope.overlay.view =
-            umbRequestHelper.convertVirtualToAbsolutePath(
-                "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
+
+        // init cached content types if it doesnt exist.
+        if (!$rootScope.dtgeContentTypes) $rootScope.dtgeContentTypes = {};
 
         // localize strings
-        localizationService.localizeMany(["docTypeGridEditor_insertItem", "docTypeGridEditor_editItem", "docTypeGridEditor_selectContentType"]).then(function (data) {
-            if ($scope.title === defaultTitle) $scope.title = data[0];
-            if (overlayTitle === defaultOverlayTitle) overlayTitle = data[1];
-            if ($scope.selectContentTypeLabel === defaultSelectContentTypeLabel) $scope.selectContentTypeLabel = data[2];
+        localizationService.localizeMany(["docTypeGridEditor_insertItem", "docTypeGridEditor_editItem", "docTypeGridEditor_selectContentType", "blueprints_selectBlueprint"]).then(function (data) {
+            overlayOptions.titles.insertItem = data[0];
+            overlayOptions.titles.editItem = data[1];
+            overlayOptions.titles.selectContentType = data[2];
+            overlayOptions.titles.selectBlueprint = data[3];
         });
 
         $scope.setValue = function (data, callback) {
+            $scope.title = $scope.control.editor.name;
+            $scope.icon = $scope.control.editor.icon;
             $scope.control.value = data;
+
             if (!("id" in $scope.control.value) || $scope.control.value.id == "") {
                 $scope.control.value.id = guid();
             }
@@ -43,38 +51,51 @@
                 $scope.title = $scope.control.value.value.name;
             }
             if ("dtgeContentTypeAlias" in $scope.control.value && $scope.control.value.dtgeContentTypeAlias) {
-                dtgeResources.getContentTypeIcon($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
-                    if (data2.icon) {
-                        $scope.icon = data2.icon;
-                    }
-                });
+                if (!$rootScope.dtgeContentTypes[$scope.control.value.dtgeContentTypeAlias]) {
+
+                    dtgeResources.getContentType($scope.control.value.dtgeContentTypeAlias).then(function (data2) {
+                        var contentType = {
+                            title: data2.title,
+                            description: data2.description,
+                            icon: data2.icon
+                        };
+
+                        // save to cached content types
+                        $rootScope.dtgeContentTypes[$scope.control.value.dtgeContentTypeAlias] = contentType;
+                        $scope.setTitleAndDescription(contentType);
+                    });
+                }
+                else {
+                    $scope.setTitleAndDescription($rootScope.dtgeContentTypes[$scope.control.value.dtgeContentTypeAlias]);
+                }
             }
             if (callback)
                 callback();
         };
 
+        $scope.setTitleAndDescription = function (contentType) {
+            $scope.title = contentType.title;
+            $scope.description = contentType.description;
+            $scope.icon = contentType.icon;
+        };
+
         $scope.setDocType = function () {
 
-            $scope.overlay = {};
-            $scope.overlay.show = true;
-            $scope.overlay.title = overlayTitle;
-            $scope.overlay.submitButtonLabelKey = "bulk_done";
-            $scope.overlay.view =
-                umbRequestHelper.convertVirtualToAbsolutePath(
-                    "~/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.dialog.html");
-            $scope.overlay.editorName = $scope.control.editor.name;
-            $scope.overlay.allowedDocTypes = $scope.control.editor.config.allowedDocTypes || [];
-            $scope.overlay.nameTemplate = $scope.control.editor.config.nameTemplate;
-            $scope.overlay.dialogData = {
+            overlayOptions.editorName = $scope.control.editor.name;
+            overlayOptions.allowedDocTypes = $scope.control.editor.config.allowedDocTypes || [];
+            overlayOptions.showDocTypeSelectAsGrid = $scope.control.editor.config.showDocTypeSelectAsGrid === true;
+            overlayOptions.nameTemplate = $scope.control.editor.config.nameTemplate;
+            overlayOptions.size = $scope.control.editor.config.largeDialog ? null : "small";
+
+            overlayOptions.dialogData = {
                 docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
                 value: $scope.control.value.value,
                 id: $scope.control.value.id
             };
-            $scope.overlay.close = function (oldModel) {
-                $scope.overlay.show = false;
-                $scope.overlay = null;
+            overlayOptions.close = function () {
+                editorService.close();
             }
-            $scope.overlay.submit = function (newModel) {
+            overlayOptions.submit = function (newModel) {
 
                 // Copy property values to scope model value
                 if (newModel.node) {
@@ -82,12 +103,15 @@
                         name: newModel.editorName
                     };
 
-                    for (var t = 0; t < newModel.node.tabs.length; t++) {
-                        var tab = newModel.node.tabs[t];
-                        for (var p = 0; p < tab.properties.length; p++) {
-                            var prop = tab.properties[p];
-                            if (typeof prop.value !== "function") {
-                                value[prop.alias] = prop.value;
+                    for (var v = 0; v < newModel.node.variants.length; v++) {
+                        var variant = newModel.node.variants[v];
+                        for (var t = 0; t < variant.tabs.length; t++) {
+                            var tab = variant.tabs[t];
+                            for (var p = 0; p < tab.properties.length; p++) {
+                                var prop = tab.properties[p];
+                                if (typeof prop.value !== "function") {
+                                    value[prop.alias] = prop.value;
+                                }
                             }
                         }
                     }
@@ -111,9 +135,10 @@
                     id: newModel.dialogData.id
                 });
                 $scope.setPreview($scope.control.value);
-                $scope.overlay.show = false;
-                $scope.overlay = null;
+                editorService.close();
             };
+
+            editorService.open(overlayOptions);
         };
 
         $scope.setPreview = function (model) {
@@ -123,7 +148,8 @@
                     $scope.control.editor.config.viewPath,
                     $scope.control.editor.config.previewViewPath,
                     !!editorState.current.publishDate)
-                    .success(function (htmlResult) {
+                    .then(function (response) {
+                        var htmlResult = response.data;
                         if (htmlResult.trim().length > 0) {
                             $scope.preview = htmlResult;
                         }
@@ -200,11 +226,30 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
         "contentResource",
         "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
         "Our.Umbraco.DocTypeGridEditor.Services.DocTypeGridEditorUtilityService",
+        "blueprintConfig",
 
-        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService) {
+        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService, blueprintConfig) {
+
+            var vm = this;
+            vm.submit = submit;
+            vm.close = close;
+            vm.loading = true;
+            vm.blueprintConfig = blueprintConfig;
+
+            function submit() {
+                if ($scope.model.submit) {
+                    $scope.$broadcast('formSubmitting', { scope: $scope });
+                    $scope.model.submit($scope.model);
+                }
+            }
+            function close() {
+                if ($scope.model.close) {
+                    $scope.model.close();
+                }
+            }
 
             $scope.docTypes = [];
-            $scope.dialogMode = "selectDocType";
+            $scope.dialogMode = null;
             $scope.selectedDocType = null;
             $scope.model.node = null;
 
@@ -214,28 +259,57 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             $scope.model.nameExp = nameExp;
 
-            $scope.selectDocType = function (alias) {
+            function createBlank() {
                 $scope.dialogMode = "edit";
-                $scope.model.dialogData.docTypeAlias = alias;
                 loadNode();
             };
 
-            function loadNode() {
-                contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
+            function createOrSelectBlueprintIfAny(docType) {
 
-                    if (dtgeUtilityService.compareCurrentUmbracoVersion("7.8", { zeroExtend: true }) < 0) {
-                        // Remove the "Generic properties" tab (removed in v7.8)
-                        data.tabs.pop();
+                $scope.model.dialogData.docTypeAlias = docType.alias;
+                var blueprintIds = _.keys(docType.blueprints || {});
+                $scope.selectedDocType = docType;
+
+                if (blueprintIds.length) {
+                    if (blueprintConfig.skipSelect) {
+                        createFromBlueprint(blueprintIds[0]);
+                    } else {
+                        $scope.dialogMode = "selectBlueprint";
                     }
+                } else {
+                    createBlank();
+                }
+            };
+
+            function createFromBlueprint(blueprintId) {
+                contentResource.getBlueprintScaffold(-20, blueprintId).then(function (data) {
+                    // Assign the model to scope
+                    $scope.nodeContext = $scope.model.node = data;
+                    $scope.dialogMode = "edit";
+                    vm.content = $scope.nodeContext.variants[0];
+                    vm.loading = false;
+                });
+            };
+
+            $scope.createBlank = createBlank;
+            $scope.createOrSelectBlueprintIfAny = createOrSelectBlueprintIfAny;
+            $scope.createFromBlueprint = createFromBlueprint;
+
+            function loadNode() {
+                vm.loading = true;
+                contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
 
                     // Merge current value
                     if ($scope.model.dialogData.value) {
-                        for (var t = 0; t < data.tabs.length; t++) {
-                            var tab = data.tabs[t];
-                            for (var p = 0; p < tab.properties.length; p++) {
-                                var prop = tab.properties[p];
-                                if ($scope.model.dialogData.value[prop.alias]) {
-                                    prop.value = $scope.model.dialogData.value[prop.alias];
+                        for (var v = 0; v < data.variants.length; v++) {
+                            var variant = data.variants[v];
+                            for (var t = 0; t < variant.tabs.length; t++) {
+                                var tab = variant.tabs[t];
+                                for (var p = 0; p < tab.properties.length; p++) {
+                                    var prop = tab.properties[p];
+                                    if ($scope.model.dialogData.value[prop.alias]) {
+                                        prop.value = $scope.model.dialogData.value[prop.alias];
+                                    }
                                 }
                             }
                         }
@@ -243,6 +317,8 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
                     // Assign the model to scope
                     $scope.nodeContext = $scope.model.node = data;
+                    vm.content = $scope.nodeContext.variants[0];
+                    vm.loading = false;
                 });
             }
 
@@ -255,9 +331,10 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 dtgeResources.getContentTypes($scope.model.allowedDocTypes).then(function (docTypes) {
                     $scope.docTypes = docTypes;
                     if ($scope.docTypes.length == 1) {
-                        $scope.model.dialogData.docTypeAlias = $scope.docTypes[0].alias;
-                        $scope.dialogMode = "edit";
-                        loadNode();
+                        createOrSelectBlueprintIfAny($scope.docTypes[0]);
+                    }
+                    else {
+                        vm.loading = false;
                     }
                 });
             }

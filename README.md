@@ -5,14 +5,14 @@
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/backoffice-extensions/doc-type-grid-editor)
 
 
-A grid editor for Umbraco 7 that allows you to use Doc Types as a blue print for grid-cell data.
+A grid editor for Umbraco 8 that allows you to use Doc Types as a blue print for grid-cell data.
 
 
 ## Getting Started
 
 ### Installation
 
-> *Note:* Doc Type Grid Editor has been developed against **Umbraco v7.6.0** and will support that version and above.
+> *Note:* Doc Type Grid Editor has been developed against **Umbraco v8.1.0** and will support that version and above.
 
 Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code.
 
@@ -83,17 +83,19 @@ Have a question?
 
 ## Dev Team
 
-* [Matt Brailsford](https://github.com/mattbrailsford)
-* [Lee Kelleher](https://github.com/leekelleher)
+* [Søren Kottal](https://github.com/skttl)
 
 ### Special thanks
 
+* Thanks to [Matt Brailsford](https://github.com/mattbrailsford) and [Lee Kelleher](https://github.com/leekelleher) for building this great package.
 * Thanks to [Jeavon Leopold](https://github.com/Jeavon) for being a rockstar and adding AppVeyor &amp; NuGet support.
 * Thanks to [Dave Woestenborghs](https://github.com/dawoe) for helping solve showstopper issues.
-* Thanks to [S&oslash;ren Kottal](https://github.com/skttl) for help with localization.
+* Thanks to [Arnold Visser](https://github.com/ArnoldV) and [Bjarne Fyrstenborg](https://github.com/bjarnef) for help with porting the package to Umbraco 8.
 
 
 ## License
+
+Copyright &copy; 2019 Søren Kottal, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
 
 Copyright &copy; 2017 UMCO, Our Umbraco and [other contributors](https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors)
 

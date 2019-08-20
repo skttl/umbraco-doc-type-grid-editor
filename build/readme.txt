@@ -1,27 +1,34 @@
-  ____            _____                  ____      _     _ _____    _ _ _             
- |  _ \  ___   __|_   _|   _ _ __   ___ / ___|_ __(_) __| | ____|__| (_) |_ ___  _ __ 
- | | | |/ _ \ / __|| || | | | '_ \ / _ \ |  _| '__| |/ _` |  _| / _` | | __/ _ \| '__|
- | |_| | (_) | (__ | || |_| | |_) |  __/ |_| | |  | | (_| | |__| (_| | | || (_) | |   
- |____/ \___/ \___||_| \__, | .__/ \___|\____|_|  |_|\__,_|_____\__,_|_|\__\___/|_|   
-                       |___/|_|                                                       
+﻿                  ██████████████                  
+            ████████████████████████              
+          ██████████████████████████████          
+       ████████████████████████████████████       
+      ██████████████████████████████████████      
+    ███████                            ███████                        _                               
+   ████████                            ████████       _   _ _ __ ___ | |__  _ __ __ _  ___ ___      
+  ██████████████████████████████████████████████     | | | | '_ ` _ \| '_ \| '__/ _` |/ __/ _ \      
+ ██████████      ████        ████      ██████████    | |_| | | | | | | |_) | | | (_| | (_| (_) |      
+ ██████████      ████        ████      ██████████     \__,_|_| |_| |_|_.__/|_|  \__,_|\___\___/       
+███████████      ████        ████      █    ██████    ____               _____                        
+███████████████████████████████████████      █████   |  _ \  ___   ___  |_   _|   _ _ __   ___        
+███████████                      ████      ███████   | | | |/ _ \ / __|   | || | | | '_ \ / _ \       
+███████████                      █      ██████████   | |_| | (_) | (__    | || |_| | |_) |  __/       
+█████████████████████████████████     ████████████   |____/ \___/ \___|   |_| \__, | .__/ \___|       
+ ██████████      ████      ████     ██ ██████████      ____      _     _   ___|___/|_|_ _             
+  █████████      ████     ███     ██   █████████      / ___|_ __(_) __| | | ____|__| (_) |_ ___  _ __ 
+  █████████      ████    ██      █     █████████     | |  _| '__| |/ _` | |  _| / _` | | __/ _ \| '__|
+   ████████      ████   ██     ███     ████████      | |_| | |  | | (_| | | |__| (_| | | || (_) | |   
+     ████████████████████    ████████████████         \____|_|  |_|\__,_| |_____\__,_|_|\__\___/|_|   
+      ██████████████████████████████████████      
+         ████████████████████████████████         
+           ████████████████████████████           
+               ████████████████████               
+                   ████████████                   
+
 
 --------------------------------------------------------------------------------------
 
-To enable DocTypeGridEditor you must add the following JSON snippet to "grid.editors.config.js" found in the Config folder.
+Thanks for installing Doc Type Grid Editor.
 
-{
-    "name": "Doc Type",
-    "alias": "docType",
-    "view": "/App_Plugins/DocTypeGridEditor/Views/doctypegrideditor.html",
-    "render": "/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditor.cshtml",
-    "icon": "icon-item-arrangement",
-    "config": {
-        "allowedDocTypes": [],
-        "nameTemplate": "",
-        "enablePreview": true,
-        "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
-        "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
-        "previewCssFilePath": "",
-        "previewJsFilePath": ""
-    }
-}
+We have added an universal grid editor allowing all your element types, in a package.manifest file in /App_Plugins/DocTypeGridEditor/package.manifest. 
+You can add your own and target specific doctypes, for single purpose grid editors if you'd like. Checkout the Developers Guide for more info at:
+https://github.com/umco/umbraco-doc-type-grid-editor/blob/master/docs/developers-guide.md
