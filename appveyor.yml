@@ -35,7 +35,7 @@ deploy:
     # GitHub Deployment for releases
   - provider: GitHub
     auth_token:
-      secure: yDxrRTveSScJA35MQTOaLYVjoPKFKl2bHBkG+JMZjiN0r7AfuUCxVU3CgW8Imu4h
+      secure: Z9C0Mgv2YVEeAilwYB/x9jhPMyg73MSzKVviFSsHBYqjmV56ayWp/FMoEdspu3tE
     artifact: /.*\.zip/            # upload all Zip packages to release assets
     draft: false
     prerelease: false
