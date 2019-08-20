@@ -31,4 +31,4 @@ Thanks for installing Doc Type Grid Editor.
 
 We have added an universal grid editor allowing all your element types, in a package.manifest file in /App_Plugins/DocTypeGridEditor/package.manifest. 
 You can add your own and target specific doctypes, for single purpose grid editors if you'd like. Checkout the Developers Guide for more info at:
-https://github.com/umco/umbraco-doc-type-grid-editor/blob/master/docs/developers-guide.md
+https://github.com/skttl/umbraco-doc-type-grid-editor/blob/master/docs/developers-guide.md
