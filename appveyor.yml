@@ -27,7 +27,7 @@ deploy:
     server: https://www.myget.org/F/umbraco-packages/api/v2/package
     symbol_server: https://www.myget.org/F/umbraco-packages/symbols/api/v2/package
     api_key:
-      secure: 36/Ax5O+e6wENlhoTwgvoEBZV3FG4XjF429SNTej2qsGTAL+cdfA1kT/tm1St8vx
+      secure: MopTO3Wq0dA16UdDqhP2GIzXLzZqS4SxGPCGiwN1i1hEL0AYLscuJVq6Ot7XYD2m
     artifact: /.*\.nupkg/
     on:
       branch: develop
