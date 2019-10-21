@@ -11,6 +11,7 @@ using System.Web.Http.ModelBinding;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Helpers;
 using Our.Umbraco.DocTypeGridEditor.Models;
+using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Core.Services;
@@ -60,7 +61,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         {
             var allContentTypes = Current.Services.ContentTypeService.GetAll().ToList();
             var contentTypes = allContentTypes
-                .Where(x => x.IsElement)
+                .Where(x => x.IsElement && x.VariesByCulture() == false)
                 .Where(x => allowedContentTypes == null || allowedContentTypes.Length == 0 || allowedContentTypes.Any(y => Regex.IsMatch(x.Alias, y)))
                 .OrderBy(x => x.Name)
                 .ToList();
