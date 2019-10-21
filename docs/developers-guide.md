@@ -93,6 +93,8 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 
 By default, a universal grid editor allowing all available element document types is added upon installation.
 
+Since Doc Type Grid Editor does not support culture variation, element document types allowing culture variations is not available for use in Doc Type Grid Editor.
+
 ---
 
 ### Hooking Up The Doc Type Grid Editor
