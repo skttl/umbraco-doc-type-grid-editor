@@ -85,6 +85,12 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
                 return _propertyType;
             }
         }
-        public string Alias { get; }
+        public string Alias 
+        { 
+            get
+            {
+                return _propertyType.Alias;
+            }
+        }
     }
 }
