@@ -85,7 +85,7 @@
             overlayOptions.allowedDocTypes = $scope.control.editor.config.allowedDocTypes || [];
             overlayOptions.showDocTypeSelectAsGrid = $scope.control.editor.config.showDocTypeSelectAsGrid === true;
             overlayOptions.nameTemplate = $scope.control.editor.config.nameTemplate;
-            overlayOptions.size = $scope.control.editor.config.largeDialog ? null : "small";
+            overlayOptions.size = $scope.control.editor.config.largeDialog ? null : $scope.control.editor.config.size || "small";
 
             overlayOptions.dialogData = {
                 docTypeAlias: $scope.control.value.dtgeContentTypeAlias,
