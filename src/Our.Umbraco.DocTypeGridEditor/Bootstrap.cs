@@ -1,50 +1,63 @@
-﻿using System.Web.Mvc;
-using Our.Umbraco.DocTypeGridEditor.Web.Attributes;
-using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
-using Umbraco.Core;
-using Umbraco.Core.Events;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
+﻿using System;
+using Newtonsoft.Json;
+using Umbraco.Core.Composing;
+using Umbraco.Core.Sync;
+using Umbraco.Web.Cache;
 
 namespace Our.Umbraco.DocTypeGridEditor
 {
-    internal class Bootstrap : ApplicationEventHandler
+
+    public class Bootstrap : IUserComposer
     {
-        protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        public void Compose(Composition composition)
         {
-            GlobalFilters.Filters.Add(new DocTypeGridEditorPreviewAttribute());
-
-            DefaultDocTypeGridEditorSurfaceControllerResolver.Current = new DefaultDocTypeGridEditorSurfaceControllerResolver();
-        }
-
-        protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-        {
-            DataTypeService.Saved += ExpireDataTypeCache;
-            ContentTypeService.SavedContentType += ExpireContentTypeCache;
-        }
-
-        private void ExpireDataTypeCache(IDataTypeService sender, SaveEventArgs<IDataTypeDefinition> e)
-        {
-            foreach (var dataType in e.SavedEntities)
+            DataTypeCacheRefresher.CacheUpdated += (sender, e) =>
             {
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_", dataType.Key));
+                if (e.MessageType == MessageType.RefreshByJson)
+                {
+                    var payload = JsonConvert.DeserializeAnonymousType((string) e.MessageObject,
+                        new[] {new {Id = default(int), UniqueId = default(Guid)}});
+                    if (payload != null)
+                    {
+                        foreach (var item in payload)
+                        {
+                            Current.AppCaches.RuntimeCache.ClearByKey(
+                                string.Concat(
+                                    "Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_",
+                                    item.UniqueId));
 
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_", dataType.Id));
-            }
-        }
+                            Current.AppCaches.RuntimeCache.ClearByKey(
+                                string.Concat(
+                                    "Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetPreValuesCollectionByDataTypeId_",
+                                    item.Id));
+                        }
+                    }
+                }
+            };
 
-        private void ExpireContentTypeCache(IContentTypeService sender, SaveEventArgs<IContentType> e)
-        {
-            foreach (var contentType in e.SavedEntities)
+            ContentTypeCacheRefresher.CacheUpdated += (sender, e) =>
             {
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_", contentType.Alias));
+                if (e.MessageType == MessageType.RefreshByJson)
+                {
+                    var payload = JsonConvert.DeserializeAnonymousType((string) e.MessageObject,
+                        new[] {new {Alias = default(string)}});
+                    if (payload != null)
+                    {
+                        foreach (var item in payload)
+                        {
+                            Current.AppCaches.RuntimeCache.ClearByKey(
+                                string.Concat(
+                                    "Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypesByAlias_",
+                                    item.Alias));
 
-                ApplicationContext.Current.ApplicationCache.RuntimeCache.ClearCacheItem(
-                    string.Concat("Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_", contentType.Key));
-            }
+                            // NOTE: Unsure how to get the doctype GUID, without hitting the database?
+                            // So we end up clearing the entire cache for this key. [LK:2018-01-30]
+                            Current.AppCaches.RuntimeCache.ClearByKey(
+                                "Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.GetContentTypeAliasByGuid_");
+                        }
+                    }
+                }
+            };
         }
     }
 }

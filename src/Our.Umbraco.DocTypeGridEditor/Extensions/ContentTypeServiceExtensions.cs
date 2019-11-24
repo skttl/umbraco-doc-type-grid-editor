@@ -1,5 +1,6 @@
 ﻿using System;
-using Umbraco.Core;
+using Umbraco.Core.Cache;
+using Umbraco.Web.Composing;
 using Umbraco.Core.Services;
 
 namespace Our.Umbraco.DocTypeGridEditor.Extensions
@@ -8,10 +9,16 @@ namespace Our.Umbraco.DocTypeGridEditor.Extensions
     {
         public static string GetAliasByGuid(this IContentTypeService contentTypeService, Guid id)
         {
-            return (string)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem(
+            var cache = Current.AppCaches.RequestCache;
+
+            return cache.GetCacheItem<string>(
                 string.Concat("Our.Umbraco.DocTypeGridEditor.Web.Extensions.ContentTypeServiceExtensions.GetAliasById_", id),
-                () => ApplicationContext.Current.DatabaseContext.Database
-                    .ExecuteScalar<string>("SELECT [cmsContentType].[alias] FROM [cmsContentType] INNER JOIN [umbracoNode] ON [cmsContentType].[nodeId] = [umbracoNode].[id] WHERE [umbracoNode].[uniqueID] = @0", id));
+                () =>
+                {
+                    using (var scope = Current.ScopeProvider.CreateScope(autoComplete:true))
+                        return scope.Database.ExecuteScalar<string>("SELECT [cmsContentType].[alias] FROM [cmsContentType] INNER JOIN [umbracoNode] ON [cmsContentType].[nodeId] = [umbracoNode].[id] WHERE [umbracoNode].[uniqueID] = @0", id);
+
+                });
         }
     }
 }

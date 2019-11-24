@@ -1,12 +1,10 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
+using Our.Umbraco.DocTypeGridEditor.Composing;
 using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
-using Our.Umbraco.DocTypeGridEditor.Web.Mvc;
 using Umbraco.Core;
-using Umbraco.Core.Models;
-using Umbraco.Web;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
 {
@@ -14,133 +12,116 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Extensions
     {
         public static HtmlString RenderDocTypeGridEditorItem(
             this HtmlHelper helper,
-            IPublishedContent content,
+            IPublishedElement content,
             string editorAlias = "",
             string viewPath = "",
-            string previewViewPath = "")
+            string previewViewPath = "",
+            bool isPreview = false)
         {
             if (content == null)
                 return new HtmlString(string.Empty);
 
-            var controllerName = content.DocumentTypeAlias + "Surface";
+            var controllerName = $"{content.ContentType.Alias}Surface";
 
-            if (!string.IsNullOrWhiteSpace(viewPath))
-                viewPath = viewPath.TrimEnd('/') + "/";
+            if (string.IsNullOrWhiteSpace(viewPath) == false)
+                viewPath = viewPath.EnsureEndsWith('/');
 
-            if (!string.IsNullOrWhiteSpace(previewViewPath))
-                previewViewPath = previewViewPath.TrimEnd('/') + "/";
+            if (string.IsNullOrWhiteSpace(previewViewPath) == false)
+                previewViewPath = previewViewPath.EnsureEndsWith('/');
+
+            var routeValues = new
+            {
+                dtgeModel = content,
+                dtgeViewPath = viewPath,
+                dtgePreviewViewPath = previewViewPath,
+                dtgePreview = isPreview
+            };
 
             // Try looking for surface controller with action named after the editor alias
-            if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
+            if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(controllerName, editorAlias, true))
             {
-                return helper.Action(editorAlias, controllerName, new
-                {
-                    dtgeModel = content,
-                    dtgeViewPath = viewPath,
-                    dtgePreviewViewPath = previewViewPath
-                });
+                return helper.Action(editorAlias, controllerName, routeValues);
             }
 
             // Try looking for surface controller with action named after the doc type alias alias
-            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.DocumentTypeAlias, true))
+            if (SurfaceControllerHelper.SurfaceControllerExists(controllerName, content.ContentType.Alias, true))
             {
-                return helper.Action(content.DocumentTypeAlias, controllerName, new
-                {
-                    dtgeModel = content,
-                    dtgeViewPath = viewPath,
-                    dtgePreviewViewPath = previewViewPath
-                });
+                return helper.Action(content.ContentType.Alias, controllerName, routeValues);
             }
 
-            // See if a default surface controller has been registered
-            var defaultController = DefaultDocTypeGridEditorSurfaceControllerResolver.Current.GetDefaultControllerType();
+            //// See if a default surface controller has been registered
+            var defaultController = Current.DefaultDocTypeGridEditorSurfaceControllerType;
             if (defaultController != null)
             {
                 var defaultControllerName = defaultController.Name.Substring(0, defaultController.Name.LastIndexOf("Controller"));
 
                 // Try looking for an action named after the editor alias
-                if (!editorAlias.IsNullOrWhiteSpace() && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
+                if (string.IsNullOrWhiteSpace(editorAlias) == false && SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, editorAlias, true))
                 {
-                    return helper.Action(editorAlias, defaultControllerName, new
-                    {
-                        dtgeModel = content,
-                        dtgeViewPath = viewPath,
-                        dtgePreviewViewPath = previewViewPath
-                    });
+                    return helper.Action(editorAlias, defaultControllerName, routeValues);
                 }
 
                 // Try looking for a doc type alias action
-                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.DocumentTypeAlias, true))
+                if (SurfaceControllerHelper.SurfaceControllerExists(defaultControllerName, content.ContentType.Alias, true))
                 {
-                    return helper.Action(content.DocumentTypeAlias, defaultControllerName, new
-                    {
-                        dtgeModel = content,
-                        dtgeViewPath = viewPath,
-                        dtgePreviewViewPath = previewViewPath
-                    });
+                    return helper.Action(content.ContentType.Alias, defaultControllerName, routeValues);
                 }
 
                 // Just go with a default action name
-                return helper.Action("Index", defaultControllerName, new
-                {
-                    dtgeModel = content,
-                    dtgeViewPath = viewPath,
-                    dtgePreviewViewPath = previewViewPath
-                });
+                return helper.Action("Index", defaultControllerName, routeValues);
             }
 
-            // Check for preview view 
-            if (!string.IsNullOrWhiteSpace(previewViewPath)
-                && helper.ViewContext.RequestContext.HttpContext.Request.QueryString["dtgePreview"] == "1")
+            // Check for preview view
+            if (string.IsNullOrWhiteSpace(previewViewPath) == false && isPreview)
             {
-                var fullPreviewViewPath = previewViewPath + editorAlias + ".cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                var fullPreviewViewPath = $"{previewViewPath}{editorAlias}.cshtml";
+                if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
-                fullPreviewViewPath = previewViewPath + content.DocumentTypeAlias + ".cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                fullPreviewViewPath = $"{previewViewPath}{content.ContentType.Alias}.cshtml";
+                if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
 
-                fullPreviewViewPath = previewViewPath + "Default.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
+                fullPreviewViewPath = $"{previewViewPath}Default.cshtml";
+                if (ViewHelper.ViewExists(helper.ViewContext, fullPreviewViewPath, true))
                 {
                     return helper.Partial(fullPreviewViewPath, content);
                 }
             }
 
             // Check for view path view
-            if (!string.IsNullOrWhiteSpace(viewPath))
+            if (string.IsNullOrWhiteSpace(viewPath) == false)
             {
-                var fullViewPath = viewPath + editorAlias + ".cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                var fullViewPath = $"{viewPath}{editorAlias}.cshtml";
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
 
-                fullViewPath = viewPath + content.DocumentTypeAlias + ".cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                fullViewPath = $"{viewPath}{content.ContentType.Alias}.cshtml";
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
 
-                fullViewPath = viewPath + "Default.cshtml";
-                if (ViewEngines.Engines.ViewExists(helper.ViewContext, fullViewPath, true))
+                fullViewPath = $"{viewPath}Default.cshtml";
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
                 {
                     return helper.Partial(fullViewPath, content);
                 }
             }
 
             // Resort to standard partial views
-            if (ViewEngines.Engines.ViewExists(helper.ViewContext, editorAlias, true))
+            if (ViewHelper.ViewExists(helper.ViewContext, editorAlias, true))
             {
                 return helper.Partial(editorAlias, content);
             }
 
-            return helper.Partial(content.DocumentTypeAlias, content);
+            return helper.Partial(content.ContentType.Alias, content);
         }
     }
 }

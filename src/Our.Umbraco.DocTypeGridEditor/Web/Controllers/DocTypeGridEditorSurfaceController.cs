@@ -1,12 +1,14 @@
-﻿using System.Web.Mvc;
-using Our.Umbraco.DocTypeGridEditor.Extensions;
-using Umbraco.Core.Models;
+﻿using System;
+using System.Web.Mvc;
+using Our.Umbraco.DocTypeGridEditor.Web.Helpers;
+using Umbraco.Core;
+using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web.Mvc;
 
 namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 {
     public abstract class DocTypeGridEditorSurfaceController
-        : DocTypeGridEditorSurfaceController<IPublishedContent>
+        : DocTypeGridEditorSurfaceController<IPublishedElement>
     { }
 
     public abstract class DocTypeGridEditorSurfaceController<TModel> : SurfaceController
@@ -28,7 +30,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         public bool IsPreview
         {
-            get { return Request.QueryString["dtgePreview"] == "1"; }
+            get { return ControllerContext.RouteData.Values.TryGetValue("dtgePreview", out object value) && Convert.ToBoolean(value); }
         }
 
         protected PartialViewResult CurrentPartialView(object model = null)
@@ -38,21 +40,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
             var viewName = ControllerContext.RouteData.Values["action"].ToString();
 
-            if (IsPreview && !string.IsNullOrWhiteSpace(PreviewViewPath))
-            {
-                var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);
-                if (ViewEngines.Engines.ViewExists(ControllerContext, previewViewPath, true))
-                    return base.PartialView(previewViewPath, model);
-            }
-
-            if (!string.IsNullOrWhiteSpace(ViewPath))
-            {
-                var viewPath = GetFullViewPath(viewName, ViewPath);
-                if (ViewEngines.Engines.ViewExists(ControllerContext, viewPath, true))
-                    return base.PartialView(viewPath, model);
-            }
-
-            return base.PartialView(viewName, model);
+            return PartialView(viewName, model);
         }
 
         protected new PartialViewResult PartialView(string viewName)
@@ -62,17 +50,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         protected override PartialViewResult PartialView(string viewName, object model)
         {
-            if (IsPreview && !string.IsNullOrWhiteSpace(PreviewViewPath))
+            if (IsPreview && string.IsNullOrWhiteSpace(PreviewViewPath) == false)
             {
                 var previewViewPath = GetFullViewPath(viewName, PreviewViewPath);
-                if (ViewEngines.Engines.ViewExists(ControllerContext, previewViewPath, true))
+                if (ViewHelper.ViewExists(ControllerContext, previewViewPath, true))
                     return base.PartialView(previewViewPath, model);
             }
 
-            if (!string.IsNullOrWhiteSpace(ViewPath))
+            if (string.IsNullOrWhiteSpace(ViewPath) == false)
             {
                 var viewPath = GetFullViewPath(viewName, ViewPath);
-                if (ViewEngines.Engines.ViewExists(ControllerContext, viewPath, true))
+                if (ViewHelper.ViewExists(ControllerContext, viewPath, true))
                     return base.PartialView(viewPath, model);
             }
 
@@ -81,13 +69,15 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
 
         protected string GetFullViewPath(string viewName, string baseViewPath)
         {
-            if (viewName.StartsWith("~") || viewName.StartsWith("/")
-                || viewName.StartsWith(".") || string.IsNullOrWhiteSpace(baseViewPath))
+            if (viewName.StartsWith("~") ||
+                viewName.StartsWith("/") ||
+                viewName.StartsWith(".") ||
+                string.IsNullOrWhiteSpace(baseViewPath))
             {
                 return viewName;
             }
 
-            return baseViewPath.TrimEnd('/') + "/" + viewName + ".cshtml";
+            return string.Concat(baseViewPath.EnsureEndsWith('/'), viewName, ".cshtml");
         }
     }
 }

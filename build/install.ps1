@@ -13,7 +13,7 @@ if (!$docTypeGridEditorFolder)
 	$projectPathExists = Test-Path $projectPath
 
 	if ($projectPathExists) {
-		Write-Host "Updating Nested Content App_Plugin files using PS as they have been excluded from the project"
+		Write-Host "Updating Doc Type Grid Editor App_Plugin files using PS as they have been excluded from the project"
 		Copy-Item $newPackageFiles $projectPath -Recurse -Force
 	}
 }

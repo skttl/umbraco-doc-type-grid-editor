@@ -18,21 +18,21 @@
 	<PropertyGroup>
 		<ProjectName>Our.Umbraco.DocTypeGridEditor</ProjectName>
 		<PackageName>Doc Type Grid Editor</PackageName>
-		<MinUmbracoVersion>7.2.0</MinUmbracoVersion>
-		<Readme>Doc Type Grid Editor is an advanced grid editor for the new Umbraco v7.2 Grid</Readme>
-		<AuthorName>Matt Brailsford, Lee Kelleher</AuthorName>
-		<AuthorUrl>https://github.com/leekelleher/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>
+		<MinUmbracoVersion>8.1.0</MinUmbracoVersion>
+		<Readme>Doc Type Grid Editor is an advanced grid editor for Umbraco 8</Readme>
+		<AuthorName>Matt Brailsford, Lee Kelleher, Søren Kottal</AuthorName>
+		<AuthorUrl>https://github.com/umco/umbraco-doc-type-grid-editor/graphs/contributors</AuthorUrl>
 		<PackageLicenseName>MIT license</PackageLicenseName>
 		<PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
-		<ProjectUrl>https://github.com/leekelleher/umbraco-doc-type-grid-editor</ProjectUrl>
+		<ProjectUrl>https://github.com/umco/umbraco-doc-type-grid-editor</ProjectUrl>
 	</PropertyGroup>
 
 	<!-- NUGET ONLY PROPERTIES -->
 	<PropertyGroup>
 		<PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
 		<NuGetPackageName>Doc Type Grid Editor for Umbraco</NuGetPackageName>
-		<Copyright>Copyright &#169; 2015 Matt Brailsford, Lee Kelleher</Copyright>
-		<Owners>Matt Brailsford, Lee Kelleher</Owners>
+		<Copyright>Copyright &#169; 2019 UMCO</Copyright>
+		<Owners>Matt Brailsford, Lee Kelleher, Søren Kottal</Owners>
 		<IconUrl>https://our.umbraco.org/media/wiki/145708/635623742802070736_dtgepng.png</IconUrl>
 		<Tags>umbraco grid document type editor</Tags>
 		<Language>en-GB</Language>
@@ -195,7 +195,7 @@
 			OutputDirectory="$(ArtifactsDir)"
 			Files="@(PackageFiles)" />
 
-		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
+		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\build\tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
 			BasePath="$(BuildNuGetDir)"
 			Version="$(ProductVersion)"
