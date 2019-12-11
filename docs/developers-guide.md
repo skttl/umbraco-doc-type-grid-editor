@@ -57,7 +57,7 @@ You can also add your editors using a package.manifest file in a folder in the `
             "allowedDocTypes": [...],
             "nameTemplate": "",
             "enablePreview": true,
-			"largeDialog": true,
+            "overlaySize": "medium",
             "viewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/",
             "previewViewPath": "/Views/Partials/Grid/Editors/DocTypeGridEditor/Previews/",
             "previewCssFilePath": "",
@@ -86,12 +86,16 @@ The **Doc Type Grid Editor** supports 3 config options, all of which are optiona
 | AllowedDocTypes | String[] | An array of doc type aliases of which should be allowed to be selected in the grid editor. Strings can be REGEX patterns to allow matching groups of doc types in a single entry. e.g. "Widget$" will match all doc types with an alias ending in "Widget". However if a single doc type is matched, (aka **Single Doc Type Mode**), then doc type selection stage (in the DTGE panel) will be skipped. Note, your document type must be an Element type, in order to be usable in DTGE. |
 | NameTemplate    | String   | Allows using any of the doctype's property values in the name/label: {{propertyAlias}} |
 | EnablePreview   | Boolean  | Enables rendering a preview of the grid cell in the grid editor. |
-| LargeDialog     | Boolean  | Makes the editing dialog larger. Especially useful for grid editors with complex property editors. |
+| overlaySize     | String   | Define the size of the grid editor dialog. You can write `large`, `medium` or `small`. If no size is set, the grid editor dialog will be small. Note, the medium size requires a minimum Umbraco version of 8.3 |
+| LargeDialog     | Boolean  | (obsolete, use overlaySize instead) Makes the editing dialog larger. Especially useful for grid editors with complex property editors. |
+| size            | string   | (obsolete, use overlaySize instead) 
 | ViewPath        | String   | Sets an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering. Defaults to `~/Views/Partials/` |
 | PreviewViewPath | String   | Sets an alternative view path for where the **Doc Type Grid Editor** should look for views when rendering previews in the backoffice |
 | ShowDocTypeSelectAsGrid | Boolean | Makes the content type selection dialog render a grid, in stead of the default list with descriptions |
 
 By default, a universal grid editor allowing all available element document types is added upon installation.
+
+Since Doc Type Grid Editor does not support culture variation, element document types allowing culture variations is not available for use in Doc Type Grid Editor.
 
 ---
 
