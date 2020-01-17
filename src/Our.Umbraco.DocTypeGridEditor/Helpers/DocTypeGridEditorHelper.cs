@@ -67,7 +67,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                 var newValue = propEditor.GetValueEditor().FromEditor(contentPropData, jProp.Value);
 
-                //TODO: Add ValueProcessor here.
+                // Performing "ValueProcessing" if any ValueProcessor is configured for this Property Editor-alias.
                 var processorsCollection = Current.Factory.GetInstance<DocTypeGridEditorValueProcessorsCollection>();
                 var processor = processorsCollection.FirstOrDefault(x => x.IsProcessorFor(propEditor.Alias));
                 if (processor != null)
