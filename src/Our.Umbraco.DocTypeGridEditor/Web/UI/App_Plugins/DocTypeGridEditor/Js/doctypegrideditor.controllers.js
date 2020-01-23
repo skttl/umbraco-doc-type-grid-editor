@@ -257,8 +257,8 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function submit() {
                 if ($scope.model.submit) {
-                    $scope.model.node.name = $scope.model.node.key;
-                    $scope.model.node.variants[0].name = "Dtge Temp: " + $scope.model.node.name
+                    $scope.model.node.name = "Dtge Temp: " + $scope.model.node.key;
+                    $scope.model.node.variants[0].name = $scope.model.node.name
                     $scope.model.node.variants[0].save = true;
 
                     // save the content as a blueprint, to trigger validation
