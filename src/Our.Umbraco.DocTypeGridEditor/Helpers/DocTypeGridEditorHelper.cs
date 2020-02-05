@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.Models;
+using Our.Umbraco.DocTypeGridEditor.ValueProcessing;
+using Our.Umbraco.DocTypeGridEditor.ValueProcessing.Collections;
 using Umbraco.Core;
 using Umbraco.Core.Cache;
 using Umbraco.Web.Composing;
@@ -63,6 +66,14 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 var contentPropData = new ContentPropertyData(jProp.Value, propPreValues);
 
                 var newValue = propEditor.GetValueEditor().FromEditor(contentPropData, jProp.Value);
+
+                // Performing "ValueProcessing" if any ValueProcessor is configured for this Property Editor-alias.
+                var processorsCollection = Current.Factory.GetInstance<DocTypeGridEditorValueProcessorsCollection>();
+                var processor = processorsCollection.FirstOrDefault(x => x.IsProcessorFor(propEditor.Alias));
+                if (processor != null)
+                {
+                    newValue = processor.ProcessValue(newValue);
+                }
 
                 /* Now that we have the DB stored value, we actually need to then convert it into its
                  * XML serialized state as expected by the published property by calling ConvertDbToString
