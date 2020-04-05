@@ -230,6 +230,8 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Composing\Current.cs" />
+    <Compile Include="Models\DocTypeGridEditorValue.cs" />
+    <Compile Include="ValueProcessing\DocTypeGridEditorDataValueReference.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Helpers\DocTypeGridEditorHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
