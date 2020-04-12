@@ -207,6 +207,47 @@ By inheriting from the `DocTypeGridEditorSurfaceController` base class, you'll a
 
 ---
 
+### Value Processors
+Since Doc Type Grid Editor stores the data for each property as a JSON-blob, we're not processing the values in the same way as Umbraco-core before storing it. This also means that the values that comes back and are passed into a Property Value Converter might be in of a type/format that that Property Value Convert can't handle. 
+
+We've added something that we call "ValueProcessors" and these can be used to modify the raw property value before we send it to the property value converter. One example of where this is needed is the Tags-editor.
+
+If you need to perform some processing of a value before it's sent to the property value converter you can add your own ValueProcessor.
+
+```csharp
+public class UmbracoColorPickerValueProcessor : IDocTypeGridEditorValueProcessor
+{
+    public bool IsProcessorFor(string propertyEditorAlias) 
+          => propertyEditorAlias.Equals(Constants.PropertyEditors.Aliases.ColorPicker);
+
+    public object ProcessValue(object value)
+    {
+        // Do something with the value
+        return value;
+    }
+}
+```
+
+Then register this during composition withing IUserComposer,
+```csharp
+public class MyCustomDocTypeGridEditorComposer : IUserComposer
+{
+    public void Compose(Composition composition)
+    {
+        composition.DocTypeGridEditorValueProcessors()
+                   .Append<UmbracoColorPickerValueProcessor>();
+    }
+}
+```
+
+Dot Type Grid editor ships with a ValueProcessor for the Umbraco-Tags property. 
+
+**Note:** When using a Tag-editor inside a DTGE this would not create any relationship between the current node and that tag, if you need to tag a node you should use the Tags-editor as a property directly on the document type.
+
+
+
+
+
 ### Useful Links
 
 * [Source Code](https://github.com/skttl/umbraco-doc-type-grid-editor)

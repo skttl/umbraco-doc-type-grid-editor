@@ -1,5 +1,6 @@
 <div class="dtge-dialog" ng-controller="Our.Umbraco.DocTypeGridEditor.Dialogs.DocTypeGridEditorDialog as vm">
 
+    <form name="dtgeForm" val-form-manager>
     <umb-editor-view>
         <umb-editor-header name="dialogMode == 'selectDocType' ? model.titles.selectContentType : dialogMode == 'selectBlueprint' ? model.titles.selectBlueprint : dialogMode == 'edit' ? model.titles.editItem : model.titles.insertItem"
                            name-locked="true"
@@ -114,4 +115,5 @@
             </umb-editor-footer-content-right>
         </umb-editor-footer>
     </umb-editor-view>
+    </form>
 </div>
