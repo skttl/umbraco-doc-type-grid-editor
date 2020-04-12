@@ -12,7 +12,7 @@ A grid editor for Umbraco 8 that allows you to use Doc Types as a blue print for
 
 ### Installation
 
-> *Note:* Doc Type Grid Editor has been developed against **Umbraco v8.1.0** and will support that version and above.
+> *Note:* Doc Type Grid Editor has been developed against **Umbraco v8.6.0** and will support that version and above.
 
 Doc Type Grid Editor can be installed from either Our Umbraco package repository, or build manually from the source-code.
 
@@ -59,8 +59,6 @@ Please be aware that not all property-editors will work within Doc Type Grid Edi
 * Macro Container
 * Tags
 * Upload
-
-Another known issue is that validation of property-editors within the overlay do not always work. For editors that use client-side (HTML5) validation, this may appear to work, (e.g. text input require attribute is added), but server-side validation does not work.
 
 ---
 
