@@ -1,5 +1,6 @@
 ﻿using Our.Umbraco.DocTypeGridEditor.Extensions;
 using Our.Umbraco.DocTypeGridEditor.ValueProcessing;
+using Umbraco.Core;
 using Umbraco.Core.Composing;
 
 namespace Our.Umbraco.DocTypeGridEditor.Composing
@@ -12,6 +13,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Composing
         public void Compose(Composition composition)
         {
             composition.DocTypeGridEditorValueProcessors().Append<UmbracoTagsValueProcessor>();
+            composition.DataValueReferenceFactories().Append<DocTypeGridEditorDataValueReference>();
         }
     }
 }
