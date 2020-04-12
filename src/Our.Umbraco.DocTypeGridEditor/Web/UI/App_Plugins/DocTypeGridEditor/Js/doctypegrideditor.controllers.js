@@ -93,49 +93,54 @@
                 id: $scope.control.value.id
             };
             overlayOptions.close = function () {
+                // ensure an empty doctype is not persisted
+                if($scope.control.$initializing){
+                    $scope.removeControl($scope.area, $scope.control.$index -1);
+                }
+
                 editorService.close();
             }
             overlayOptions.submit = function (newModel) {
 
-                // Copy property values to scope model value
-                if (newModel.node) {
-                    var value = {
-                        name: newModel.editorName
-                    };
+                        // Copy property values to scope model value
+                        if (newModel.node) {
+                            var value = {
+                                name: newModel.editorName
+                            };
 
-                    for (var v = 0; v < newModel.node.variants.length; v++) {
-                        var variant = newModel.node.variants[v];
-                        for (var t = 0; t < variant.tabs.length; t++) {
-                            var tab = variant.tabs[t];
-                            for (var p = 0; p < tab.properties.length; p++) {
-                                var prop = tab.properties[p];
-                                if (typeof prop.value !== "function") {
-                                    value[prop.alias] = prop.value;
+                            for (var v = 0; v < newModel.node.variants.length; v++) {
+                                var variant = newModel.node.variants[v];
+                                for (var t = 0; t < variant.tabs.length; t++) {
+                                    var tab = variant.tabs[t];
+                                    for (var p = 0; p < tab.properties.length; p++) {
+                                        var prop = tab.properties[p];
+                                        if (typeof prop.value !== "function") {
+                                            value[prop.alias] = prop.value;
+                                        }
+                                    }
                                 }
                             }
+
+                            if (newModel.nameExp) {
+                                var newName = newModel.nameExp(value); // Run it against the stored dictionary value, NOT the node object
+                                if (newName && (newName = $.trim(newName))) {
+                                    value.name = newName;
+                                }
+                            }
+
+                            newModel.dialogData.value = value;
+                        } else {
+                            newModel.dialogData.value = null;
+
                         }
-                    }
 
-                    if (newModel.nameExp) {
-                        var newName = newModel.nameExp(value); // Run it against the stored dictionary value, NOT the node object
-                        if (newName && (newName = $.trim(newName))) {
-                            value.name = newName;
-                        }
-                    }
-
-                    newModel.dialogData.value = value;
-                } else {
-                    newModel.dialogData.value = null;
-
-                }
-
-                $scope.setValue({
-                    dtgeContentTypeAlias: newModel.dialogData.docTypeAlias,
-                    value: newModel.dialogData.value,
-                    id: newModel.dialogData.id
-                });
-                $scope.setPreview($scope.control.value);
-                editorService.close();
+                        $scope.setValue({
+                            dtgeContentTypeAlias: newModel.dialogData.docTypeAlias,
+                            value: newModel.dialogData.value,
+                            id: newModel.dialogData.id
+                        });
+                        $scope.setPreview($scope.control.value);
+                        editorService.close();
             };
 
             editorService.open(overlayOptions);
@@ -227,8 +232,10 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
         "Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources",
         "Our.Umbraco.DocTypeGridEditor.Services.DocTypeGridEditorUtilityService",
         "blueprintConfig",
+        "contentEditingHelper",
+        "serverValidationManager",
 
-        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService, blueprintConfig) {
+        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService, blueprintConfig, contentEditingHelper, serverValidationManager) {
 
             var vm = this;
             vm.submit = submit;
@@ -236,10 +243,41 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             vm.loading = true;
             vm.blueprintConfig = blueprintConfig;
 
+            function cleanup() {
+                if ($scope.model.node.id > 0){
+                    // delete any temporary blueprints used for validation
+                    contentResource.deleteBlueprint($scope.model.node.id);
+                }
+
+                //clear server validation messages when this editor is destroyed
+                serverValidationManager.clear();
+            }
+
+            $scope.$on('$destroy', cleanup);
+
             function submit() {
                 if ($scope.model.submit) {
-                    $scope.$broadcast('formSubmitting', { scope: $scope });
-                    $scope.model.submit($scope.model);
+                    $scope.model.node.name = "Dtge Temp: " + $scope.model.node.key;
+                    $scope.model.node.variants[0].name = $scope.model.node.name
+                    $scope.model.node.variants[0].save = true;
+
+                    // save the content as a blueprint, to trigger validation
+                    var args = {
+                        saveMethod: contentResource.saveBlueprint,
+                        scope: $scope,
+                        content: $scope.model.node,
+                        create: true,
+                        action: "save",
+                        showNotifications: true,
+                        softRedirect: true
+                    }
+
+                    contentEditingHelper.contentEditorPerformSave(args).then(function (data) {
+                            $scope.model.submit($scope.model);
+                        }, 
+                        function (err) {
+                            
+                        });
                 }
             }
             function close() {
@@ -282,7 +320,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             };
 
             function createFromBlueprint(blueprintId) {
-                contentResource.getBlueprintScaffold(-20, blueprintId).then(function (data) {
+                contentResource.getBlueprintScaffold(-1, blueprintId).then(function (data) {
                     // Assign the model to scope
                     $scope.nodeContext = $scope.model.node = data;
                     $scope.dialogMode = "edit";
@@ -297,7 +335,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function loadNode() {
                 vm.loading = true;
-                contentResource.getScaffold(-20, $scope.model.dialogData.docTypeAlias).then(function (data) {
+                contentResource.getScaffold(-1, $scope.model.dialogData.docTypeAlias).then(function (data) {
 
                     // Merge current value
                     if ($scope.model.dialogData.value) {
