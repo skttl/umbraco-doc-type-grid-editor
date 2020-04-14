@@ -244,7 +244,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             vm.blueprintConfig = blueprintConfig;
 
             function cleanup() {
-                if ($scope.model.node.id > 0){
+                if ($scope.model.node && $scope.model.node.id > 0){
                     // delete any temporary blueprints used for validation
                     contentResource.deleteBlueprint($scope.model.node.id);
                 }
