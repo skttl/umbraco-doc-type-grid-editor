@@ -93,9 +93,12 @@
                 id: $scope.control.value.id
             };
             overlayOptions.close = function () {
-                // ensure an empty doctype is not persisted
-                if($scope.control.$initializing){
-                    $scope.removeControl($scope.area, $scope.control.$index -1);
+                // ensure an empty DTGE without ContentType Alias is not persisted
+                if ($scope.control.value && $scope.control.value.dtgeContentTypeAlias === "") {
+                    let indexOfThis = $scope.area.controls.map(function (control) { return control.$uniqueId }).indexOf($scope.control.$uniqueId);
+                    if (indexOfThis > -1) {
+                        $scope.removeControl($scope.area, indexOfThis);
+                    }
                 }
 
                 editorService.close();
