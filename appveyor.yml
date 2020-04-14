@@ -1,7 +1,7 @@
 image: Visual Studio 2017
 
 # version format
-version: 1.2.0.{build}
+version: 1.2.1.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX if a rtm release build this should be blank, otherwise if empty will default to alpha
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
@@ -45,7 +45,7 @@ deploy:
 
     # NuGet Deployment for releases
   - provider: NuGet
-    server: 
+    server:
     skip_symbols: true
     api_key:
       secure: RYtJVVEuX1s2cy3Wo1Xly0yvp1n40wDdndhNsXQGgrAUmZDnlwujEycsLxUL8NsN
