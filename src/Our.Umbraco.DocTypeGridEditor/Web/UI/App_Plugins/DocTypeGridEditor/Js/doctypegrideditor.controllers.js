@@ -271,7 +271,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         content: $scope.model.node,
                         create: true,
                         action: "save",
-                        showNotifications: true,
+                        showNotifications: false,
                         softRedirect: true
                     }
 
