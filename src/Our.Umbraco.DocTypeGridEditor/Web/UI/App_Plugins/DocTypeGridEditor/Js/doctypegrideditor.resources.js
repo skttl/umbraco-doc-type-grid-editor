@@ -2,14 +2,14 @@
     function ($q, $http, umbRequestHelper) {
         return {
             getContentTypeAliasByGuid: function (guid) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeAliasByGuid?guid=" + guid);
+                var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeAliasByGuid?guid=" + guid;
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
                     'Failed to retrieve content type alias by guid'
                 );
             },
             getContentTypes: function (allowedContentTypes) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypes");
+                var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypes";
                 if (allowedContentTypes) {
                     for (var i = 0; i < allowedContentTypes.length; i++) {
                         url += (i == 0 ? "?" : "&") + "allowedContentTypes=" + allowedContentTypes[i];
@@ -21,21 +21,21 @@
                 );
             },
             getContentType: function (contentTypeAlias) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentType?contentTypeAlias=" + contentTypeAlias);
+                var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentType?contentTypeAlias=" + contentTypeAlias;
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
                     'Failed to retrieve content type icon'
                 );
             },
             getDataTypePreValues: function (dtdId) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetDataTypePreValues?dtdid=" + dtdId);
+                var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetDataTypePreValues?dtdid=" + dtdId;
                 return umbRequestHelper.resourcePromise(
                     $http.get(url),
                     'Failed to retrieve datatypes'
                 );
             },
             getEditorMarkupForDocTypePartial: function (pageId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath, published) {
-                var url = umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetPreviewMarkup?dtgePreview=1&pageId=" + pageId);
+                var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetPreviewMarkup?dtgePreview=1&pageId=" + pageId;
                 return $http({
                     method: 'POST',
                     url: url,
