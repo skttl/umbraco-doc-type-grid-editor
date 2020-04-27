@@ -93,54 +93,57 @@
                 id: $scope.control.value.id
             };
             overlayOptions.close = function () {
-                // ensure an empty doctype is not persisted
-                if($scope.control.$initializing){
-                    $scope.removeControl($scope.area, $scope.control.$index -1);
+                // ensure an empty DTGE without ContentType Alias is not persisted
+                if ($scope.control.value && $scope.control.value.dtgeContentTypeAlias === "") {
+                    let indexOfThis = $scope.area.controls.map(function (control) { return control.$uniqueId }).indexOf($scope.control.$uniqueId);
+                    if (indexOfThis > -1) {
+                        $scope.removeControl($scope.area, indexOfThis);
+                    }
                 }
 
                 editorService.close();
             }
             overlayOptions.submit = function (newModel) {
 
-                        // Copy property values to scope model value
-                        if (newModel.node) {
-                            var value = {
-                                name: newModel.editorName
-                            };
+                // Copy property values to scope model value
+                if (newModel.node) {
+                    var value = {
+                        name: newModel.editorName
+                    };
 
-                            for (var v = 0; v < newModel.node.variants.length; v++) {
-                                var variant = newModel.node.variants[v];
-                                for (var t = 0; t < variant.tabs.length; t++) {
-                                    var tab = variant.tabs[t];
-                                    for (var p = 0; p < tab.properties.length; p++) {
-                                        var prop = tab.properties[p];
-                                        if (typeof prop.value !== "function") {
-                                            value[prop.alias] = prop.value;
-                                        }
-                                    }
+                    for (var v = 0; v < newModel.node.variants.length; v++) {
+                        var variant = newModel.node.variants[v];
+                        for (var t = 0; t < variant.tabs.length; t++) {
+                            var tab = variant.tabs[t];
+                            for (var p = 0; p < tab.properties.length; p++) {
+                                var prop = tab.properties[p];
+                                if (typeof prop.value !== "function") {
+                                    value[prop.alias] = prop.value;
                                 }
                             }
-
-                            if (newModel.nameExp) {
-                                var newName = newModel.nameExp(value); // Run it against the stored dictionary value, NOT the node object
-                                if (newName && (newName = $.trim(newName))) {
-                                    value.name = newName;
-                                }
-                            }
-
-                            newModel.dialogData.value = value;
-                        } else {
-                            newModel.dialogData.value = null;
-
                         }
+                    }
 
-                        $scope.setValue({
-                            dtgeContentTypeAlias: newModel.dialogData.docTypeAlias,
-                            value: newModel.dialogData.value,
-                            id: newModel.dialogData.id
-                        });
-                        $scope.setPreview($scope.control.value);
-                        editorService.close();
+                    if (newModel.nameExp) {
+                        var newName = newModel.nameExp(value); // Run it against the stored dictionary value, NOT the node object
+                        if (newName && (newName = $.trim(newName))) {
+                            value.name = newName;
+                        }
+                    }
+
+                    newModel.dialogData.value = value;
+                } else {
+                    newModel.dialogData.value = null;
+
+                }
+
+                $scope.setValue({
+                    dtgeContentTypeAlias: newModel.dialogData.docTypeAlias,
+                    value: newModel.dialogData.value,
+                    id: newModel.dialogData.id
+                });
+                $scope.setPreview($scope.control.value);
+                editorService.close();
             };
 
             editorService.open(overlayOptions);
@@ -244,7 +247,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             vm.blueprintConfig = blueprintConfig;
 
             function cleanup() {
-                if ($scope.model.node.id > 0){
+                if ($scope.model.node && $scope.model.node.id > 0) {
                     // delete any temporary blueprints used for validation
                     contentResource.deleteBlueprint($scope.model.node.id);
                 }
@@ -268,15 +271,15 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         content: $scope.model.node,
                         create: true,
                         action: "save",
-                        showNotifications: true,
+                        showNotifications: false,
                         softRedirect: true
                     }
 
                     contentEditingHelper.contentEditorPerformSave(args).then(function (data) {
-                            $scope.model.submit($scope.model);
-                        }, 
+                        $scope.model.submit($scope.model);
+                    },
                         function (err) {
-                            
+
                         });
                 }
             }

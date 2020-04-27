@@ -18,6 +18,9 @@
     border: 1px solid #bbbabf;
 }
 
+.dtge-editor-preview-container {
+    text-align: initial;
+}
 /*
     Style the doc type grid editor previews
 
