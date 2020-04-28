@@ -316,6 +316,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         createFromBlueprint(blueprintIds[0]);
                     } else {
                         $scope.dialogMode = "selectBlueprint";
+                        vm.loading = false;
                     }
                 } else {
                     createBlank();
