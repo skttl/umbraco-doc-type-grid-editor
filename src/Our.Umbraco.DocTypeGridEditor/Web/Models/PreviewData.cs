@@ -22,5 +22,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Web
 
         [DataMember(Name = "viewPath")]
         public string ViewPath { get; set; }
+
+        [DataMember(Name = "culture")]
+        public string Culture { get; set; }
     }
 }
