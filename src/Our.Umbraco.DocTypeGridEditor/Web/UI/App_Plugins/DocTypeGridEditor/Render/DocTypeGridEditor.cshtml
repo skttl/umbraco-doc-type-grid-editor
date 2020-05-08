@@ -3,6 +3,7 @@
 @using Microsoft.CSharp.RuntimeBinder
 @using Our.Umbraco.DocTypeGridEditor.Helpers
 @using Our.Umbraco.DocTypeGridEditor.Web.Extensions
+@using Umbraco.Core.Models.PublishedContent
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<dynamic>
 @if (Model.value != null)
 {
@@ -11,6 +12,8 @@
     string contentTypeAlias = "";
     string value = Model.value.value.ToString();
     string viewPath = Model.editor.config.viewPath.ToString();
+
+    var page = UmbracoContext.PublishedRequest.PublishedContent;
 
     try
     {
@@ -23,7 +26,17 @@
 
     if (contentTypeAlias != "")
     {
-        var content = DocTypeGridEditorHelper.ConvertValueToContent(id, contentTypeAlias, value);
+        IPublishedElement content;
+
+        if (page != null)
+        {
+            content = DocTypeGridEditorHelper.ConvertValueToContent(id, contentTypeAlias, value, page.Id);
+        }
+        else
+        {
+            content = DocTypeGridEditorHelper.ConvertValueToContent(id, contentTypeAlias, value);
+        }
+        
 
         @Html.RenderDocTypeGridEditorItem(content, editorAlias, viewPath)
     }

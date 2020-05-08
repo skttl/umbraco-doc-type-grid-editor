@@ -171,8 +171,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 }
             }
 
+            IPublishedElement content;
             // Get content node object
-            var content = DocTypeGridEditorHelper.ConvertValueToContent(data.Id, data.ContentTypeAlias, data.Value);
+            if (page != null)
+            {
+                content = DocTypeGridEditorHelper.ConvertValueToContent(data.Id, data.ContentTypeAlias, data.Value,page.Id);
+            }
+            else
+            {
+                content = DocTypeGridEditorHelper.ConvertValueToContent(data.Id, data.ContentTypeAlias, data.Value);
+            }
+            
 
             // Construct preview model
             var model = new PreviewModel

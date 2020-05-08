@@ -21,6 +21,25 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
     public static class DocTypeGridEditorHelper
     {
 
+        public static IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson, int pageId)
+        {
+            if (string.IsNullOrWhiteSpace(contentTypeAlias))
+                return null;
+
+            if (dataJson == null)
+                return null;
+
+            if (Current.UmbracoContext == null)
+                return ConvertValue(id, contentTypeAlias, dataJson);
+            
+            return (IPublishedElement)Current.AppCaches.RuntimeCache.GetCacheItem(
+                $"Our.Umbraco.DocTypeGridEditor.Helpers.DocTypeGridEditorHelper.ConvertValueToContent_Page_{pageId}_{id}_{contentTypeAlias}",
+                () =>
+                {
+                    return ConvertValue(id, contentTypeAlias, dataJson);
+                });
+        }
+
         public static IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
         {
             if (string.IsNullOrWhiteSpace(contentTypeAlias))
@@ -56,10 +75,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
 
                 /* Because we never store the value in the database, we never run the property editors
-                     * "ConvertEditorToDb" method however the property editors will expect their value to 
-                     * be in a "DB" state so to get round this, we run the "ConvertEditorToDb" here before
-                     * we go on to convert the value for the view. 
-                     */
+                 * "ConvertEditorToDb" method however the property editors will expect their value to 
+                 * be in a "DB" state so to get round this, we run the "ConvertEditorToDb" here before
+                 * we go on to convert the value for the view. 
+                 */
                 Current.PropertyEditors.TryGet(propType.EditorAlias, out var propEditor);
                 var propPreValues = GetPreValuesCollectionByDataTypeId(propType.DataType.Id);
 
