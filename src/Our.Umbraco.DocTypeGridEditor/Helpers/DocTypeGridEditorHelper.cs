@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Caching;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -37,7 +38,11 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 () =>
                 {
                     return ConvertValue(id, contentTypeAlias, dataJson);
-                });
+                },
+                timeout: TimeSpan.FromMinutes(120),
+                isSliding:true,
+                CacheItemPriority.BelowNormal
+            );
         }
 
         public static IPublishedElement ConvertValueToContent(string id, string contentTypeAlias, string dataJson)
