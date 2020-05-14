@@ -159,10 +159,10 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
             }
 
             // Set the culture for the preview
-            if (page != null)
+            if (page != null && page.Cultures != null)
             {
-                var currentCulture = page.GetCultureFromDomains();
-                if (page.Cultures != null && page.Cultures.ContainsKey(currentCulture))
+                var currentCulture = string.IsNullOrWhiteSpace(data.Culture) ? page.GetCultureFromDomains() : data.Culture;
+                if (currentCulture != null && page.Cultures.ContainsKey(currentCulture))
                 {
                     var culture = new CultureInfo(page.Cultures[currentCulture].Culture);
                     UmbracoContext.PublishedRequest.Culture = culture;
