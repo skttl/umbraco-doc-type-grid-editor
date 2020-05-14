@@ -34,7 +34,7 @@
                     'Failed to retrieve datatypes'
                 );
             },
-            getEditorMarkupForDocTypePartial: function (pageId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath, published) {
+            getEditorMarkupForDocTypePartial: function (pageId, id, editorAlias, contentTypeAlias, value, viewPath, previewViewPath, published, culture) {
                 var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetPreviewMarkup?dtgePreview=1&pageId=" + pageId;
                 return $http({
                     method: 'POST',
@@ -45,7 +45,8 @@
                         contentTypeAlias: contentTypeAlias,
                         value: JSON.stringify(value),
                         viewPath: viewPath,
-                        previewViewPath: previewViewPath
+                        previewViewPath: previewViewPath,
+                        culture: culture
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'

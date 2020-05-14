@@ -151,11 +151,13 @@
 
         $scope.setPreview = function (model) {
             if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
+                var activeVariant = editorState.current.variants.find(v => v.active);
+                var culture = activeVariant ? activeVariant.language.culture : null;
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
                     $scope.control.editor.config.previewViewPath,
-                    !!editorState.current.publishDate)
+                    !!editorState.current.publishDate, culture)
                     .then(function (response) {
                         var htmlResult = response.data;
                         if (htmlResult.trim().length > 0) {
@@ -316,6 +318,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         createFromBlueprint(blueprintIds[0]);
                     } else {
                         $scope.dialogMode = "selectBlueprint";
+                        vm.loading = false;
                     }
                 } else {
                     createBlank();
