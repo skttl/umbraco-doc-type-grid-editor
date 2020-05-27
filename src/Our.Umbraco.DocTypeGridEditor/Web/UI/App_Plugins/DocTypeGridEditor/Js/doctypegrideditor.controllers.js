@@ -151,8 +151,8 @@
 
         $scope.setPreview = function (model) {
             if ($scope.control.editor.config && "enablePreview" in $scope.control.editor.config && $scope.control.editor.config.enablePreview) {
-                var activeVariant = editorState.current.variants.find(v => v.active);
-                var culture = activeVariant ? activeVariant.language.culture : null;
+                var activeVariant = editorState.current.variants?.find(v => v.active);
+                var culture = activeVariant?.language?.culture;
                 dtgeResources.getEditorMarkupForDocTypePartial(editorState.current.id, model.id,
                     $scope.control.editor.alias, model.dtgeContentTypeAlias, model.value,
                     $scope.control.editor.config.viewPath,
