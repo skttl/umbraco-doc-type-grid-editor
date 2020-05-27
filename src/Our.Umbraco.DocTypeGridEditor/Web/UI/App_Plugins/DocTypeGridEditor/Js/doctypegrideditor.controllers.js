@@ -387,6 +387,10 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 });
             }
 
+            if (dtgeUtilityService.compareCurrentUmbracoVersion("8.7.0", {}) && !$("body").hasClass("pre870")) {
+                $("body").addClass("pre870");
+            };
+
         }
 
     ]);
