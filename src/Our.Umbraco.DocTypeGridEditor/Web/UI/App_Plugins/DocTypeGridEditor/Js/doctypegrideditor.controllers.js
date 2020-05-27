@@ -252,6 +252,9 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                 if ($scope.model.node && $scope.model.node.id > 0) {
                     // delete any temporary blueprints used for validation
                     contentResource.deleteBlueprint($scope.model.node.id);
+
+                    // set current node id, so subsequent deletes, giving 404 errors is avoided
+                    $scope.model.node.id = 0;
                 }
 
                 //clear server validation messages when this editor is destroyed
@@ -280,9 +283,10 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                     contentEditingHelper.contentEditorPerformSave(args).then(function (data) {
                         $scope.model.submit($scope.model);
                     },
-                        function (err) {
-
-                        });
+                    function (err) {
+                        // cleanup the blueprint immediately
+                        cleanup();
+                    });
                 }
             }
             function close() {
