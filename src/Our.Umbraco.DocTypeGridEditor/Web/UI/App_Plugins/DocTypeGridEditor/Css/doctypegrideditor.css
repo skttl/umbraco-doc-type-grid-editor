@@ -44,3 +44,11 @@
     display: block;
 }
 */
+
+/* workaround for https://github.com/skttl/umbraco-doc-type-grid-editor/issues/199 from https://github.com/umbraco/Umbraco-CMS/issues/7754 */
+body.pre870 .dtge-dialog .umb-overlay {
+    left: inherit !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+}
