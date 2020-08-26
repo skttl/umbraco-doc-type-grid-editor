@@ -30,6 +30,9 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
             var result = new List<UmbracoEntityReference>();
             var _propertyEditors = Current.PropertyEditors;
             var rawJson = value == null ? string.Empty : value is string str ? str : value.ToString();
+            
+            if(rawJson.IsNullOrWhiteSpace()) return result;
+            
             DeserializeGridValue(rawJson, out var dtgeValues);
 
             foreach (var control in dtgeValues)
