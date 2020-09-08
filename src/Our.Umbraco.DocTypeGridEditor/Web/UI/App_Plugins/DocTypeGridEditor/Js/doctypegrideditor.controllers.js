@@ -248,6 +248,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             vm.close = close;
             vm.loading = true;
             vm.blueprintConfig = blueprintConfig;
+            vm.saveButtonState = "init";
 
             function cleanup() {
                 if ($scope.model.node && $scope.model.node.id > 0) {
@@ -266,6 +267,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function submit() {
                 if ($scope.model.submit) {
+                    vm.saveButtonState = "busy";
                     $scope.model.node.name = "Dtge Temp: " + $scope.model.node.key;
                     $scope.model.node.variants[0].name = $scope.model.node.name
                     $scope.model.node.variants[0].save = true;
