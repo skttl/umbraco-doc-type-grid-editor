@@ -272,9 +272,12 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                     $scope.model.node.variants[0].name = $scope.model.node.name
                     $scope.model.node.variants[0].save = true;
 
-                    // Reset route create to prevent showing up the changed content dialog
+                    // Reset route create to prevent showing up the unsaved changes dialog
                     var routeParamsCreate = $routeParams.create;
                     $routeParams.create = undefined;
+                    
+                    // Clear serverside errors to revalidate when pressing submit button  
+                    serverValidationManager.reset();
 
                     // save the content as a blueprint, to trigger validation
                     var args = {
@@ -293,7 +296,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         $routeParams.create = routeParamsCreate;
                     },
                         function (err) {
-                            // Set original value of $routeParams.create
+                            // Reset original value of $routeParams.create
                             $routeParams.create = routeParamsCreate;
                             // cleanup the blueprint immediately
                             cleanup();
