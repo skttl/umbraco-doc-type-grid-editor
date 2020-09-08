@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Clear earlier serverside validation errors #217
 - Null Pointer Exception on save when no grid layout selected #211
 - Unsaved Changes dialog fires when hitting submit on grid editors #205
 
