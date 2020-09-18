@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Handle null value when deserializing grid value in DataValueReference 50ba85aaeeb66ed305248d303d568e4698943094
 
 ## [1.2.4] - 2020-09-09
 - Clear earlier serverside validation errors #217
