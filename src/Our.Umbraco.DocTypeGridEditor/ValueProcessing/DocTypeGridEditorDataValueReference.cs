@@ -30,9 +30,9 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
             var result = new List<UmbracoEntityReference>();
             var _propertyEditors = Current.PropertyEditors;
             var rawJson = value == null ? string.Empty : value is string str ? str : value.ToString();
-            
+
             if(rawJson.IsNullOrWhiteSpace()) return result;
-            
+
             DeserializeGridValue(rawJson, out var dtgeValues);
 
             foreach (var control in dtgeValues)
@@ -67,9 +67,16 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
         {
             var grid = JsonConvert.DeserializeObject<GridValue>(rawJson);
 
-            // Find all controls that uses DTGE editor
-            var controls = grid.Sections.SelectMany(x => x.Rows.SelectMany(r => r.Areas).SelectMany(a => a.Controls)).ToArray();
-            dtgeValues = controls.Where(x => x.Editor.Alias.ToLowerInvariant() == "doctype").Select(x => x.Value.ToObject<DocTypeGridEditorValue>());
+            if (grid != null)
+            {
+                // Find all controls that uses DTGE editor
+                var controls = grid.Sections.SelectMany(x => x.Rows.SelectMany(r => r.Areas).SelectMany(a => a.Controls)).ToArray();
+                dtgeValues = controls.Where(x => x.Editor.Alias.ToLowerInvariant() == "doctype").Select(x => x.Value.ToObject<DocTypeGridEditorValue>());
+            }
+            else
+            {
+                dtgeValues = Enumerable.Empty<DocTypeGridEditorValue>();
+            }
 
             return grid;
         }
