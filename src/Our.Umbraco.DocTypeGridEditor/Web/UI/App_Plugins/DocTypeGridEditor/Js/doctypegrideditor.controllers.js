@@ -293,6 +293,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                         $routeParams.create = routeParamsCreate;
                     },
                         function (err) {
+                            vm.saveButtonState = "init";
                             // Set original value of $routeParams.create
                             $routeParams.create = routeParamsCreate;
                             // cleanup the blueprint immediately
