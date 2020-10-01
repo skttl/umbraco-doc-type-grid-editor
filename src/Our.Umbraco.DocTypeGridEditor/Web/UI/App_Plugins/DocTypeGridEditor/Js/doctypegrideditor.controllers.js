@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor", [
+angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.GridEditors.DocTypeGridEditor", [
 
     "$scope",
     "$rootScope",
@@ -239,14 +239,16 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
         "blueprintConfig",
         "contentEditingHelper",
         "serverValidationManager",
+        "$routeParams",
 
-        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService, blueprintConfig, contentEditingHelper, serverValidationManager) {
+        function ($scope, $interpolate, formHelper, contentResource, dtgeResources, dtgeUtilityService, blueprintConfig, contentEditingHelper, serverValidationManager, $routeParams) {
 
             var vm = this;
             vm.submit = submit;
             vm.close = close;
             vm.loading = true;
             vm.blueprintConfig = blueprintConfig;
+            vm.saveButtonState = "init";
 
             function cleanup() {
                 if ($scope.model.node && $scope.model.node.id > 0) {
@@ -265,9 +267,14 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function submit() {
                 if ($scope.model.submit) {
+                    vm.saveButtonState = "busy";
                     $scope.model.node.name = "Dtge Temp: " + $scope.model.node.key;
                     $scope.model.node.variants[0].name = $scope.model.node.name
                     $scope.model.node.variants[0].save = true;
+
+                    // Reset route create to prevent showing up the changed content dialog
+                    var routeParamsCreate = $routeParams.create;
+                    $routeParams.create = undefined;
 
                     // save the content as a blueprint, to trigger validation
                     var args = {
@@ -282,10 +289,14 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
                     contentEditingHelper.contentEditorPerformSave(args).then(function (data) {
                         $scope.model.submit($scope.model);
+                        // Reset original value of $routeParams.create
+                        $routeParams.create = routeParamsCreate;
                     },
-                    function (err) {
-                        // cleanup the blueprint immediately
-                        cleanup();
+                        function (err) {
+                            // Set original value of $routeParams.create
+                            $routeParams.create = routeParamsCreate;
+                            // cleanup the blueprint immediately
+                            cleanup();
                     });
                 }
             }
