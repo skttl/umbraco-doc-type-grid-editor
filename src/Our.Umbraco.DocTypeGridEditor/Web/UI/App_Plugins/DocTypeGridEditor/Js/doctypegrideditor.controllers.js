@@ -297,6 +297,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             $routeParams.create = routeParamsCreate;
                             // cleanup the blueprint immediately
                             cleanup();
+                            vm.saveButtonState = "error";
                     });
                 }
             }
