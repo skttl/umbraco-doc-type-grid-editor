@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Resetting saveButtonState when validation contains errors #221
+- Handle null value when deserializing grid value in DataValueReference 50ba85aaeeb66ed305248d303d568e4698943094
+
+## [1.2.4] - 2020-09-09
 - Clear earlier serverside validation errors #217
 - Null Pointer Exception on save when no grid layout selected #211
 - Unsaved Changes dialog fires when hitting submit on grid editors #205
@@ -45,7 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Developers Guide updated
 - New minimum Umbraco version requirement: 8.1.0 - Doc Type Grid Editor will not work in lower versions!
 
-[unreleased]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.2...HEAD
+[unreleased]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.4...HEAD
+[1.2.4]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.3...1.2.4
 [1.2.3]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.2...1.2.3
 [1.2.2]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.0...1.2.1
