@@ -288,6 +288,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                     }
 
                     contentEditingHelper.contentEditorPerformSave(args).then(function (data) {
+                        $scope.model.node.id = data.id;
                         $scope.model.submit($scope.model);
                         // Reset original value of $routeParams.create
                         $routeParams.create = routeParamsCreate;
@@ -296,6 +297,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             // Set original value of $routeParams.create
                             $routeParams.create = routeParamsCreate;
                             // cleanup the blueprint immediately
+                            $scope.model.node.id = err.data.id;
                             cleanup();
                             vm.saveButtonState = "error";
                     });

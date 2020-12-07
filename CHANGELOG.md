@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## 1.2.6 - 2020-12-07
+- Fix: Error saving temp blueprint
+- Fix: issue when previewing linked content items
+
+## [1.2.5] - 2020-11-01
 - Resetting saveButtonState when validation contains errors #221
 - Handle null value when deserializing grid value in DataValueReference 50ba85aaeeb66ed305248d303d568e4698943094
 
@@ -49,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Developers Guide updated
 - New minimum Umbraco version requirement: 8.1.0 - Doc Type Grid Editor will not work in lower versions!
 
-[unreleased]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.4...HEAD
+[unreleased]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.5...HEAD
+[1.2.5]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.4...1.2.5
 [1.2.4]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.3...1.2.4
 [1.2.3]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.2...1.2.3
 [1.2.2]: https://github.com/skttl/umbraco-doc-type-grid-editor/compare/1.2.1...1.2.2
