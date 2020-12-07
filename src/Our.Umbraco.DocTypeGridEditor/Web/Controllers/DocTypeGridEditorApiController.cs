@@ -31,7 +31,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
         private readonly IContentTypeService _contentTypeService;
         private readonly IDataTypeService _dataTypeService;
         private readonly IPublishedContentCache _contentCache;
-
+        
         public DocTypeGridEditorApiController()
         {
         }
@@ -157,7 +157,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                 UmbracoContext.PublishedRequest = router.CreateRequest(UmbracoContext, Request.RequestUri);
                 UmbracoContext.PublishedRequest.PublishedContent = page;
             }
-
+            
             // Set the culture for the preview
             if (page != null && page.Cultures != null)
             {
@@ -168,6 +168,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Web.Controllers
                     UmbracoContext.PublishedRequest.Culture = culture;
                     System.Threading.Thread.CurrentThread.CurrentCulture = culture;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+                    UmbracoContext.VariationContextAccessor.VariationContext = new VariationContext(culture.Name);
                 }
             }
 
