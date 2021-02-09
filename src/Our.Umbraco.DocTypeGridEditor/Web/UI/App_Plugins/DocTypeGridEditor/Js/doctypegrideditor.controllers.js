@@ -301,6 +301,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             cleanup();
                             vm.saveButtonState = "error";
                     });
+                    vm.saveButtonState = "init";
                 }
             }
             function close() {
