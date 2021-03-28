@@ -297,10 +297,13 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             // Set original value of $routeParams.create
                             $routeParams.create = routeParamsCreate;
                             // cleanup the blueprint immediately
-                            $scope.model.node.id = err.data.id;
+                            if (err && err.data) {
+                                $scope.model.node.id = err.data.id;
+                            }
                             cleanup();
                             vm.saveButtonState = "error";
                     });
+                    vm.saveButtonState = "init";
                 }
             }
             function close() {
