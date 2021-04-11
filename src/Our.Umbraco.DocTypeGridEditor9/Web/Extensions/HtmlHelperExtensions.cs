@@ -106,10 +106,10 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Extensions
             if (string.IsNullOrWhiteSpace(viewPath) == false)
             {
                 var fullViewPath = $"{viewPath}{editorAlias}.cshtml";
-                //if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
-                //{
-                //    return helper.PartialAsync(fullViewPath, content).Result;
-                //}
+                if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
+                {
+                    return helper.PartialAsync(fullViewPath, content).Result;
+                }
 
                 fullViewPath = $"{viewPath}{content.ContentType.Alias}.cshtml";
                 if (ViewHelper.ViewExists(helper.ViewContext, fullViewPath, true))
