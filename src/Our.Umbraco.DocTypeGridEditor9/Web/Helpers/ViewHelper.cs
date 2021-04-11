@@ -11,6 +11,8 @@ using Umbraco.Cms.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Web;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Our.Umbraco.DocTypeGridEditor9.Web.Helpers
 {

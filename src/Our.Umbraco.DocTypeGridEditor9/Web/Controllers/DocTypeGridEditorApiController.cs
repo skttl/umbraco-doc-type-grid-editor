@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Our.Umbraco.DocTypeGridEditor9.Helpers;
+using Our.Umbraco.DocTypeGridEditor9.Models;
 using Our.Umbraco.DocTypeGridEditor9.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +19,7 @@ using System.Threading.Tasks;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Services;
@@ -37,6 +42,10 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
         private readonly IPublishedContentQuery _contentQuery;
         private readonly IPublishedRouter _router;
         private readonly DocTypeGridEditorHelper _dtgeHelper;
+        private readonly ServiceContext _serviceContext;
+        private readonly IPublishedContentTypeFactory _publishedContentTypeFactory;
+        private readonly IPublishedModelFactory _publishedModelFactory;
+        private readonly PropertyEditorCollection _propertyEditorCollection;
 
         public DocTypeGridEditorApiController(IUmbracoContextAccessor umbracoContext,
             IContentTypeService contentTypeService,
@@ -45,6 +54,9 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
             IShortStringHelper shortStringHelper,
             IPublishedContentQuery contentQuery,
             IPublishedRouter router,
+            ServiceContext serviceContext,
+            IPublishedContentTypeFactory publishedContentTypeFactory,
+            PropertyEditorCollection propertyEditorCollection,
             DocTypeGridEditorHelper dtgeHelper)
         {
             _umbracoContext = umbracoContext;
@@ -55,10 +67,13 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
             _contentQuery = contentQuery;
             _router = router;
             _dtgeHelper = dtgeHelper;
+            _serviceContext = serviceContext;
+            _publishedContentTypeFactory = publishedContentTypeFactory;
+            _propertyEditorCollection = propertyEditorCollection;
         }
 
         [HttpGet]
-        public object GetContentTypeAliasByGuid([ModelBinder] Guid guid)
+        public object GetContentTypeAliasByGuid([FromQuery] Guid guid)
         {
             return new
             {
@@ -67,7 +82,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<object> GetContentTypesOld(string[] allowedContentTypes)
+        public IEnumerable<object> GetContentTypes([FromQuery]string[] allowedContentTypes)
         {
             var allContentTypes = _contentTypeService.GetAll().ToList();
             var contentTypes = allContentTypes
@@ -96,35 +111,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<object> GetContentTypes()
-        {
-            var allContentTypes = _contentTypeService.GetAll().ToList();
-            var contentTypes = allContentTypes
-                .Where(x => x.IsElement && x.VariesByCulture() == false)
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            var blueprints = _contentService.GetBlueprintsForContentTypes(contentTypes.Select(x => x.Id).ToArray()).ToArray();
-
-            return contentTypes
-                .Select(x => new
-                {
-                    id = x.Id,
-                    guid = x.Key,
-                    name = x.Name,
-                    alias = x.Alias,
-                    description = x.Description,
-                    icon = x.Icon,
-                    blueprints = blueprints.Where(bp => bp.ContentTypeId == x.Id).Select(bp => new
-                    {
-                        id = bp.Id,
-                        name = bp.Name
-                    })
-                });
-        }
-
-        [HttpGet]
-        public object GetContentType(string contentTypeAlias)
+        public object GetContentType([FromQuery]string contentTypeAlias)
         {
             Guid docTypeGuid;
             if (Guid.TryParse(contentTypeAlias, out docTypeGuid))
@@ -140,7 +127,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
         }
 
         [HttpGet]
-        public object GetDataTypePreValues(string dtdId)
+        public object GetDataTypePreValues([FromQuery]string dtdId)
         {
             Guid guidDtdId;
             int intDtdId;
@@ -173,7 +160,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage GetPreviewMarkup([FromBody] PreviewData data, int pageId)
+        public PartialViewResult GetPreviewMarkup([FromForm] PreviewData data, [FromQuery]int pageId)
         {
             var page = default(IPublishedContent);
 
@@ -185,7 +172,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
                 if (page == null)
                 {
                     // If unpublished, then fake PublishedContent
-                    // page = new UnpublishedContent(pageId, Services); TODO: UnpublishedContent
+                    page = new UnpublishedContent(pageId, _contentService, _contentTypeService, _dataTypeService, _propertyEditorCollection, _publishedContentTypeFactory);
                 }
             }
 
@@ -224,19 +211,18 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Controllers
                 ViewPath = data.ViewPath
             };
 
+
             // Render view
+
             var partialName = "~/App_Plugins/DocTypeGridEditor/Render/DocTypeGridEditorPreviewer.cshtml";
-            var markup = Helpers.ViewHelper.RenderPartial(partialName, model, HttpContext, _umbracoContext.UmbracoContext);
 
-            // Return response
-            var response = new HttpResponseMessage
+            var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
+            viewData.Model = model;
+            return new PartialViewResult()
             {
-                Content = new StringContent(markup ?? string.Empty)
+                ViewName = partialName,
+                ViewData = viewData
             };
-
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Text.Html);
-
-            return response;
         }
     }
 }

@@ -20,21 +20,21 @@ namespace Our.Umbraco.DocTypeGridEditor9.Models
         private readonly Lazy<IPublishedContent> parent;
         private readonly Lazy<Dictionary<string, IPublishedProperty>> properties;
 
-        public UnpublishedContent(int id, ServiceContext serviceContext, PropertyEditorCollection propertyEditorCollection, IPublishedContentTypeFactory publishedContentTypeFactory)
-            : this(serviceContext.ContentService.GetById(id), serviceContext, propertyEditorCollection, publishedContentTypeFactory)
+        public UnpublishedContent(int id, IContentService contentService, IContentTypeService contentTypeService, IDataTypeService dataTypeService, PropertyEditorCollection propertyEditorCollection, IPublishedContentTypeFactory publishedContentTypeFactory)
+            : this(contentService.GetById(id), contentService, contentTypeService, dataTypeService, propertyEditorCollection, publishedContentTypeFactory)
         { }
 
-        public UnpublishedContent(IContent content, ServiceContext serviceContext, PropertyEditorCollection propertyEditorCollection, IPublishedContentTypeFactory publishedContentTypeFactory)
+        public UnpublishedContent(IContent content, IContentService contentService, IContentTypeService contentTypeService, IDataTypeService dataTypeService, PropertyEditorCollection propertyEditorCollection, IPublishedContentTypeFactory publishedContentTypeFactory)
             : base()
         {
 
             this.content = content;
-            var contentType = serviceContext.ContentTypeService.Get(this.content.ContentType.Id);
+            var contentType = contentTypeService.Get(this.content.ContentType.Id);
 
             //this.children = new Lazy<IEnumerable<IPublishedContent>>(() => this.content.Children().Select(x => new UnpublishedContent(x, serviceContext)).ToList());
             this.contentType = new Lazy<IPublishedContentType>(() => publishedContentTypeFactory.CreateContentType(contentType));
-            this.parent = new Lazy<IPublishedContent>(() => new UnpublishedContent(serviceContext.ContentService.GetById(this.content.ParentId), serviceContext, propertyEditorCollection, publishedContentTypeFactory));
-            this.properties = new Lazy<Dictionary<string, IPublishedProperty>>(() => MapProperties(serviceContext, propertyEditorCollection));
+            this.parent = new Lazy<IPublishedContent>(() => new UnpublishedContent(contentService.GetById(this.content.ParentId), contentService, contentTypeService, dataTypeService, propertyEditorCollection, publishedContentTypeFactory));
+            this.properties = new Lazy<Dictionary<string, IPublishedProperty>>(() => MapProperties(dataTypeService, propertyEditorCollection));
             //this.urlName = new Lazy<string>(() => this.content.Name.ToUrlSegment());
             //this.writerName = new Lazy<string>(() => this.content.GetWriterProfile(userService.Value).Name);
         }
@@ -108,7 +108,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Models
             return this.properties.Value.TryGetValue(alias, out IPublishedProperty property) ? property : null;
         }
 
-        private Dictionary<string, IPublishedProperty> MapProperties(ServiceContext services, PropertyEditorCollection dataEditors)
+        private Dictionary<string, IPublishedProperty> MapProperties(IDataTypeService dataTypeService, PropertyEditorCollection dataEditors)
         {
             var contentType = this.contentType.Value;
             var properties = this.content.Properties;
@@ -124,7 +124,7 @@ namespace Our.Umbraco.DocTypeGridEditor9.Models
                     dataEditors.TryGet(propertyType.DataType.EditorAlias, out var editor);
                     if (editor != null)
                     {
-                        value = editor.GetValueEditor().ConvertDbToString(property.PropertyType, value, services.DataTypeService);
+                        value = editor.GetValueEditor().ConvertDbToString(property.PropertyType, value, dataTypeService);
                     }
                 }
 

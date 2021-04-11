@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Our.Umbraco.DocTypeGridEditor9.Web.Helpers;
 using System;
 using System.Collections.Generic;
@@ -132,5 +131,6 @@ namespace Our.Umbraco.DocTypeGridEditor9.Web.Extensions
 
             return helper.PartialAsync(content.ContentType.Alias, content).Result;
         }
+
     }
 }
