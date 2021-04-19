@@ -2,12 +2,14 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Product>Our.Umbraco.DocTypeGridEditor9</Product>
-        <PackageId>Our.Umbraco.DocTypeGridEditor9</PackageId>
-        <Title>Our.Umbraco.DocTypeGridEditor9</Title>
+        <Product>Our.Umbraco.DocTypeGridEditor</Product>
+        <PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
+        <Title>Our.Umbraco.DocTypeGridEditor</Title>
         <Description>...</Description>
         <Product>...</Product>
         <PackageTags>umbraco plugin package</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>9.0.0-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Web\UI\App_Plugins\DocTypeGridEditor\**\*.*">
+        <Content Include="App_Plugins\DocTypeGridEditor\**\*.*">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
