@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -204,7 +205,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
         }
 
         public IHtmlContent RenderDocTypeGridEditorItem(
-            IHtmlHelper helper,
+            IViewComponentHelper helper,
+            IHtmlHelper htmlHelper,
             dynamic model)
         {
             if (model.value != null)
@@ -216,14 +218,15 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 string viewPath = model.editor.config.viewPath.ToString();
 
                 var content = ConvertValue(id, contentTypeAlias, value);
-                return RenderDocTypeGridEditorItem(helper, content, editorAlias, viewPath);
+                return RenderDocTypeGridEditorItem(helper, htmlHelper, content, editorAlias, viewPath);
             }
 
             return null;
         }
 
         public IHtmlContent RenderDocTypeGridEditorItem(
-            IHtmlHelper helper,
+            IViewComponentHelper helper,
+            IHtmlHelper htmlHelper,
             IPublishedElement content,
             string editorAlias = "",
             string viewPath = "",
@@ -231,23 +234,24 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             bool isPreview = false)
         {
             if (content == null)
-                return new HtmlString(string.Empty);
+                return new HtmlString("<pre>content is null</pre>");
 
             // get view path
-            if (!TryGetViewPath(helper.ViewContext, editorAlias, content.ContentType.Alias, viewPath, previewViewPath, isPreview, out string fullViewPath))
+            if (!TryGetViewPath(htmlHelper.ViewContext, editorAlias, content.ContentType.Alias, viewPath, previewViewPath, isPreview, out string fullViewPath))
             {
-                return new HtmlString(string.Empty);
+                return new HtmlString($"<pre>could not get viewpath. {editorAlias}, {content.ContentType.Alias}, {viewPath}, {previewViewPath}, {isPreview}, {fullViewPath}</pre>");
             }
 
-            var renderParams = new object[] { content, fullViewPath };
+            var renderParams = new { model = content, viewPath = fullViewPath };
             var viewComponent = _options.DefaultDocTypeGridEditorViewComponent;
 
-            if (TryGetComponent(editorAlias, out ViewComponentDescriptor component) || TryGetComponent(content.ContentType.Alias, out component))
+            if (!TryGetComponentName(new[] { editorAlias, content.ContentType.Alias }, out string componentName))
             {
-                viewComponent = component.GetType();
+                return new HtmlString($"<pre>could not get componentName. {editorAlias}, {content.ContentType.Alias}, {componentName}</pre>");
+
             }
 
-            return helper.RenderComponentAsync(viewComponent, RenderMode.Static, renderParams).Result;
+            return helper.InvokeAsync(componentName, renderParams).Result;
         }
 
         private bool TryGetViewPath(ViewContext viewContext, string editorAlias, string contentTypeAlias, string viewPath, string previewViewPath, bool isPreview, out string fullViewPath)
@@ -292,13 +296,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             return !fullViewPath.IsNullOrWhiteSpace();
         }
 
-        private bool TryGetComponent(string name, out ViewComponentDescriptor component)
+        private bool TryGetComponentName(string[] names, out string componentName)
         {
-            component = null;
-            if (name.IsNullOrWhiteSpace()) return false;
-
-            component = _viewComponentSelector.SelectComponent($"{name}DocTypeGridEditorViewComponent");
-            return component != null;
+            componentName = "";
+            foreach (var name in names)
+            {
+                Console.WriteLine($"getting component name for {name}");
+                if (_viewComponentSelector.SelectComponent($"{name}DocTypeGridEditor") != null)
+                {
+                    componentName = $"{name}DocTypeGridEditor";
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static bool ViewExists(ViewContext viewContext, string viewName)

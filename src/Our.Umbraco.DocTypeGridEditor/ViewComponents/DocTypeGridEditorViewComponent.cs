@@ -12,7 +12,7 @@ namespace Our.Umbraco.DocTypeGridEditor.ViewComponents
 {
     public class DocTypeGridEditorViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(IPublishedElement model, string viewPath)
+        public IViewComponentResult Invoke(dynamic model, string viewPath)
         {
             return View(viewPath, model);
         }
