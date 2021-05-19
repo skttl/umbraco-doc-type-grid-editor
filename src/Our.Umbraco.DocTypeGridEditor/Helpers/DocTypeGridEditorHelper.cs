@@ -242,16 +242,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 return new HtmlString($"<pre>could not get viewpath. {editorAlias}, {content.ContentType.Alias}, {viewPath}, {previewViewPath}, {isPreview}, {fullViewPath}</pre>");
             }
 
-            var renderParams = new { model = content, viewPath = fullViewPath };
-            var viewComponent = _options.DefaultDocTypeGridEditorViewComponent;
-
-            if (!TryGetComponentName(new[] { editorAlias, content.ContentType.Alias }, out string componentName))
-            {
-                return new HtmlString($"<pre>could not get componentName. {editorAlias}, {content.ContentType.Alias}, {componentName}</pre>");
-
-            }
-
-            return helper.InvokeAsync(componentName, renderParams).Result;
+            var componentName = GetComponentName(new[] { editorAlias, content.ContentType.Alias });
+            return helper.InvokeAsync(componentName, new { model = content, viewPath = fullViewPath }).Result;
         }
 
         private bool TryGetViewPath(ViewContext viewContext, string editorAlias, string contentTypeAlias, string viewPath, string previewViewPath, bool isPreview, out string fullViewPath)
@@ -296,19 +288,19 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             return !fullViewPath.IsNullOrWhiteSpace();
         }
 
-        private bool TryGetComponentName(string[] names, out string componentName)
+        private string GetComponentName(string[] names)
         {
-            componentName = "";
+            var componentName = _options.DefaultDocTypeGridEditorViewComponent.Name;
+            if (componentName.EndsWith("ViewComponent")) componentName = componentName.Substring(0, componentName.LastIndexOf("ViewComponent"));
             foreach (var name in names)
             {
-                Console.WriteLine($"getting component name for {name}");
                 if (_viewComponentSelector.SelectComponent($"{name}DocTypeGridEditor") != null)
                 {
-                    componentName = $"{name}DocTypeGridEditor";
-                    return true;
+                    return $"{name}DocTypeGridEditor";
                 }
             }
-            return false;
+
+            return componentName;
         }
 
         public static bool ViewExists(ViewContext viewContext, string viewName)
