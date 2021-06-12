@@ -234,12 +234,17 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             bool isPreview = false)
         {
             if (content == null)
-                return new HtmlString("<pre>content is null</pre>");
+                _logger.LogError("Failed rendering DocTypeGridEditorItem. " +
+                    "content is null");
+                return new HtmlString("");
 
             // get view path
             if (!TryGetViewPath(htmlHelper.ViewContext, editorAlias, content.ContentType.Alias, viewPath, previewViewPath, isPreview, out string fullViewPath))
             {
-                return new HtmlString($"<pre>could not get viewpath. {editorAlias}, {content.ContentType.Alias}, {viewPath}, {previewViewPath}, {isPreview}, {fullViewPath}</pre>");
+                _logger.LogError("Failed rendering DocTypeGridEditorItem. " +
+                    "Could not get viewpath. " +
+                    "{editorAlias}, {content.ContentType.Alias}, {viewPath}, {previewViewPath}, {isPreview}, {fullViewPath}", editorAlias, content.ContentType.Alias, viewPath, previewViewPath, isPreview, fullViewPath);
+                return new HtmlString("");
             }
 
             var componentName = GetComponentName(new[] { editorAlias, content.ContentType.Alias });
