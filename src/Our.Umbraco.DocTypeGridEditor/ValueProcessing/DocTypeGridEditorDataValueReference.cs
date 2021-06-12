@@ -17,16 +17,16 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
     public class DocTypeGridEditorDataValueReference : IDataValueReferenceFactory, IDataValueReference
     {
         private readonly Lazy<Dictionary<string, IContentType>> _contentTypes;
-        private readonly PropertyEditorCollection _dataEditors;
+        private readonly Lazy<PropertyEditorCollection> _dataEditors;
 
         public IDataValueReference GetDataValueReference() => this;
 
         public bool IsForEditor(IDataEditor dataEditor) => dataEditor.Alias.InvariantEquals(Constants.PropertyEditors.Aliases.Grid);
 
 
-        public DocTypeGridEditorDataValueReference(IContentTypeService contentTypeService, PropertyEditorCollection dataEditors)
+        public DocTypeGridEditorDataValueReference(Lazy<IContentTypeService> contentTypeService, Lazy<PropertyEditorCollection> dataEditors)
         {
-            _contentTypes = new Lazy<Dictionary<string, IContentType>>(() => contentTypeService.GetAll().ToDictionary(c => c.Alias));
+            _contentTypes = new Lazy<Dictionary<string, IContentType>>(() => contentTypeService.Value.GetAll().ToDictionary(c => c.Alias));
             _dataEditors = dataEditors;
         }
 
@@ -50,7 +50,7 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
                     {
                         if (propertyTypes.TryGetValue(property.Name, out var propertyType))
                         {
-                            if (_dataEditors.TryGet(propertyType.PropertyEditorAlias, out var propertyEditor))
+                            if (_dataEditors.Value.TryGet(propertyType.PropertyEditorAlias, out var propertyEditor))
                             {
                                 if (propertyEditor.GetValueEditor() is IDataValueReference reference)
                                 {
