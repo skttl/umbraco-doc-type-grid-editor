@@ -180,7 +180,9 @@ else
 #### DocTypeGridEditorViewComponent
 Behind the scenes, Doc Type Grid Editor uses a ViewComponent to render all items. You can let it use the default component for all your editors if you like, but you can also specify your own document type specific, or editor specific view component. Or specify your own default view component.
 
-If you are not the type of developer that likes to put business logic in your views, then the ability to seperate logic from your view is a must. To render your grid editor item with a document type or editor specific view component, you need to create a view component, and give it a name in the format `{DocTypeAlias or EditorAlias}DocTypeGridEditorViewComponent`.
+If you are not the type of developer that likes to put business logic in your views, then the ability to seperate logic from your view is a must. To render your grid editor item with a document type or editor specific view component, you need to create a view component, and give it a name in the format `{EditorAlias or Document Type Alias}DocTypeGridEditorViewComponent`. 
+
+Note: The name of the viewcomponent is case sensitive, but DTGE is helpful enough to look for view components starting both with an uppercase letter and lowercase letter of your alias.
 
 The view component must implement a method called Invoke taking a dynamic model parameter, and a viewPath parameter as a string. The method should return an IViewComponentResult. As an example, the default view component does this:
 
@@ -192,9 +194,25 @@ public IViewComponentResult Invoke(dynamic model, string viewPath)
 ```
 
 #### Overriding the default view component
-Doc Type Grid Editor comes with a default view component, that simply takes the model of the editor and sends it to the correct view. If you want to override this viewcomponent.
+Doc Type Grid Editor comes with a default view component, that simply takes the model of the editor and sends it to the correct view. If you want to override this ViewComponent and replace it with your own, you can do it in your Startup.cs file, in the ConfigureServices method.
 
-TODO: How to implement config?
+Add the following code, to configure DocTypeGridEditor:
+
+```cs
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddUmbraco(_env, _config)
+        .AddBackOffice()
+        .AddWebsite()
+        .AddComposers()
+        .Build();
+
+    services.SetDocTypeGridEditorSettings(c =>
+    {
+        c.DefaultDocTypeGridEditorViewComponent = typeof(MyDocTypeGridEditorViewComponent);
+    });
+}
+```
 
 ---
 
