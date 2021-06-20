@@ -146,7 +146,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
             // Convert to editor config
             var dataType = _dataTypeService.GetDataType(dtd.Id);
             var propEditor = dataType.Editor;
-            var content = propEditor.GetValueEditor().ConvertDbToString(new PropertyType(_shortStringHelper, dataType), dataType.Configuration, _dataTypeService);
+            var content = propEditor.GetValueEditor().ConvertDbToString(new PropertyType(_shortStringHelper, dataType), dataType.Configuration);
             return content;
         }
 

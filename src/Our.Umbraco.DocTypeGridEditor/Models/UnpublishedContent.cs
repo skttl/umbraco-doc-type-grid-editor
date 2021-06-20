@@ -124,7 +124,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Models
                     dataEditors.TryGet(propertyType.DataType.EditorAlias, out var editor);
                     if (editor != null)
                     {
-                        value = editor.GetValueEditor().ConvertDbToString(property.PropertyType, value, dataTypeService);
+                        value = editor.GetValueEditor().ConvertDbToString(property.PropertyType, value);
                     }
                 }
 

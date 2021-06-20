@@ -143,7 +143,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
                 if (prop2 != null)
                 {
-                    var newValue2 = propEditor.GetValueEditor().ConvertDbToString(propType2, newValue, _dataTypeService);
+                    var newValue2 = propEditor.GetValueEditor().ConvertDbToString(propType2, newValue);
 
                     properties.Add(new DetachedPublishedProperty(propType, newValue2));
                 }
