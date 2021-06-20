@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## UNRELEASED
 - Updated to Umbraco 9.0.0
-- DocTypeGridEditorSurfaceController replaced by DocTypeGridEditorViewComponent
+- DocTypeGridEditorSurfaceController replaced by DocTypeGridEditorViewComponent **BREAKING**
 - Finding moved cheese
-- Changed DocTypeGridEditorHelper from a static class to being registered in the container for DI.
+- Changed DocTypeGridEditorHelper from a static class to being registered in the container for DI. **BREAKING**
 - Adds default DocTypeGridEditorViewComponent used for all not hijacked rendering.
+- Adds DocTypeGridEditorSettings object for configuring DocTypeGridEditor - currently only configures the default viewcomponent.
 
 ## 1.2.7 - 2020-03-28
 - Fix: Null error when validation fails

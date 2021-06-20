@@ -7,10 +7,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Our.Umbraco.DocTypeGridEdit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4933D56D-BD6F-4C2D-A9CF-40B90148E933}"
 	ProjectSection(SolutionItems) = preProject
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\FUNDING.yml = ..\FUNDING.yml
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dtge9Testsite", "Dtge9Testsite\Dtge9Testsite.csproj", "{7C24F7A4-D89C-4E48-BC0C-CE8EA2674A10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8E6B61BE-CD4E-4C09-B386-81AF21ABE55D}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\developers-guide-v1.md = ..\docs\developers-guide-v1.md
+		..\docs\developers-guide-v2.md = ..\docs\developers-guide-v2.md
+		..\docs\README.md = ..\docs\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +39,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8E6B61BE-CD4E-4C09-B386-81AF21ABE55D} = {4933D56D-BD6F-4C2D-A9CF-40B90148E933}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66EC167C-845A-4DCC-87B7-C7DB5CC1E38B}
