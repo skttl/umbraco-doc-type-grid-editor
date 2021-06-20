@@ -240,7 +240,6 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
                 return new HtmlString("");
             }
 
-            // get view path
             if (!TryGetViewPath(htmlHelper.ViewContext, editorAlias, content.ContentType.Alias, viewPath, previewViewPath, isPreview, out string fullViewPath))
             {
                 _logger.LogError("Failed rendering DocTypeGridEditorItem. " +
@@ -299,6 +298,8 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
         {
             var componentName = _options.DefaultDocTypeGridEditorViewComponent.Name;
             if (componentName.EndsWith("ViewComponent")) componentName = componentName.Substring(0, componentName.LastIndexOf("ViewComponent"));
+            names = names.SelectMany(x => new[] { x.ToFirstUpper(), x }).Distinct().ToArray();
+
             foreach (var name in names)
             {
                 if (_viewComponentSelector.SelectComponent($"{name}DocTypeGridEditor") != null)
