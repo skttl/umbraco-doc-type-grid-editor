@@ -27,6 +27,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
     public class DocTypeGridEditorApiController : UmbracoAuthorizedJsonController
     {
         private readonly IUmbracoContextAccessor _umbracoContext;
+        private readonly IVariationContextAccessor _variationContextAccessor;
         private readonly IContentTypeService _contentTypeService;
         private readonly IContentService _contentService;
         private readonly IDataTypeService _dataTypeService;
@@ -39,6 +40,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
         private readonly PropertyEditorCollection _propertyEditorCollection;
 
         public DocTypeGridEditorApiController(IUmbracoContextAccessor umbracoContext,
+            IVariationContextAccessor variationContextAccessor,
             IContentTypeService contentTypeService,
             IContentService contentService,
             IDataTypeService dataTypeService,
@@ -51,6 +53,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
             DocTypeGridEditorHelper dtgeHelper)
         {
             _umbracoContext = umbracoContext;
+            _variationContextAccessor = variationContextAccessor;
             _contentTypeService = contentTypeService;
             _contentService = contentService;
             _dataTypeService = dataTypeService;
@@ -168,11 +171,11 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
             }
 
 
-            if (_umbracoContext.UmbracoContext.PublishedRequest == null)
+            if (_umbracoContext.GetRequiredUmbracoContext().PublishedRequest == null)
             {
                 var request = _router.CreateRequestAsync(new Uri(Request.GetDisplayUrl())).Result;
                 request.SetPublishedContent(page);
-                _umbracoContext.UmbracoContext.PublishedRequest = request.Build();
+                _umbracoContext.GetRequiredUmbracoContext().PublishedRequest = request.Build();
             }
 
             // Set the culture for the preview
@@ -184,7 +187,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
                     var culture = new CultureInfo(page.Cultures[currentCulture].Culture);
                     System.Threading.Thread.CurrentThread.CurrentCulture = culture;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
-                    _umbracoContext.UmbracoContext.VariationContextAccessor.VariationContext = new VariationContext(culture.Name);
+                    _variationContextAccessor.VariationContext = new VariationContext(culture.Name);
                 }
             }
 
