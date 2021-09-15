@@ -74,7 +74,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
             if (dataJson == null)
                 return null;
 
-            if (_umbracoContext.UmbracoContext == null)
+            if (_umbracoContext.GetRequiredUmbracoContext() == null)
                 return ConvertValue(id, contentTypeAlias, dataJson);
 
             return (IPublishedElement)_appCaches.RequestCache.Get(
@@ -155,7 +155,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Helpers
 
             // Get the current request node we are embedded in
 
-            var pcr = _umbracoContext.UmbracoContext.PublishedRequest;
+            var pcr = _umbracoContext.GetRequiredUmbracoContext().PublishedRequest;
             var containerNode = pcr != null && pcr.HasPublishedContent() ? pcr.PublishedContent : null;
 
             // Create the model based on our implementation of IPublishedElement

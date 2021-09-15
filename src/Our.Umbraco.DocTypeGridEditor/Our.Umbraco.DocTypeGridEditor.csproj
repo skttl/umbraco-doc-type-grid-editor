@@ -8,7 +8,7 @@
         <Product>Our.Umbraco.DocTypeGridEditor</Product>
         <PackageTags>umbraco plugin package</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>9.0.0-beta001</Version>
+        <Version>9.0.0-beta002</Version>
         <Authors>Søren Kottal</Authors>
         <Company></Company>
         <AssemblyName>Our.Umbraco.DocTypeGridEditor</AssemblyName>
@@ -16,8 +16,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0-beta003" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-beta003" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0-rc002" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-rc002" />
     </ItemGroup>
 
     <ItemGroup>

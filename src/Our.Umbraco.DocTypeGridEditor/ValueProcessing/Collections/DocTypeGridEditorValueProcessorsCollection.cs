@@ -12,7 +12,7 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing.Collections
     /// </summary>
     public class DocTypeGridEditorValueProcessorsCollection : BuilderCollectionBase<IDocTypeGridEditorValueProcessor>
     {
-        public DocTypeGridEditorValueProcessorsCollection(IEnumerable<IDocTypeGridEditorValueProcessor> items) : base(items)
+        public DocTypeGridEditorValueProcessorsCollection(Func<IEnumerable<IDocTypeGridEditorValueProcessor>> items) : base(items)
         {
 
         }
