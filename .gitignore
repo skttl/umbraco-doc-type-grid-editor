@@ -2,3 +2,5 @@
 Our.Umbraco.DocTypeGridEditor.Testsite
 bin
 obj
+src/.idea
+src/Our.Umbraco.DocTypeGridEditor/.idea

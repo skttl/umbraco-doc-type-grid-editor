@@ -8,7 +8,7 @@ using Umbraco.Extensions;
 
 namespace Our.Umbraco.DocTypeGridEditor
 {
-    public class DocTypeGridEditorComposer : IUserComposer
+    public class DocTypeGridEditorComposer : IComposer
     {
         public void Compose(IUmbracoBuilder builder)
         {
