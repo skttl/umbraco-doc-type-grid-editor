@@ -10,7 +10,8 @@
 5. [Rendering a Doc Type Grid Editor](#rendering-a-doc-type-grid-editor)
     1. [Rendering Alternative Preview Content](#rendering-alternative-preview-content)
     2. [DocTypeGridEditorSurfaceController](#doctypegrideditorsurfacecontroller)
-6. [Useful Links](#useful-links)
+6. [Value Processors](#value-processors)
+7. [Useful Links](#useful-links)
 
 ---
 
