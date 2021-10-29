@@ -75,7 +75,7 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
             {
                 // Find all controls that uses DTGE editor
                 var controls = grid.Sections.SelectMany(x => x.Rows.SelectMany(r => r.Areas).SelectMany(a => a.Controls)).ToArray();
-                dtgeValues = controls.Where(x => x.Editor.Alias.ToLowerInvariant() == "doctype").Select(x => x.Value.ToObject<DocTypeGridEditorValue>());
+                dtgeValues = controls.Where(x => x.Value["dtgeContentTypeAlias"] != null).Select(x => x.Value.ToObject<DocTypeGridEditorValue>());
             }
             else
             {
