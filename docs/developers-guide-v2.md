@@ -39,7 +39,7 @@ Before you get started, there are a number of things you will need:
 
 ### Configuring The Doc Type Grid Editor
 
-The **Doc Type Grid Editor** is configured via package.manifest files located in `~/App_Plugins/*`. A default configuration is installed along with the package, but for details on the configuration options, please see below.
+The **Doc Type Grid Editor** is configured via package.manifest files located in `~/App_Plugins/*`. A default configuration is installed along with the package in `~/App_Plugins/DocTypeGridEditor/package.manifest`.  If you want to add your own editor configurations you can create your own package manifest file with the gridEditor config values (somewhere like `~/App_Plugins/DocTypeGridEditor.CustomEditors/package.manifest`).   For details on the configuration options, please see below.
 
 #### Example
 
