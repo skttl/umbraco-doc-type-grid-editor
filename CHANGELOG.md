@@ -5,10 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 9.0.UNRELEASED
+## 9.0.1
+- Fixes bug when saving a component which previously failed validation - thanks @inetzo
 - Fixes bug in DataValueReference for media tracking, where custom DTGEs were not recognized. 4db5cdd
 
-## 1.2.UNRELEASED
+## 1.2.8
+- Fixes bug when saving a component which previously failed validation - thanks @inetzo
 - Fixes bug in DataValueReference for media tracking, where custom DTGEs were not recognized. 4db5cdd
 
 ## 9.0.0
