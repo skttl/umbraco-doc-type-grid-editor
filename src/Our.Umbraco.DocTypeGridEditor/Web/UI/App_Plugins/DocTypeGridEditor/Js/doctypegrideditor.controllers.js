@@ -267,6 +267,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
             function submit() {
                 if ($scope.model.submit) {
+                    serverValidationManager.reset();
                     vm.saveButtonState = "busy";
                     $scope.model.node.name = "Dtge Temp: " + $scope.model.node.key;
                     $scope.model.node.variants[0].name = $scope.model.node.name

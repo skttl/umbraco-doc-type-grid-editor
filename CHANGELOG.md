@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.2.8
+- Fixes bug in DataValueReference for media tracking, where custom DTGEs were not recognized. 4db5cdd
+
+## 1.2.7
+- Fixes: Unable to save a component which previously failed validation #231
+- Null-check for err object when submiting #236
+
 ## 1.2.6 - 2020-12-07
 - Fix: Error saving temp blueprint
 - Fix: issue when previewing linked content items
