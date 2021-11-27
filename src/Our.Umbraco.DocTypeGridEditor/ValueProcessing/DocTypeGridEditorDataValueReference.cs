@@ -11,6 +11,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
 using Newtonsoft.Json;
 using Our.Umbraco.DocTypeGridEditor.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
 {
@@ -75,7 +76,7 @@ namespace Our.Umbraco.DocTypeGridEditor.ValueProcessing
             {
                 // Find all controls that uses DTGE editor
                 var controls = grid.Sections.SelectMany(x => x.Rows.SelectMany(r => r.Areas).SelectMany(a => a.Controls)).ToArray();
-                dtgeValues = controls.Where(x => x.Value["dtgeContentTypeAlias"] != null).Select(x => x.Value.ToObject<DocTypeGridEditorValue>());
+                dtgeValues = controls.Where(x => x.Value is JObject && x.Value["dtgeContentTypeAlias"] != null).Select(x => x.Value.ToObject<DocTypeGridEditorValue>());
             }
             else
             {
