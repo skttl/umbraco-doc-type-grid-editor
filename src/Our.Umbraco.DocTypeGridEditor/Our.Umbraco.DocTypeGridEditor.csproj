@@ -3,6 +3,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
 	    <StaticWebAssetBasePath>App_Plugins/DocTypeGridEditor</StaticWebAssetBasePath>
+	    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 
         <PackageId>Our.Umbraco.DocTypeGridEditor</PackageId>
         <Title>Our.Umbraco.DocTypeGridEditor</Title>
