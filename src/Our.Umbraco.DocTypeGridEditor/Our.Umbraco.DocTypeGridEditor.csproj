@@ -21,6 +21,6 @@
 
     <ItemGroup>
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="12.0.0" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="12.0.0" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="12.0.1" />
     </ItemGroup>
 </Project>
