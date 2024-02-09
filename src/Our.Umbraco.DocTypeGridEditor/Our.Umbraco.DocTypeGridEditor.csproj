@@ -282,9 +282,9 @@
     <Compile Include="ValueProcessing\Collections\DocTypeGridEditorValueProcessorsCollectionBuilder.cs" />
     <Compile Include="ValueProcessing\IDocTypeGridEditorValueProcessor.cs" />
     <Compile Include="ValueProcessing\UmbracoTagsValueProcessor.cs" />
+    <Compile Include="Web\Controllers\DocTypeGridEditorBlueprintApiController.cs" />
     <Compile Include="Web\Controllers\DocTypeGridEditorApiController.cs" />
     <Compile Include="Extensions\ContentTypeServiceExtensions.cs" />
-    <Compile Include="Web\Controllers\DocTypeGridEditorBlueprintApiController.cs" />
     <Compile Include="Web\Controllers\DocTypeGridEditorSurfaceController.cs" />
     <Compile Include="Web\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Web\Extensions\WebCompositionExtensions.cs" />
