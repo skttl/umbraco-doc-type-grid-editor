@@ -253,7 +253,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
             function cleanup() {
                 if ($scope.model.node && $scope.model.node.id > 0) {
                     // delete any temporary blueprints used for validation
-                    contentResource.deleteBlueprint($scope.model.node.id);
+                    dtgeResources.deleteBlueprint($scope.model.node.id);
 
                     // set current node id, so subsequent deletes, giving 404 errors is avoided
                     $scope.model.node.id = 0;
@@ -279,7 +279,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
 
                     // save the content as a blueprint, to trigger validation
                     var args = {
-                        saveMethod: contentResource.saveBlueprint,
+                        saveMethod: dtgeResources.saveBlueprint,
                         scope: $scope,
                         content: $scope.model.node,
                         create: true,
@@ -303,7 +303,7 @@ angular.module("umbraco").controller("Our.Umbraco.DocTypeGridEditor.Dialogs.DocT
                             }
                             cleanup();
                             vm.saveButtonState = "error";
-                    });
+                        });
                     vm.saveButtonState = "init";
                 }
             }
