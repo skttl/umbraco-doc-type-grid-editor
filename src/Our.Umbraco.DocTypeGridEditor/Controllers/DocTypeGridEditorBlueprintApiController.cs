@@ -42,6 +42,7 @@ namespace Our.Umbraco.DocTypeGridEditor.Controllers
 
         public DocTypeGridEditorBlueprintApiController(ICultureDictionary cultureDictionary, ILoggerFactory loggerFactory, IShortStringHelper shortStringHelper, IEventMessagesFactory eventMessages, ILocalizedTextService localizedTextService, PropertyEditorCollection propertyEditors, IContentService contentService, IUserService userService, IBackOfficeSecurityAccessor backofficeSecurityAccessor, IContentTypeService contentTypeService, IUmbracoMapper umbracoMapper, IPublishedUrlProvider publishedUrlProvider, IDomainService domainService, IDataTypeService dataTypeService, ILocalizationService localizationService, IFileService fileService, INotificationService notificationService, ActionCollection actionCollection, ISqlContext sqlContext, IJsonSerializer serializer, ICoreScopeProvider scopeProvider, IAuthorizationService authorizationService, IContentVersionService contentVersionService, ICultureImpactFactory cultureImpactFactory)
         {
+            _contentService = contentService;
             _contentController = new ContentController(cultureDictionary, loggerFactory, shortStringHelper, eventMessages, localizedTextService, propertyEditors, contentService, userService, backofficeSecurityAccessor, contentTypeService, umbracoMapper, publishedUrlProvider, domainService, dataTypeService, localizationService, fileService, notificationService, actionCollection, sqlContext, serializer, scopeProvider, authorizationService, contentVersionService, cultureImpactFactory);
         }
 
