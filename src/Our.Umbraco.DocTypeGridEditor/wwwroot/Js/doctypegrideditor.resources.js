@@ -1,5 +1,5 @@
 ﻿angular.module('umbraco.resources').factory('Our.Umbraco.DocTypeGridEditor.Resources.DocTypeGridEditorResources',
-    function ($q, $http, umbRequestHelper) {
+    function ($q, $http, umbRequestHelper, umbDataFormatter) {
         return {
             getContentTypeAliasByGuid: function (guid) {
                 var url = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorApi/GetContentTypeAliasByGuid?guid=" + guid;
@@ -52,6 +52,24 @@
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 });
+            },
+            saveBlueprint: function (content, isNew, files, showNotifications) {
+                var restApiUrl = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorBlueprintApi/PostSaveBlueprint";
+                return umbRequestHelper.postSaveContent({
+                    restApiUrl: restApiUrl,
+                    content: content,
+                    action: "save" + (isNew ? "New" : ""),
+                    files: files,
+                    showNotifications: showNotifications,
+                    dataFormatter: function (c, a) {
+                        return umbDataFormatter.formatContentPostData(c, a);
+                    }
+                });
+            },
+            deleteBlueprint: function (id) {
+                var restApiUrl = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + "/backoffice/DocTypeGridEditorApi/DocTypeGridEditorBlueprintApi/DeleteBlueprint";
+                var requestData = { id: id };
+                $http.post(restApiUrl, null, { params: requestData })
             }
         };
     });
